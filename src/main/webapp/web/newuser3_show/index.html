@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>免费送210元</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .banner img {
+            display: block;
+            width: 100%;
+        }
+
+        .top {
+            background: url("img/bg.png") repeat-y;
+            background-size: 100% auto;
+            padding-bottom: 4vw;
+        }
+
+        .tq {
+            margin-top: 6.6vw;
+            margin-left: 5vw;
+            width: 90vw;
+            height: 46.33vw;
+            background: rgba(255, 255, 255, 1);
+            border-radius: 1vw;
+            box-shadow: 5vw 0vw 16vw rgba(255, 96, 0, 0.5);
+            position: relative;
+        }
+
+        .tq-title {
+            position: absolute;
+            width: 54.4vw;
+            top: 0;
+            left: 50%;
+            margin-left: -27.2vw;
+        }
+
+        .tq-title-1 {
+            position: absolute;
+            top: 13.47vw;
+            width: 100%;
+            text-align: center;
+            height: 6.8vw;
+            font-size: 7.2vw;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 87, 94, 1);
+            line-height: 9.6vw;
+        }
+
+        .tq-p-1 {
+            position: absolute;
+            top: 23.87vw;
+            text-align: center;
+            width: 100%;
+            height: 3.73vw;
+            font-size: 4vw;
+            font-family: PingFangSC-Regular;
+            color: rgba(51, 51, 51, 1);
+            line-height: 9.6vw;
+        }
+
+        .tq-button-1 {
+            position: absolute;
+            bottom: 2.07vw;
+            left: 21.33vw;
+            display: block;
+            text-align: center;
+            line-height: 10.67vw;
+            width: 48vw;
+            height: 10.67vw;
+            background: rgba(255, 138, 23, 1);
+            border-radius: 5vw;
+            box-shadow: 0vw 1vw 1vw rgba(255, 138, 23, 0.5);
+            font-size: 4.67vw;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 255, 255, 1);
+            text-decoration: none;
+        }
+
+        .tq2 {
+            height: 48.67vw;
+        }
+
+        .tq2 .tq-title-1 {
+            top: 12.27vw;
+        }
+
+        .tq2 .tq-p-1 {
+            top: 21vw;
+        }
+
+        .tq2 .tq-p-1 span {
+            text-decoration: line-through;
+        }
+
+        .tq2 .tq-button-1 {
+            bottom: 7.7vw;
+        }
+
+        .tq-desc {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            font-size: 4vw;
+            font-family: PingFangSC-Regular;
+            color: rgba(51, 51, 51, 1);
+            bottom: 1.2vw;
+        }
+
+        .bottom {
+            padding: 5vw;
+            background: url("img/bottom-bg.png") repeat-y;
+            background-size: 100% auto;
+        }
+
+        .bottom-title {
+            width: 64vw;
+            display: block;
+        }
+
+        .bottom table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .bottom table td img {
+            display: block;
+            width: 100%;
+            margin: 4.5vw 0 3.3vw 0;
+        }
+
+        /* toast css*/
+        .toast-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 100%;
+            top: 100%;
+            z-index: 2999;
+        }
+
+        .toast {
+            position: absolute;
+            top: -56%;
+            left: -50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            padding: 13px 16px;
+            font-size: 14px;
+            border-radius: 2px;
+            width: auto;
+            /*颜色*/
+            color: #ccc;
+            background: rgba(37, 38, 45, 0.9);
+            /*可以输入的字数的宽度*/
+            max-width: 16em;
+        }
+
+        /* toast css end*/
+        /* 弹窗css*/
+        /*移动端适配 width|height|font-size = 视觉稿量出来的值 / 100rem;@lbl*/
+        @media screen and (max-width: 359px) and (min-width: 320px) {
+            html, body {
+                font-size: 50px !important;
+            }
+        }
+
+        @media screen and (max-width: 374px) and (min-width: 360px) {
+            html, body {
+                font-size: 56.25px !important;
+            }
+        }
+
+        @media screen and (max-width: 413px) and (min-width: 375px) {
+            html, body {
+                font-size: 58.5px !important;
+            }
+        }
+
+        @media screen and (max-width: 639px)  and (min-width: 414px) {
+            html, body {
+                font-size: 64.6px !important;
+            }
+        }
+
+        @media screen and (min-width: 640px) {
+            html, body {
+                font-size: 100px !important;
+            }
+        }
+
+        .award-popup {
+            background: #000;
+            opacity: 0.7;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .award-popup-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .award-right {
+            position: absolute;
+            top: 50%;
+            width: 4.83rem;
+            left: 50%;
+            margin-left: -2.415rem;
+            height: 5rem;
+            margin-top: -2.5rem;
+        }
+
+        .award-popup-bg {
+            display: block;
+            width: 100%;
+        }
+
+        .form {
+            position: absolute;
+            top: 50%;
+            margin-top: -0.9rem;
+            width: 4.83rem;
+            left: 50%;
+            margin-left: -2.415rem;
+        }
+
+        .form input {
+            -webkit-appearance: none;
+            background: #fff;
+            height: 0.7rem;
+            font-size: 0.24rem;
+            display: block;
+            border-radius: 0.35rem;
+            border: none;
+            color: #F18383;
+        }
+
+        input::-webkit-input-placeholder {
+            color: #F18383;
+        }
+
+        input::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color: #F18383;
+        }
+
+        input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color: #F18383;
+        }
+
+        input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: #F18383;
+        }
+
+        .share-button a {
+            display: block;
+            width: 90%;
+            margin-left: 5%;
+            text-decoration: none;
+            font-size: 0.3rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(119, 56, 0, 1);
+            text-align: center;
+            background: url("img/button2.png") no-repeat;
+            background-size: 100% auto;
+            margin-top: 0.2rem;
+            padding: 0.25rem 0;
+        }
+
+        .form input:focus {
+            outline: none;
+            line-height: normal;
+        }
+
+        input.mobile {
+            margin-left: 7.5%;
+            width: 85%;
+            text-align: center;
+            margin-bottom: 0.24rem;
+        }
+
+        input.verify-code {
+            margin-left: 7.5%;
+            width: 48%;
+            text-align: center;
+            float: left;
+            margin-bottom: 0.1rem;
+        }
+
+        input.verify-code-button {
+            background: #ffd428;
+            margin-right: 7.5%;
+            width: 32%;
+            text-align: center;
+            float: right;
+            margin-bottom: 0.1rem;
+            font-size: 0.24rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(119, 56, 0, 1);
+        }
+
+        input.password {
+            margin: 0.24rem auto;
+            margin-left: 7.5%;
+            width: 85%;
+            text-align: center;
+
+        }
+
+        .rule-text {
+            color: #fff;
+            text-align: center;
+            font-size: 0.24rem;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        input[type="number"] {
+            padding: 0;
+        }
+
+        input[type="password"] {
+            padding: 0;
+        }
+
+        input.add-class {
+            background: #ffdc88;
+        }
+
+        [v-cloak] {
+            display: none
+        }
+
+        .success-p {
+            font-size: 0.3rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 255, 255, 1);
+            text-align: center;
+        }
+
+        .form-success {
+            margin-top: 0;
+        }
+
+        .big-number {
+            font-size: 0.6rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 87, 94, 1);
+        }
+
+        .color-red {
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 87, 94, 1);
+        }
+
+        .close {
+            width: 0.4rem;
+            position: absolute;
+            top: -0.5rem;
+            right: 0rem;
+        }
+
+        [v-cloak] {
+            display: none
+        }
+
+        .not-active {
+            background-color: #bbbbbb;
+            box-shadow: 0vw 1vw 1vw #bbbbbb;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak @click="openDownloadPage(androidAppUrl,iosAppUrl)">
+    <div class="top">
+        <div class="banner">
+            <img src="img/banner.png" alt="">
+        </div>
+        <div class="tq">
+            <img class="tq-title" src="img/tq1.png" alt="">
+            <p class="tq-title-1">注册免费送5智慧币</p>
+            <p class="tq-p-1">购买预测、会员直抵5元</p>
+            <a class="tq-button-1" v-bind:class="{ 'not-active': (button1text=='已领取,看预测') }"
+               href="javascript:void(0)" v-text="button1text"></a>
+        </div>
+        <div class="tq tq2">
+            <img class="tq-title" src="img/tq2.png" alt="">
+            <p class="tq-title-1">足彩首月会员仅75元</p>
+            <p class="tq-p-1">免费看大神推单，<span>原价105元</span></p>
+            <a class="tq-button-1" href="javascript:void(0)"
+               v-bind:class="{ 'not-active': (button3text=='已购买,看预测') }" v-text="button3text"></a>
+            <p class="tq-desc" v-show="button3text=='限时抢购'&&buyVipDate!=0">倒计时：仅剩<span style="color: #FF575E"
+                                                                                       v-text="buyVipDate"></span>天</p>
+        </div>
+        <div class="tq">
+            <img class="tq-title" src="img/tq3.png" alt="">
+            <p class="tq-title-1">足彩预测免单+1次</p>
+            <p class="tq-p-1">免费看大神推单，<span>价值88元</span></p>
+            <a class="tq-button-1" href="javascript:void(0)" v-bind:class="{ 'not-active': (button1text=='已领取,看预测') }"
+               v-text=""></a>
+        </div>
+        <div class="tq tq2">
+            <img class="tq-title" src="img/tq4.png" alt="">
+            <p class="tq-title-1">数字彩首月会员仅10元</p>
+            <p class="tq-p-1">免费看绝杀码，<span>原价30元</span></p>
+            <a class="tq-button-1" href="javascript:void(0)"
+               v-bind:class="{ 'not-active': (button2text=='已购买,看预测') }" v-text="button2text"></a>
+            <p v-show="button2text=='限时抢购'&&buyVipDate!=0" class="tq-desc">倒计时：仅剩<span style="color: #FF575E"
+                                                                                       v-text="buyVipDate"></span>天
+            </p>
+        </div>
+
+    </div>
+    <div class="bottom">
+        <img class="bottom-title" src="img/sports-title.png" alt="">
+        <table>
+            <tr>
+                <td>
+                    <img src="img/1.png" alt="">
+                </td>
+                <td>
+                    <img src="img/2.png" alt="">
+                </td>
+                <td>
+                    <img src="img/3.png" alt="">
+                </td>
+            </tr>
+        </table>
+        <img class="bottom-title" src="img/digital-title.png" alt="">
+        <table>
+            <tr>
+                <td>
+                    <img src="img/4.png" alt="">
+                </td>
+                <td>
+                    <img src="img/5.png" alt="">
+                </td>
+                <td>
+                    <img src="img/6.png" alt="">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- 弹窗代码-->
+    <div class="award-popup" v-show="showRegisterPop||showRegisterSuccessPop">
+    </div>
+    <div class="award-popup-fixed" v-show="showRegisterPop||showRegisterSuccessPop">
+        <!-- 注册弹窗-->
+        <div class="award-right award-pop" v-show="showRegisterPop">
+            <img class="award-popup-bg" src="http://sportsimg.mojieai.com/newusera/popup1.png" alt="">
+            <div class="form-relative">
+                <img class="close" src="http://sportsimg.mojieai.com/newusera/close.png"
+                     alt="">
+                <div class="form">
+                    <input class="mobile" type="number" oninput="if(value.length>11)value=value.slice(0,11)"
+                           placeholder="请输入手机号"
+                           v-model="mobile">
+                    <input class="verify-code" type="number" oninput="if(value.length>4)value=value.slice(0,4)"
+                           placeholder="请输入验证码" v-model="verifyCode">
+                    <input class="verify-code-button" type="button" v-model="buttonVerifyCode"
+                           >
+                    <div class="clear"></div>
+                    <div class="share-button">
+                        <a href="javascript:void(0)">免费注册</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新手注册成功弹窗-->
+        <div class="award-right award-pop" v-show="showRegisterSuccessPop">
+            <img class="award-popup-bg" src="img/pupup2.png" alt="">
+            <div class="form-relative">
+                <div class="form form-success">
+                    <p class="success-p">恭喜您</p>
+                    <p class="success-p">5枚智慧币已到账</p>
+                    <p class="success-p">可在“我的-智慧币”查收~</p>
+                    <div class="clear"></div>
+                    <div class="share-button">
+                        <a href="javascript:void(0)" >朕知道了</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+<!-- jquery vue-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="script/config.js"></script>
+<script>
+    // toast 方法
+    function toast(msg) {
+        var str = "<div class='toast-container' style='display:none'> <div class='toast'>" + msg + "</div></div>";
+        $('body').append(str);
+        $('.toast-container').stop().fadeIn(100).delay(1500).fadeOut(400); //fade out after 3 seconds
+        setTimeout(function () {
+            $('.toast-container').remove();
+        }, 3000);
+    }
+
+    // Vue实例代码
+    token = getCookie('token');
+    var app = new Vue({
+        el: '#app',
+        data: {
+            mobile: "",
+            verifyCode: "",
+            buttonVerifyCode: "获取验证码",
+            showRegisterPop: false,
+            showRegisterSuccessPop: false,
+            button2text: "免费注册",
+            button4text: "免费注册",
+            button3text: "免费注册",
+            button1text: "免费注册",
+            buyVipDate: 5,
+            schemesJumpStr: "mjlottery://mjnative?page=wap&url=https://predictapi.mojieai.com/web/big_cafe/index.html",
+            androidAppUrl: "https://cdn.caiqr.com/zhyc4.6.4.apk",
+            iosAppUrl: "https://t.mojieai.com/web/qybios3/index.html"
+        },
+        mounted: function () {
+            this.initPage()
+            this.openApp("mjlottery://mjnative?page=wap&url=https://t.mojieai.com/web/newuser3/index.html")
+            var u = navigator.userAgent.toLowerCase();
+            if (/iphone|ipod|ipad/.test(u)) {
+                setTimeout(function () {
+                    window.location="https://t.mojieai.com/web/qybios3/index.html";
+                },2000);
+            } else {
+                setTimeout(function () {
+                    window.location="https://cdn.caiqr.com/zhyc4.6.4.apk";
+                },5000);
+            }
+        },
+        methods: {
+            openDownloadPage: function (androidUrl,iosUrl){
+
+                this.openApp(this.schemesJumpStr)
+                var u = navigator.userAgent.toLowerCase();
+
+                setTimeout(function () {
+                    if  (/iphone|ipod|ipad/.test(u)) {
+                        window.location=iosUrl;
+                    } else {
+                        window.location=androidUrl;
+                    }
+                },2000);
+
+            },
+            openApp: function (url) {
+                setTimeout(function () {
+                    try
+                    {
+                        window.location.href = url;
+                    }
+                    catch(err)
+                    {
+
+                    }
+                },1);
+
+            },
+            initPage: function () {
+                var index = this;
+                if (token == "") {
+                    index.$data.button2text = "免费注册";
+                    index.$data.button3text = "免费注册";
+                    index.$data.button4text = "免费注册";
+                } else {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/activity/checkIsGivenWisdomCoinWithOutSign',
+                        data: {
+                            'activityId': config.activityId,
+                            'token': token,
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+                            if (data.code == 0) {
+                                if (data.data.IsGivenWisdomCoin) {
+                                    index.$data.button1text = "已领取,看预测";
+                                } else {
+                                    index.$data.button1text = "立即领取";
+                                }
+                                if (data.data.isBuyVip) {
+                                    index.$data.button2text = "已购买,看预测";
+                                } else {
+                                    index.$data.button2text = "限时抢购";
+                                }
+                                index.$data.buyVipDate = 5 - data.data.buyVipDate;
+                                if (data.data.buyVipDate > 5) {
+                                    index.$data.buyVipDate = 0;
+                                }
+                                if (data.data.isBuyVip2) {
+                                    index.$data.button3text = "已购买,看预测";
+                                } else {
+                                    index.$data.button3text = "限时抢购";
+                                }
+                            }
+                            if (data.code == -1) {
+                                toast('网络异常')
+                            }
+                        }
+                    })
+                    // 检查免单券
+                    index.checkIsGetFreeTickets()
+                    // 校验用户属性 初始化顺序
+
+                }
+            },
+            checkIsGetFreeTickets: function () {
+                var index = this;
+                // 检查用户是否领取过免单券
+                $.ajax({
+                    type: 'POST',
+                    url: '/activity/checkActivityFreeTicket',
+                    data: {
+                        'token': token,
+                        'activityId': 201806001,
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            if (data.data.isGetFreeTicket) {
+                                index.$data.button4text = "已领取,看预测";
+                            } else {
+                                index.$data.button4text = "立即领取";
+                            }
+                        }
+                    }
+                })
+            },
+            buyVip: function () {
+                var index = this;
+                if (index.$data.button2text == "已购买,看预测") {
+                    openNativePage('mjlottery://mjnative?page=wisdomProgram&gameEn=ssq&currentPage=3');
+                    return
+                }
+                if (token == "") {
+                    index.$data.showRegisterPop = true;
+                    return
+                }
+
+                if (token != "" && index.$data.button2text == "限时抢购") {
+                    if (typeof(window.webkit) != "undefined") {
+                        window.webkit.messageHandlers.pay.postMessage({price: '10', memo: 'newUserActivity'})
+                        //window.webkit.messageHandlers.pay.postMessage({body: token});
+                    }
+                    if (typeof(webViewNative) != "undefined") {
+                        //alert("android share");
+//                    webViewNative.innerShareOpen('0.01','memo')
+                        webViewNative.pay('10', "newUserActivity");
+                    }
+                }
+            },
+            buyVip2: function () {
+                var index = this;
+                if (index.$data.button3text == "已购买,看预测") {
+                    openNativePage('mjlottery://mjnative?page=homeFootball&selectIndex=0');
+                    return
+                }
+                if (token == "") {
+                    index.$data.showRegisterPop = true;
+                    return
+                }
+
+                if (token != "" && index.$data.button3text == "限时抢购") {
+                    if (typeof(window.webkit) != "undefined") {
+                        window.webkit.messageHandlers.pay.postMessage({price: '75', memo: 'newUserActivity2'})
+                        //window.webkit.messageHandlers.pay.postMessage({body: token});
+                    }
+                    if (typeof(webViewNative) != "undefined") {
+                        //alert("android share");
+//                    webViewNative.innerShareOpen('0.01','memo')
+                        webViewNative.pay('75', "newUserActivity2");
+                    }
+                }
+            },
+            getFreeTickets: function () {
+                var index = this;
+                if (index.$data.button4text == "已领取,看预测") {
+                    openNativePage('mjlottery://mjnative?page=homeFootball&selectIndex=0');
+                    return
+                }
+                if (token == "") {
+                    index.$data.showRegisterPop = true;
+                    return
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/activity/get_coupon_by_activity',
+                    data: {
+                        'token': token,
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            index.$data.button4text = "已领取,看预测";
+                        }
+                    }
+                })
+            },
+            close: function () {
+                var index = this;
+                index.$data.showRegisterSuccessPop = false;
+                index.$data.showRegisterPop = false;
+            },
+            openSocial: function () {
+                //openNativePage('mjlottery://mjnative?page=homeCommunity');
+            },
+            openWisdom: function () {
+                openNativePage('mjlottery://mjnative?page=wisdomProgram&gameEn=ssq&currentPage=1');
+            },
+            registerPop: function () {
+                var index = this;
+                if (index.$data.button1text == "已领取,看预测") {
+                    openNativePage('mjlottery://mjnative?page=homeFootball&selectIndex=0');
+                    return
+                }
+                if (index.$data.button1text == " ") {
+                    openNativePage('mjlottery://mjnative?page=wisdomProgram&gameEn=ssq&currentPage=1');
+                }
+                if (index.$data.button1text == "立即领取") {
+                    // 直接领取
+                    $.ajax({
+                        type: 'POST',
+                        url: '/activity/getWisdomCoinWithOutSign',
+                        data: {
+                            'activityId': config.activityId,
+                            'token': token,
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+                            if (data.code == 0) {
+                                // if (/iphone|ipod|ipad/.test(ua)) {
+                                //
+                                // } else {
+                                //
+                                // }
+                                index.$data.showRegisterSuccessPop = true;
+                                index.$data.button1text = "已领取,看预测";
+                            }
+                            if (data.code == -1) {
+                                toast('sasas')
+                            }
+                        }
+                    })
+                } else if (index.$data.button1text == "免费注册") {
+                    index.$data.showRegisterPop = true;
+                }
+            },
+            register: function () {
+                var index = this;
+                // 注册
+                if (index.$data.mobile == "") {
+                    toast("请输入手机号");
+                    return;
+                }
+                if (index.$data.mobile.length != 11) {
+                    toast("手机号格式不正确");
+                    return;
+                }
+                if (index.$data.verifyCode == "") {
+                    toast("请输入验证码");
+                    return;
+                }
+                index.$data.showRegisterPop = false;
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserAuth/login',
+                    data: {
+                        'mobile': index.$data.mobile,
+                        'verifyCode': index.$data.verifyCode,
+                        'channelType': "newUserWeb",
+                        'clientType': 1003
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        // 用户已经注册，校验出错 区分
+                        if (data.code == 0) {
+                            token = data.data.userLogin.token;
+                            // 同步客户端token
+                            if (typeof(window.webkit) != "undefined") {
+                                window.webkit.messageHandlers.checkLoginToken.postMessage({body: token});
+                            } else {
+                                if (typeof(webViewNative) != "undefined") {
+                                    webViewNative.checkLoginToken(token);
+                                }
+                            }
+
+                            // 领取奖励
+                            if (data.data.IsGivenWisdomCoin) {
+                                toast('您已领取过智慧币啦');
+
+                            } else {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/activity/getWisdomCoinWithOutSign',
+                                    data: {
+                                        'activityId': config.activityId,
+                                        'token': token,
+                                    },
+                                    dataType: 'json',
+                                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                                    success: function (data) {
+                                        if (data.code == 0) {
+                                            if (/iphone|ipod|ipad/.test(ua)) {
+
+                                            } else {
+
+                                            }
+                                        }
+                                        if (data.code == -1) {
+                                            toast(data.msg)
+                                        }
+                                    }
+                                })
+                                index.$data.showRegisterSuccessPop = true;
+                            }
+                            index.initPage()
+                        }
+                        if (data.code == -1) {
+                            toast('bssdsd')
+                        }
+                    }
+                })
+            },
+            getVerifyCode: function () {
+                var index = this;
+                if (index.$data.mobile == "") {
+                    toast("请输入手机号");
+                    return;
+                }
+                if (index.$data.mobile.length != 11) {
+                    toast("手机号格式不正确");
+                    return;
+                }
+                // 发送验证码
+                if (index.$data.buttonVerifyCode == "获取验证码") {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/UserAuth/sendVerifyCode',
+                        data: {
+                            'mobile': index.$data.mobile,
+                            'type': 0,
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+                            // 用户已经注册，校验出错 区分
+                            if (data.code == 0) {
+                                if (data.msg == "success") {
+                                    toast("验证码发送成功！")
+                                } else {
+                                    toast(data.msg)
+                                }
+
+                                var seconds = 60;
+                                var timer = setInterval(function () {
+                                    if (seconds == 0) {
+                                        clearInterval(timer);
+                                        index.$data.buttonVerifyCode = "获取验证码";
+                                        $('.verify-code-button').removeClass('add-class');
+                                    } else {
+                                        console.log(seconds);
+                                        seconds = seconds - 1;
+                                        index.$data.buttonVerifyCode = "还剩" + seconds + "s";
+                                        $('.verify-code-button').addClass('add-class');
+                                    }
+                                }, 1000);
+                            } else {
+                                if (data.msg == "该手机号已经注册") {
+                                    if (/iphone|ipod|ipad/.test(ua)) {
+                                        index.$data.showHaveRegisterIOS = true;
+                                    } else {
+                                        index.$data.showHaveRegister = true;
+                                    }
+                                } else {
+                                    if (data.msg == "success") {
+                                        toast("验证码已发送，请注意查收！")
+                                    } else {
+                                        toast(data.msg);
+                                    }
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    })
+
+    function nativePaySuccess() {
+        app.initPage();
+    }
+
+    // growing IO 数据统计代码
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+
+</script>
+</html>

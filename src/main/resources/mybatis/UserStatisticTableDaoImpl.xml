@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserStatisticTable">
+    <resultMap id="userStatisticTableMap" type="userStatisticTable">
+        <result column="DATE_ID" property="dateId" jdbcType="INTEGER"/>
+        <result column="NEW_DEVICE_COUNT" property="newDeviceCount" jdbcType="INTEGER"/>
+        <result column="NEW_USER_REGISTER_COUNT" property="newUserRegisterCount" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        DATE_ID, NEW_DEVICE_COUNT, NEW_USER_REGISTER_COUNT, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserStatisticTableByPage" resultMap="userStatisticTableMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_STATISTIC_TABLE
+        ORDER BY DATE_ID DESC
+    </select>
+
+    <select id="getUserStatisticTableByDateId" resultMap="userStatisticTableMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_STATISTIC_TABLE
+        WHERE DATE_ID = #{dateId,jdbcType=BIGINT}
+    </select>
+
+    <select id="countRecords" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM TB_USER_STATISTIC_TABLE
+    </select>
+
+    <insert id="insert" parameterType="userStatisticTable">
+        INSERT INTO TB_USER_STATISTIC_TABLE(<include refid="Base_Column_List"/>)
+        VALUES (
+        #{dateId,jdbcType=INTEGER}, #{newDeviceCount,jdbcType=INTEGER}, #{newUserRegisterCount,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="userStatisticTable">
+        UPDATE TB_USER_STATISTIC_TABLE
+        SET NEW_DEVICE_COUNT = #{newDeviceCount,jdbcType=INTEGER}, NEW_USER_REGISTER_COUNT = #{newUserRegisterCount,jdbcType=INTEGER}, UPDATE_TIME = now()
+        WHERE DATE_ID = #{dateId,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>帮助与反馈</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="style/layout.css">
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+
+</head>
+<body>
+
+<div class="container-fluid" id="app">
+    <div class="feedback">
+        <p>意见反馈：</p>
+
+        <textarea maxlength="300" class="form-control label-input" rows="6" placeholder="请留下您的宝贵意见，我们将为您不断改进"
+                  v-model="content"></textarea>
+    </div>
+
+    <div class="row contact">
+        <div class="col-xs-12">
+            <form class="form-inline">
+                <div class="form-group">
+                    <p>
+                        <span class="label-text">联系方式:</span>
+                        <input type="tel" maxlength="50" class="label-text label-input input-tel" id="exampleInputName2"
+                               placeholder="(手机号/QQ号/邮箱)"
+                           v-model="contact">
+                    </p>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- Indicates a dangerous or potentially negative action -->
+    <button type="button" class="btn btn-danger" v-on:click="submit()">提交</button>
+
+    <div v-show="showDialog" class="returnDialogShadow">
+
+    </div>
+    <div v-show="showDialog" class="returnDialog">
+        <img width="60" v-bind:src="returnImage"/>
+        <p v-text="feedbackTitle" style="font-size:18px;padding-top: 10px;"></p>
+        <p v-text="feedbackMsg" style="font-size:14px;color:#999"></p>
+    </div>
+</div>
+
+</body>
+
+<script>
+    $(function () {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                content: "",
+                contact: '',
+                feedbackTitle: "反馈已送达，非常感谢",
+                feedbackMsg: "因为有你，我们才更好",
+                returnImage: "img/success.png",
+                showDialog: false,
+            },
+            // 在 `methods` 对象中定义方法
+            methods: {
+                submit: function () {
+                    var app = this.$data;
+                    var content = app.content;
+                    var contact = app.contact;
+                    if (content.trim() == "") {
+                        alert("请输入反馈意见");
+                        return;
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "/attach/userFeedback",
+                        data: {
+                            content: content,
+                            contact: contact,
+                            token: document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.code != 0) {
+                                app.feedbackTitle = "遇到一些问题，请重新提交";
+                                app.feedbackMsg = "可能是因为网络，请查看网络";
+                                app.returnImage = "img/failed.png";
+                            }
+                            setTimeout(function () {
+                                if (typeof(window.webkit) != "undefined") {
+                                    window.webkit.messageHandlers.popBack.postMessage({body: ""});
+                                } else {
+                                    if (typeof(webViewNative) != "undefined") {
+                                        webViewNative.popBack();
+                                    }
+                                }
+                            }, 1500);
+                            app.showDialog = true;
+                        }
+                    });
+                }
+            }
+        })
+    })
+
+</script>
+</html>

@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>大咖预测</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <meta name="format-detection" content="telephone=no">
+    <script src="script/config.js"></script>
+</head>
+<style>
+    body, p {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: url("https://ojhwh2s98.qnssl.com/worldcup/zhihui3/bg_02.png") repeat-y;
+        background-size: 100% auto;
+        padding-bottom: 10vw;
+    }
+
+    #app {
+        overflow: hidden;
+    }
+
+    .banner img {
+        display: block;
+        width: 100%;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+
+    .person-info {
+        position: relative;
+        height: 27vw;
+        background: url("https://ojhwh2s98.qnssl.com/worldcup/zhihui3/person_info_bg.png") no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .head-img {
+        position: absolute;
+        width: 15vw;
+        left: 7vw;
+        bottom: 6vw;
+        z-index: 99;
+    }
+
+    .head_img_f {
+        position: absolute;
+        width: 17vw;
+        left: 6vw;
+        bottom: 5vw;
+        z-index: 100;
+    }
+
+    .nick-name {
+        position: absolute;
+        left: 29vw;
+        top: 3vw;
+        font-size: 4.33vw;
+        font-family: PingFangSC-Regular;
+        color: rgba(255, 222, 139, 1);
+    }
+
+    .nick-desc {
+        position: absolute;
+        width: 64vw;
+        left: 29vw;
+        top: 9vw;
+        font-size: 3.2vw;
+        font-family: PingFangSC-Regular;
+        color: rgba(255, 222, 139, 1);
+    }
+
+    .jinrizhutui {
+        position: relative;
+        margin-top: 6vw;
+        height: 80vw;
+    }
+
+    .jinrizutui_bg {
+        width: 100%;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .host-img {
+        position: absolute;
+        top: 12vw;
+        width: 12vw;
+        left: 9vw;
+    }
+
+    .away-img {
+        position: absolute;
+        top: 12vw;
+        width: 12vw;
+        right: 9vw;
+    }
+
+    .host-name {
+        position: absolute;
+        top: 26vw;
+        width: 20vw;
+        left: 10vw;
+        margin-left: -5vw;
+        text-align: center;
+        font-size: 3.2vw;
+        font-family: PingFangSC-Regular;
+        color: rgba(255, 255, 255, 1);
+    }
+
+    .away-name {
+        position: absolute;
+        top: 26vw;
+        width: 20vw;
+        right: 10vw;
+        margin-right: -5vw;
+        text-align: center;
+        font-size: 3.2vw;
+        font-family: PingFangSC-Regular;
+        color: rgba(255, 255, 255, 1);
+    }
+
+    .match-info {
+        position: absolute;
+        width: 50vw;
+        left: 50%;
+        margin-left: -25vw;
+        top: 16.5vw;
+    }
+
+    .match-info p {
+        text-align: center;
+        font-size: 3.47vw;
+        font-family: PingFangSC-Regular;
+        color: rgba(255, 255, 255, 1);
+    }
+
+    .recommend-info {
+        position: absolute;
+        width: 85.33vw;
+        height: 37.33vw;
+        left: 7vw;
+        top: 31.5vw;
+        background: rgba(255, 255, 255, 1);
+    }
+
+    .recommend-info2 {
+        height: 43vw;
+    }
+
+    .cutdown-time {
+        position: absolute;
+        width: 56vw;
+        height: 7vw;
+        left: 15vw;
+        top: 0;
+        background: url("https://ojhwh2s98.qnssl.com/worldcup/zhihui3/cutdown_time_bg.png") no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .cutdown-time p {
+        font-size: 3.73vw;
+        line-height: 7vw;
+        font-family: PingFangSC-Regular;
+        color: rgba(255, 67, 24, 1);
+        text-align: center;
+    }
+
+    .yjhb {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        font-size: 3.47vw;
+        color: #4A2F00;
+        top: 8vw;
+    }
+
+    .yjhb2 {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        font-size: 3.47vw;
+        color: #4A2F00;
+        top: 15vw;
+    }
+    .yjhb3 {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        font-size: 3.47vw;
+        color: #4A2F00;
+        top: 24vw;
+    }
+
+    .yjhb span {
+        color: #ED2839;
+    }
+
+    .yjhb span.value {
+        color: #ED2839;
+        font-size: 5vw;
+    }
+
+    .btnMsg {
+        position: absolute;
+        display: block;
+        width: 49.33vw;
+        height: 9.87vw;
+        border-radius: 1vw;
+        bottom: 2vw;
+        left: 18vw;
+        text-align: center;
+        line-height: 9.87vw;
+        font-size: 4.27vw;
+        color: #FFF;
+        background: -webkit-linear-gradient(#FF4628, #FF8441); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(#FF4628, #FF8441); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(#FF4628, #FF8441); /* Firefox 3.6 - 15 */
+        background: linear-gradient(#FF4628, #FF8441); /* 标准的语法 */
+        text-decoration: none;
+    }
+
+    .saiqianfenxi {
+        position: relative;
+        margin-top: 6.4vw;
+        background: url("https://ojhwh2s98.qnssl.com/worldcup/zhihui3/sqfx_bg.png") repeat-y;
+        background-size: 100% auto;
+        padding: 7.2vw 0 10.8vw 0;
+    }
+
+    .saiqianfenxi-title {
+        position: absolute;
+        text-align: center;
+        font-size: 5.33vw;
+        font-family: PingFangSC-Regular;
+        color: rgba(255, 225, 150, 1);
+        height: 5.07vw;
+        line-height: 5.07vw;
+        top: -2.5vw;
+        width: 100%;
+    }
+
+    .saiqianfenxi-content {
+        font-size: 3.47vw;
+        font-family: PingFangSC-Regular;
+        color: #FFE196;
+        width: 87.2vw;
+        margin: 0 auto;
+    }
+
+    .zhan-btn {
+        position: absolute;
+        width: 14.67vw;
+        left: 42.67vw;
+        bottom: -8.6vw;
+    }
+
+    .sqfx-bottom {
+        position: absolute;
+        bottom: -2.6vw;
+        display: block;
+        width: 100%;
+    }
+
+    .count {
+        position: absolute;
+        bottom: -16vw;
+        width: 100%;
+        text-align: center;
+        font-size: 5.33vw;
+        font-family: PingFangSC-Regular;
+        color: rgba(255, 225, 150, 1);
+    }
+
+    .history-list {
+        margin-top: 20vw;
+    }
+
+    .history-list img {
+        width: 100%;
+        display: block;
+    }
+
+    .history-item {
+        width: 88vw;
+        height: 26.67vw;
+        margin: 0 auto;
+        border: 1px solid #FFAA46;
+        background: #FFF;
+        margin-top: 4vw;
+        position: relative;
+        color: #333333;
+    }
+
+    .history-middle {
+        background: url("https://ojhwh2s98.qnssl.com/worldcup/zhihui3/history-middile.png") repeat-y;
+        background-size: 100% auto;
+        overflow: auto;
+    }
+
+    .item-title {
+        width: 100%;
+        height: 9vw;
+        line-height: 9vw;
+        text-align: center;
+        color: #FFF;
+        font-size: 4vw;
+        background: #FFAA46;
+    }
+
+    .history-middle span {
+        display: inline-block;
+        font-size: 3.47vw;
+        font-family: PingFangSC-Regular;
+        color: #333;
+        line-height: 8.53vw;
+        width: 40vw;
+        padding-left: 2.4vw;
+    }
+
+    .recommend-info-play-type {
+        font-family: PingFangSC-Regular;
+        color: rgba(74, 47, 0, 1);
+        text-align: center;
+        line-height: 6vw;
+        margin-bottom: 1vw;
+    }
+
+    .result {
+        padding-left: 4.27vw;
+        line-height: 7vw;
+        font-size: 3.8vw;
+    }
+
+    .memo {
+        position: absolute;
+        font-size: 3.6vw;
+        font-family: PingFangSC-Regular;
+        color: rgba(255, 80, 80, 1);
+        line-height: 7vw;
+        text-align: center;
+        bottom: 1vw;
+        width: 100%;
+    }
+
+    .zhan-animation {
+        position: absolute;
+        bottom: 1vw;
+        left: 12vw;
+        width: 100%;
+        text-align: center;
+        font-size: 5.33vw;
+        font-family: PingFangSC-Regular;
+        color: rgba(255, 225, 150, 1);
+        opacity: 0;
+    }
+
+    .history-list img.right-img {
+        position: absolute;
+        display: block;
+        width: 14.93vw;
+        right: 0;
+        bottom: 1.47vw;
+    }
+    .buzhongbaopei{
+        width: 16vw;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+    .banner img.banner-img-rule{
+        position: absolute;
+        top: 0;
+        right: 5px;
+        width: 10vw;
+        z-index: 998;
+    }
+
+    .award-popup {
+        background: #000;
+        opacity: 0.7;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 999;
+    }
+
+    .award-popup-fixed {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1000;
+    }
+
+    .award-right {
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        height: 4vw;
+        margin-top: -3vw;
+        width: 100%;
+        margin-left: -50%;
+    }
+
+    .award-relative {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        z-index: 1000;
+    }
+
+    .close {
+        position: absolute;
+        top: 0.4vw;
+        right: 0.4vw;
+        width: 0.4vw;
+    }
+
+    .award-rule {
+        color: #772d00;
+        background: #fff;
+        width: 90%;
+        margin-left: -45%;
+        height:65vw;
+        border-radius: 0.1vw;
+    }
+
+    .award-rule .overflow {
+        overflow: scroll;
+    }
+
+    .award-rule p {
+        margin: 0 5%;
+    }
+
+    .award-rule p span {
+        font-weight: 900;
+        margin: 0.1vw 0 0 0;
+        display: block;
+    }
+
+    .award-rule img {
+        width: 44%;
+        margin-left: 28%;
+        margin-top: 0.3vw;
+        margin-bottom: 0.2vw;
+    }
+
+    .award-rule img.close {
+        width: 5vw;
+        top: -2.5vw;
+        right: -2.5vw;
+        margin-top: 0;
+    }
+    /*!*移动端适配 width|height|font-size = 视觉稿量出来的值 / 100rem;@lbl*!*/
+    /*@media screen and (max-width: 359px) and (min-width: 320px) {*/
+        /*html, body {*/
+            /*font-size: 50px !important;*/
+        /*}*/
+    /*}*/
+
+    /*@media screen and (max-width: 374px) and (min-width: 360px) {*/
+        /*html, body {*/
+            /*font-size: 56.25px !important;*/
+        /*}*/
+    /*}*/
+
+    /*@media screen and (max-width: 413px) and (min-width: 375px) {*/
+        /*html, body {*/
+            /*font-size: 58.5px !important;*/
+        /*}*/
+    /*}*/
+
+    /*@media screen and (max-width: 639px)  and (min-width: 414px) {*/
+        /*html, body {*/
+            /*font-size: 64.6px !important;*/
+        /*}*/
+    /*}*/
+
+    /*@media screen and (min-width: 640px) {*/
+        /*html, body {*/
+            /*font-size: 100px !important;*/
+        /*}*/
+    /*}*/
+    /*特权*/
+    .award-popup-priv {
+        background: #000;
+        opacity: 0.7;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 999;
+    }
+    .ward-popup-fixed-priv {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1000;
+    }
+
+    .award-right-priv {
+        position: absolute;
+        top: 42%;
+        left: 50%;
+        height: 4vw;
+        margin-top: -3vw;
+        width: 100%;
+        margin-left: -50%;
+    }
+
+    .award-relative-priv {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        z-index: 1000;
+    }
+
+    .close-priv {
+        position: absolute;
+        top: 0.4vw;
+        right: 0.4vw;
+        width: 0.4vw;
+    }
+
+    .award-rule-priv {
+        /*color: #772d00;*/
+        background: #fff;
+        width: 82%;
+        margin-left: -41%;
+        height: 42vw;
+        border-radius: 1.5vw;
+    }
+
+    .award-rule-priv .overflow-priv {
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .award-rule-priv p {
+        color: RGBA(0, 0, 0, 1);
+        font-size: 5vw;
+        margin-top: 10vw;
+
+    }
+
+    .award-but-priv {
+        display: flex;
+        justify-content: space-around;
+        letter-spacing: .5vw;
+        font-size: 4vw;
+        margin-top: 8vw;
+    }
+
+    .award-but-priv .award-cancel-priv {
+        color: RGBA(255, 68, 68, 1);
+        border: 1px solid RGBA(255, 68, 68, 1);
+        border-radius: 1vw;
+        padding: 3vw 11vw;
+    }
+
+    .award-but-priv .award-confirm-priv {
+        color: #FFFFFF;
+        background-color: RGBA(255, 68, 68, 1);
+        border: 1px solid RGBA(255, 68, 68, 1);
+        border-radius: 1vw;
+        padding: 3vw 11vw;
+    }
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="banner">
+        <img v-show="!programType" src="img/banner.png" alt="">
+        <img v-show="programType" src="img/banner1.png" alt="">
+        <img v-show="programType" class="banner-img-rule" v-on:click="showRule"
+             src="http://sportsimg.mojieai.com/drawnumbernewrule.png"
+             alt="">
+    </div>
+    <div class="person-info">
+        <img class="head-img" v-bind:src="userInfo.userImg" alt="">
+        <img class="head_img_f" src="https://ojhwh2s98.qnssl.com/worldcup/zhihui3/head_img_f.png" alt="">
+        <p class="nick-name"><span v-text="userInfo.userName"></span><img src="img/v.png"
+                                                                          style="width: 3.4vw;margin-left: 1vw;" alt="">
+        </p>
+        <p class="nick-desc" v-html="userInfo.userIntroduce">10年足彩经验，搜狐论坛大v，前cctv解说，体彩中心首批足彩培训师</p>
+    </div>
+    <div class="jinrizhutui">
+        <img class="jinrizutui_bg" src="https://ojhwh2s98.qnssl.com/worldcup/zhihui3/jinrizhutui_bg.png" alt="">
+        <img class="host-img" v-bind:src="matchInfo.hostImg" alt="">
+        <p class="host-name" v-text="matchInfo.hostName">法国</p>
+        <img class="away-img" v-bind:src="matchInfo.awayImg" alt="">
+        <p class="away-name" v-text="matchInfo.awayName">澳大利亚</p>
+        <div class="match-info">
+            <p class="match-sn"><span v-text="matchInfo.matchName"></span><span v-show="matchInfo.single"><img
+                    style="width: 9vw;margin:0 0 -0.7vw 1vw;" src="img/vip_danguan.png"
+                                                                                     alt=""></span></p>
+            <p class="match-time" v-text="matchInfo.matchTime"></p>
+        </div>
+        <div class="recommend-info recommend-info2" v-show="!recommendInfo.buyStatus">
+            <div class="cutdown-time">
+                <p>开赛倒计时：<span v-text="countDownText"></span></p>
+            </div>
+            <p class="yjhb">预计回报：<span class="value" v-text="recommendInfo.rewardMin"></span><span>倍~</span><span
+                    class="value" v-text="recommendInfo.rewardMax"></span><span>倍
+            </span></p>
+            <p class="yjhb2">推荐玩法：<span v-text="recommendInfo.recommendPlayType"></span></p>
+            <p class="yjhb3"><span v-text="recommendInfo.currentPrice" style="color: #ED2839;font-size: 5vw;"></span><span
+                    v-text="recommendInfo.originPrice" style="text-decoration: line-through"></span></p>
+            <a class="btnMsg" href="javascript:void(0)" v-on:click="privilegeStatus(recommendInfo.buyStatus)" v-text="recommendInfo.btnMsg"></a>
+            <img v-show="programType" class="buzhongbaopei" src="img/buzhongbaopei.png" alt="">
+        </div>
+        <div class="recommend-info recommend-info2" v-show="recommendInfo.buyStatus">
+            <p class="recommend-info-play-type">推荐玩法</p>
+            <p class="result"
+               v-for="red in recommendInfo.recommend.recommends"
+               v-html="red"></p>
+            <p class="memo" v-text="recommendInfo.recommend.memo">
+
+            </p>
+        </div>
+    </div>
+    <p style="padding-left: 3vw;color: #ED2839;font-size: 14px;">*支付成功后，若看不到预测结果，退出页面重新进入即可</p>
+    <div class="saiqianfenxi">
+        <p class="saiqianfenxi-title">赛前分析</p>
+        <p class="saiqianfenxi-content" v-html="recommendInfo.reason">
+        </p>
+        <img class="sqfx-bottom" src="https://ojhwh2s98.qnssl.com/worldcup/zhihui3/sqfx_bottom.png" alt="">
+        <img class="zhan-btn" src="https://ojhwh2s98.qnssl.com/worldcup/zhihui3/zhan_btn.png" v-on:click="dianzhan"
+             alt="">
+        <p class="count" v-text="likeCount>9999?'9999+':likeCount"></p>
+        <p id="zhan-animation" class="zhan-animation">+1</p>
+    </div>
+    <div class="history-list">
+        <img src="https://ojhwh2s98.qnssl.com/worldcup/zhihui3/history-top.png" alt="">
+        <div class="history-middle">
+            <div class="history-item" v-for="match in historyRecords">
+                <p class="item-title" v-text="match.matchDesc"></p>
+                <span v-for="recomend in match.recommends" v-html="recomend"></span>
+                <img class="right-img" src="img/rgiht.png" alt="">
+            </div>
+        </div>
+        <img src="https://ojhwh2s98.qnssl.com/worldcup/zhihui3/history-bottom.png" alt="">
+    </div>
+    <div class="award-popup"
+         v-show="showRuleFlag">
+    </div>
+    <div class="award-popup-fixed"
+         v-show="showRuleFlag">
+        <!--活动规则-->
+        <div class="award-right award-rule" v-show="showRuleFlag">
+            <div class="award-relative not-right">
+                <img class="close" v-on:click="closeRule" src="https://ohduoklem.qnssl.com/rule-close.png" alt="">
+                <div class="overflow">
+                    <img src="https://ohduoklem.qnssl.com/activity-rule.png" alt="">
+                    <p><span>包赔规则：</span></p>
+                    <p>大咖每场推荐4个玩法，若有一个玩法不中，退还22智慧币，以此类推若是4个玩法全未命中，则退还88智慧币。</p>
+                    <p>&nbsp</p>
+                    <p><span>退款时间：</span></p>
+                    <p>50%的智慧币将会在比赛开奖的第二天24点前派发至账户，剩余的50%智慧币将在比赛开奖后的第7天24点前派发至账户。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--弹框-->
+    <div class="award-popup-priv" v-show="showPrivilegeFlag"></div>
+    <div class="ward-popup-fixed-priv" v-show="showPrivilegeFlag">
+        <div class="award-right-priv award-rule-priv">
+            <div class="award-relative-priv not-right-priv">
+                <div class="overflow-priv">
+                    <p>确定使用特权查看本场预测？</p>
+                </div>
+                <div class="award-but-priv">
+                    <div class="award-cancel-priv" @click="closePrivilege">取消</div>
+                    <div class="award-confirm-priv" @click="confirm">确认</div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="./script/jquery.min.js"></script>
+<script type="text/javascript" src="./script/vue.min.js"></script>
+<script type="text/javascript">
+    token = getCookie('token');
+    localStorage.pagecount = '1';
+    if (null != localStorage.getItem('token')){
+        token = localStorage.getItem('token');
+    }
+    userId = 1804241000095374;
+    app = new Vue({
+        el: '#app',
+        data: {
+            recommendInfo: {recommend: {recommends: []}},
+            userInfo: {},
+            matchInfo: {},
+            likeCount: 0,
+            historyRecords: [],
+            payMemo: "",
+            recommendId: "",
+            price: 0,
+            countDown: 0,
+            countDownText: "",
+            timer: null,
+            showRuleFlag: false, // 规则弹窗
+            programType: 0, // 规则弹窗
+            availableTimes:"",
+            showPrivilegeFlag:false,
+        },
+        mounted: function () {
+            this.initPage()
+        },
+        methods: {
+            // 显示活动规则
+            showRule: function () {
+                var index = this;
+                index.$data.showRuleFlag = true;
+            },
+            // 关闭
+            closeRule: function () {
+                var index = this;
+                index.$data.showRuleFlag = false;
+            },
+
+            initPage: function () {
+                var index = this
+                $.ajax({
+                    type: 'POST',
+                    url: '/activity/get_internet_celebrity',
+                    data: {
+                        token: token,
+                        celebrityUserId: userId
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        index.userInfo = data.data.userInfo
+                        index.matchInfo = data.data.matchInfo
+                        index.recommendInfo = data.data.recommendInfo
+                        index.price = data.data.recommendInfo.price
+                        index.likeCount = data.data.likeCount
+                        var historyRecords = data.data.historyRecords || [];
+                        if (historyRecords.length > 10) {
+                            var list = []
+                            for(var i = 0 ;i < 10; i++){
+                                list.push(historyRecords[i])
+                            }
+                            index.historyRecords = list
+                        }else{
+                            index.historyRecords = historyRecords
+                        }
+                        index.payMemo = data.data.payMemo
+                        index.countDown = data.data.matchInfo.countDownSecond
+                        index.recommendId = data.data.recommendInfo.recommendId
+                        index.countDownText = timeStamp(index.countDown)
+                        index.programType = data.data.programType
+                        timer = setInterval(function () {
+                            index.countDown--;
+                            index.countDownText = timeStamp(index.countDown)
+                        }, 1000)
+                        index.availableTimes = data.data.availableTimes
+
+                        // index.buyStatus = data.data.buyStatus
+                    }
+                })
+            },
+            showPrivilege:function () {
+                var index = this;
+                index.$data.showPrivilegeFlag = true;
+            },
+            // 关闭特权弹框
+            closePrivilege: function() {
+                var index = this;
+                index.$data.showPrivilegeFlag = false;
+            },
+            privilegeStatus: function(buyStatus) {
+                var that = this;
+                if (token == "") {
+                    token = getCookie('token')
+                    if (null != localStorage.getItem('token')){
+                        token = localStorage.getItem('token');
+                    }
+                    if (token == "") {
+                        openNativePage("mjlottery://mjNative?page=login");
+                        return;
+                    }
+                }
+
+                if (that.availableTimes > 0 && !buyStatus) {
+                    that.showPrivilege();
+                } else {
+                    that.buy();
+                }
+
+            },
+            buy: function () {
+                var index = this;
+                if (typeof(window.webkit) != "undefined") {
+                    window.webkit.messageHandlers.pay.postMessage({price: index.price + "", memo: index.payMemo})
+                }
+                if (typeof(webViewNative) != "undefined") {
+                    webViewNative.pay(index.price, index.payMemo);
+                }
+            },
+            dianzhan: function () {
+                $('#zhan-animation').animate({opacity: '1'}, 'fast', 'swing', function () {
+                    $('#zhan-animation').animate({opacity: '0'}, 'fast', 'swing')
+                })
+                var index = this;
+                index.likeCount++;
+                $.ajax({
+                    type: 'POST',
+                    url: '/activity/add_celebrity_like_count',
+                    data: {
+                        recommendId: index.recommendId
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                    }
+                })
+            },
+
+            confirm: function () {
+                var that = this;
+                $.ajax({
+                    type: 'GET',
+                    url: '/activity/internetCelebrities/unlock',
+                    data: {
+                        recommendId: that.recommendId,
+                        token: token,
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            that.$data.showPrivilegeFlag = false;
+                            that.initPage()
+
+                        }else{
+                            that.$data.showPrivilegeFlag = false;
+                            that.initPage()
+                        }
+                    }
+                })
+            },
+        }
+    })
+
+    function timeStamp(second) {
+        var hour = parseInt(second / 3600);
+        var min = parseInt((second - (hour * 3600)) / 60);
+        var sec = second - ((hour * 3600)) - (min * 60);
+        StatusMinute = "";
+        if (hour > 0) {
+            StatusMinute += hour + "小时";
+        }
+        if (min > 0) {
+            StatusMinute += parseFloat(min) + "分";
+        }
+        StatusMinute += sec + "秒";
+        return StatusMinute;
+    }
+
+    function nativePaySuccess() {
+        app.initPage();
+    }
+
+
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+
+</script>
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SocialCodeSchedule">
+    <resultMap id="socialCodeScheduleMap" type="socialCodeSchedule">
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="IF_DISTRIBUTE" property="ifDistribute" jdbcType="INTEGER"/>
+        <result column="IF_DISTRIBUTE_TIME" property="ifDistributeTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_RANK" property="ifRank" jdbcType="INTEGER"/>
+        <result column="IF_RANK_TIME" property="ifRankTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="socialCodeSchedule">
+        INSERT INTO TB_SOCIAL_CODE_SCHEDULE(GAME_ID, PERIOD_ID, IF_DISTRIBUTE, IF_RANK, CREATE_TIME)
+        VALUES (#{gameId,jdbcType=BIGINT}, #{periodId,jdbcType=VARCHAR}, #{ifDistribute,jdbcType=INTEGER},
+        #{ifRank,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="getUnFinishedSchedules" resultMap="socialCodeScheduleMap" parameterType="map">
+        select * from TB_SOCIAL_CODE_SCHEDULE
+        where game_id = #{gameId,jdbcType=BIGINT} and <![CDATA[period_id <= #{periodId, jdbcType=VARCHAR}
+        ]]>
+        and (IF_DISTRIBUTE = 0 OR IF_RANK = 0)
+    </select>
+
+    <update id="updateSocialCodeSchedule" parameterType="map">
+        UPDATE TB_SOCIAL_CODE_SCHEDULE
+        set ${flagColumn} = 1 , ${timeColumn} = now()
+        where game_id = #{gameId,jdbcType=BIGINT} AND period_id = #{periodId,jdbcType=VARCHAR} and ${flagColumn} = 0
+    </update>
+
+    <select id="getSocialCodeSchedule" resultMap="socialCodeScheduleMap" parameterType="map">
+        select * from TB_SOCIAL_CODE_SCHEDULE where game_id = #{gameId,jdbcType=BIGINT}
+        AND period_id = #{periodId,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

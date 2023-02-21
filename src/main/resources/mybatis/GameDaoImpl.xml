@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Game">
+    <resultMap id="gameMap" type="game">
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="GAME_EN" property="gameEn" jdbcType="VARCHAR"/>
+        <result column="GAME_NAME" property="gameName" jdbcType="VARCHAR"/>
+        <result column="SHORT_NAME" property="shortName" jdbcType="CHAR"/>
+        <result column="PERIOD_LOADED" property="periodLoaded" jdbcType="INTEGER"/>
+        <result column="GAME_TYPE" property="gameType" jdbcType="INTEGER"/>
+        <result column="USABLE" property="usable" jdbcType="INTEGER"/>
+        <result column="TASK_SWITCH" property="taskSwitch" jdbcType="INTEGER"/>
+        <result column="NODE_TYPE" property="nodeType" jdbcType="INTEGER"/>
+        <result column="TASK_TIME_OFFSET" property="taskTimeOffset" jdbcType="INTEGER"/>
+        <result column="SALE_TIME_OFFSET" property="saleTimeOffset" jdbcType="INTEGER"/>
+        <result column="REFUND_TIME_OFFSET" property="refundTimeOffset" jdbcType="INTEGER"/>
+        <result column="DISPLAY_REFUND_TIME_OFFSET" property="displayRefundTimeOffset" jdbcType="INTEGER"/>
+        <result column="AWARD_TIME_OFFSET" property="awardTimeOffset" jdbcType="INTEGER"/>
+        <result column="UPPER_LIMIT_ORDER" property="upperLimitOrder" jdbcType="DECIMAL"/>
+        <result column="TICKET_BET_TIMES" property="ticketBetTimes" jdbcType="INTEGER"/>
+        <result column="MAX_BET_TIMES" property="maxBetTimes" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="getAllGame" resultMap="gameMap">
+		select * from TB_GAME
+	</select>
+
+    <select id="getGameDetails" resultMap="gameMap" parameterType="map">
+        select * from TB_GAME where game_id = #{gameId,jdbcType=BIGINT}
+    </select>
+
+    <sql id="Base_Column_List">
+        GAME_EN, GAME_NAME, USABLE
+    </sql>
+
+    <insert id="insert" parameterType="game">
+        INSERT INTO TB_GAME(<include refid="Base_Column_List"/>)
+        VALUES (#{gameEn,jdbcType=VARCHAR}, #{gameName,jdbcType=VARCHAR}, #{usable,jdbcType=INTEGER})
+    </insert>
+
+    <update id="update" parameterType="game">
+        UPDATE TB_GAME
+        SET GAME_EN = #{gameEn,jdbcType=VARCHAR}, GAME_NAME = #{gameName,jdbcType=VARCHAR},
+        USABLE = #{usable,jdbcType=INTEGER}
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateUsable" parameterType="map">
+        UPDATE TB_GAME
+        SET USABLE = #{usable,jdbcType=INTEGER}
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT}
+    </update>
+</mapper>

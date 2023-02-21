@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>免费享会员</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <link rel="stylesheet" href="style/pure-min.css"/>
+    <link rel="stylesheet" href="style/layout.css"/>
+    <meta name="format-detection" content="telephone=no">
+    <script src="script/jswxsdk.js"></script>
+    <script src="script/config.js"></script>
+    <link rel="stylesheet" href="script/swiper-3.4.2.min.css">
+    <script src="script/swiper-3.4.2.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            background: #6480ff;
+        }
+
+        #app {
+            background: url("http://sportsimg.mojieai.com/bg_02.png") no-repeat;
+            background-size: 100% auto;
+        }
+
+        /* bnaner*/
+        .banner img {
+            display: block;
+            width: 100%;
+        }
+
+        .banner-2 img {
+            display: block;
+            width: 100%;
+        }
+
+        .banner-2 p {
+            color: #fff;
+            font-size: 0.24rem;
+            padding-left: 0.2rem;
+        }
+
+        .banner-2 {
+            margin-top: 0.1rem;
+            padding-bottom: 0.5rem;
+        }
+
+        /* 跑马灯*/
+        .award-title {
+            text-align: center;
+            padding: 0 0 0.2rem 0;
+            margin-top: -0.3rem;
+        }
+
+        .award-title-p {
+            background: url("http://sportsimg.mojieai.com/marquee.png") no-repeat;
+            background-size: 100% 100%;
+            width: 80%;
+            text-align: center;
+            display: inline-block;
+            padding: 0 0.2rem;
+            height: 0.6rem;
+            overflow: hidden;
+        }
+
+        .award-title-p p {
+            color: #fff;
+            font-size: 0.28rem;
+            line-height: 0.6rem;
+        }
+
+        .swiper-container {
+            height: 1.2rem;
+        }
+
+        /* 分享按钮*/
+        .share-button img {
+            margin: 0.3rem 0;
+            display: block;
+            width: 100%;
+        }
+
+        /* 我的奖励*/
+        .my-award-title img {
+            display: block;
+            width: 100%;
+        }
+
+        .my-award-list {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .my-award-list img {
+            display: block;
+            width: 100%;
+        }
+
+        .list-middle-none {
+            font-size: 0.24rem;
+            height: 1.3rem;
+            line-height: 1.3rem;
+            color: #999;
+            text-align: center;
+            background: url("http://sportsimg.mojieai.com/my-award-middle-bg.png") repeat-y;
+            background-size: 100% auto;
+        }
+
+        /* 活动规则*/
+        .rule p {
+            color: #fff;
+            font-size: 0.28rem;
+            padding-left: 0.2rem;
+        }
+
+        .form input {
+            -webkit-appearance: none;
+            background: #fff;
+            height: 0.7rem;
+            font-size: 0.24rem;
+            display: block;
+            border-radius: 0.35rem;
+            border: none;
+            color: #333;
+        }
+
+        .form input:focus {
+            outline: none;
+            line-height: normal;
+        }
+
+        input.mobile {
+            margin-left: 7.5%;
+            width: 85%;
+            text-align: center;
+            margin-bottom: 0.24rem;
+        }
+
+        input.verify-code {
+            margin-left: 7.5%;
+            width: 48%;
+            text-align: center;
+            float: left;
+            margin-bottom: 0.1rem;
+        }
+
+        input.verify-code-button {
+            background: #ffd428;
+            margin-right: 7.5%;
+            width: 32%;
+            text-align: center;
+            float: right;
+            margin-bottom: 0.1rem;
+        }
+
+        input.password {
+            margin: 0.24rem auto;
+            margin-left: 7.5%;
+            width: 85%;
+            text-align: center;
+
+        }
+
+        .rule-text {
+            color: #fff;
+            text-align: center;
+            font-size: 0.24rem;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        input[type="number"] {
+            padding: 0;
+        }
+
+        input[type="password"] {
+            padding: 0;
+        }
+
+        input.add-class {
+            background: #ffdc88;
+        }
+
+        .award-popup {
+            background: #000;
+            opacity: 0.7;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .award-popup-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .award-right {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            height: 6rem;
+            margin-top: -3rem;
+            width: 100%;
+            margin-left: -50%;
+        }
+
+        .award-relative {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .close {
+            position: absolute;
+            top: 0.4rem;
+            right: 0.4rem;
+            width: 0.4rem;
+        }
+
+        .award-rule {
+            font-size: 0.26rem;
+            color: #772d00;
+            background: #fff;
+            width: 90%;
+            margin-left: -45%;
+            height: 8rem;
+            border-radius: 0.1rem;
+        }
+
+        .award-rule .overflow {
+            overflow: scroll;
+        }
+
+        .award-rule p {
+            margin: 0 5%;
+        }
+
+        .award-rule p span {
+            font-weight: 900;
+            margin: 0.1rem 0 0 0;
+            display: block;
+        }
+
+        .award-rule img {
+            width: 44%;
+            margin-left: 28%;
+            margin-top: 0.3rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .award-rule img.close {
+            width: 0.5rem;
+            top: -0.2rem;
+            right: -0.2rem;
+            margin-top: 0;
+        }
+
+        .jingxuanfangan {
+            background: url("https://ohduoklem.qnssl.com/jignxuanfangan.png") no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .margin-top-none {
+            margin-top: 0;
+        }
+
+        .padding-top {
+            padding-top: 0.15rem;
+        }
+
+        .color-red {
+            color: #ff4e6f;
+        }
+
+        .hese {
+            color: #da7600;
+        }
+
+        .popup-bg {
+            width: 100%;
+        }
+
+        .close-button {
+            position: absolute;
+            width: 0.4rem;
+            top: 0.4rem;
+            right: 0.4rem;
+        }
+
+        .content {
+            position: absolute;
+            top: 2rem;
+            width: 100%;
+        }
+
+        .award-right .content p {
+            color: #333;
+            font-size: 0.28rem;
+            text-align: center;
+            margin: 0.2rem 0;
+        }
+
+        .award-right .content span {
+            font-size: 0.26rem;
+            color: #fff;
+            width: 4rem;
+            line-height: 0.8rem;
+            height: 0.8rem;
+            border-radius: 0.4rem;
+            display: inline-block;
+            margin: 0 0.15rem;
+        }
+
+        .award-right .content span.red-button {
+            background: #FF282F;
+            background-size: 100% auto;
+        }
+
+        .award-right .content span.yellow-button {
+            background: url("https://ohduoklem.qnssl.com/yellow-button.png") no-repeat;
+            background-size: 100% auto;
+        }
+
+        .award-pop {
+            top: 50%;
+        }
+
+        .award-popup {
+            background: #000;
+            opacity: 0.7;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .toast-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 100%;
+            top: 100%;
+            z-index: 2999;
+        }
+
+        .toast {
+            position: absolute;
+            top: -56%;
+            left: -50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            padding: 13px 16px;
+            font-size: 14px;
+            border-radius: 2px;
+            width: auto;
+            /*颜色*/
+            color: #ccc;
+            background: rgba(37, 38, 45, 0.9);
+            /*可以输入的字数的宽度*/
+            max-width: 16em;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="banner">
+        <img src="http://sportsimg.mojieai.com/share_banner.png" alt="">
+    </div>
+    <div class="form">
+        <input class="mobile" type="number" oninput="if(value.length>11)value=value.slice(0,11)" placeholder="请输入手机号"
+               v-model="mobile">
+        <input class="password" type="password" maxlength="16" placeholder="设置VIP密码(6-18位英文或数字)" v-model="password">
+        <input class="verify-code" type="number" oninput="if(value.length>4)value=value.slice(0,4)"
+               placeholder="请输入验证码" v-model="verifyCode">
+        <input class="verify-code-button" type="button" v-model="buttonVerifyCode"
+               v-on:click="getVerifyCode">
+        <div class="clear"></div>
+        <p class="rule-text">本活动仅针对于尚未注册的新用户</p>
+        <div class="share-button">
+            <img v-on:click="register" src="http://sportsimg.mojieai.com/lijilingqu.png" alt="">
+        </div>
+    </div>
+
+    <div class="banner">
+        <img src="http://sportsimg.mojieai.com/b-1.png" alt="">
+    </div>
+    <div class="banner-2">
+        <img src="http://sportsimg.mojieai.com/b-2.png" alt="">
+    </div>
+
+    <div class="award-popup" v-show="showGetSuccess||showHaveRegister||showHaveRegisterIOS||showGetSuccessIOS">
+    </div>
+    <div class="award-popup-fixed" v-show="showGetSuccess||showHaveRegister||showHaveRegisterIOS||showGetSuccessIOS">
+        <!--活动规则-->
+        <!--领取成功弹窗-->
+        <div class="award-right award-pop" v-show="showGetSuccess">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg" src="https://ohduoklem.qnssl.com/con-get.png" alt="">
+            <div class="content">
+                <p>领取成功！</br>您已经是VIP了！</p>
+                <p><span class="red-button" v-on:click="download">
+                        下载体验VIP预测</span></p>
+            </div>
+        </div>
+        <!--领取成功弹窗-->
+        <div class="award-right award-pop" v-show="showHaveRegister">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg" src="https://ohduoklem.qnssl.com/no-get.png" alt="">
+            <div class="content">
+                <p>抱歉您已经注册过了！</br>打开智慧app，</br>邀请好友即可获得VIP！</p>
+                <p><span class="red-button" v-on:click="download">
+                        知道了</span></p>
+            </div>
+        </div>
+        <!--领取成功弹窗-->
+        <div class="award-right award-pop" v-show="showGetSuccessIOS">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg" src="https://ohduoklem.qnssl.com/no-get.png" alt="">
+            <div class="content">
+                <p>苹果版会员暂未上线</br>您可以先体验其他功能</p>
+                <p><span class="red-button" v-on:click="download">
+                        查看本期预测</span></p>
+            </div>
+        </div>
+        <!--领取成功弹窗-->
+        <div class="award-right award-pop" v-show="showHaveRegisterIOS">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg" src="https://ohduoklem.qnssl.com/no-get.png" alt="">
+            <div class="content">
+                <p>抱歉您已经注册过了!</br>打开智慧预测一注大奖号码吧!</p>
+                <p><span class="red-button" v-on:click="download">
+                        知道了</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+    //    if (getUrlParam('uid') == null && getUrlParam('code') == null) {
+    //        var redirectUrl = window.location.protocol + "//" + window.location.host + "/web/newShare/index.html";
+    //        var link = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9fea09e960df08c0&redirect_uri=" +
+    //            redirectUrl + "&response_type=code&scope=snsapi_userinfo&state=" + getUrlParam("state") +
+    //            "#wechat_redirect";
+    //        window.location.href = link;
+    //    }
+    var userId = getUrlParam('state');
+    if (null == userId) {
+        userId = getUrlParam('uid');
+    }
+    //alert(userId);
+    function toast(msg) {
+        var str = "<div class='toast-container' style='display:none'> <div class='toast'>" + msg + "</div></div>";
+        $('body').append(str);
+        $('.toast-container').stop().fadeIn(100).delay(1500).fadeOut(400); //fade out after 3 seconds
+        setTimeout(function () {
+            $('.toast-container').remove();
+        }, 3000);
+    }
+    var ua = navigator.userAgent.toLowerCase();
+    var app = new Vue({
+        el: '#app',
+        data: {
+            mobile: "",
+            verifyCode: "",
+            buttonVerifyCode: "获取验证码",
+            password: '',
+            showGetSuccess: false,
+            showGetSuccessIOS: false,
+            showHaveRegister: false,
+            showHaveRegisterIOS: false,
+        },
+        mounted: function () {
+            $.ajax({
+                type: 'POST',
+                url: '/wx/getJsApiTicket',
+                data: {
+                    'pageUrl': window.location.href
+                },
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    try {
+                        wx.config({
+                            debug: false,
+                            // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                            appId: data.data.appId, // 必填，公众号的唯一标识
+                            timestamp: data.data.timestamp, // 必填，生成签名的时间戳
+                            nonceStr: data.data.nonceStr, // 必填，生成签名的随机串
+                            signature: data.data.signature,// 必填，签名，见附录1
+                            jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage", "onMenuShareQQ", "onMenuShareWeibo", "onMenuShareQZone"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                        });
+                    } catch (e) {
+                        toast(e);
+                    }
+
+                }
+            })
+        },
+        methods: {
+            close: function () {
+                var index = this;
+                index.$data.showGetSuccess = false;
+                index.$data.showGetSuccessIOS = false;
+                index.$data.showHaveRegister = false;
+                index.$data.showHaveRegisterIOS = false;
+            },
+            register: function () {
+                var index = this;
+                // 注册
+                if (index.$data.mobile == "") {
+                    toast("请输入手机号");
+                    return;
+                }
+                if (index.$data.mobile.length != 11) {
+                    toast("手机号格式不正确");
+                    return;
+                }
+                if (index.$data.verifyCode == "") {
+                    toast("请输入验证码");
+                    return;
+                }
+                if (index.$data.password == "") {
+                    toast("请设置密码");
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/activity/shareUserRegister',
+                    data: {
+                        'activityId': config.activityId,
+                        'fromUserId': userId,
+                        'mobile': index.$data.mobile,
+                        'password': index.$data.password,
+                        'verifyCode': index.$data.verifyCode
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        // 用户已经注册，校验出错 区分
+                        if (data.code == 0) {
+                            if (/iphone|ipod|ipad/.test(ua)) {
+                                index.$data.showGetSuccessIOS = true;
+                            } else {
+                                index.$data.showGetSuccess = true;
+                            }
+
+                        }
+                        if (data.code == -1) {
+                            toast(data.msg)
+                        }
+                    }
+                })
+            },
+            getVerifyCode: function () {
+                var index = this;
+                if (index.$data.mobile == "") {
+                    toast("请输入手机号");
+                    return;
+                }
+                if (index.$data.mobile.length != 11) {
+                    toast("手机号格式不正确");
+                    return;
+                }
+                // 发送验证码
+                if (index.$data.buttonVerifyCode == "获取验证码") {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/UserAuth/sendVerifyCode',
+                        data: {
+                            'mobile': index.$data.mobile,
+                            'type': 0,
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+                            // 用户已经注册，校验出错 区分
+                            if (data.code == 0) {
+                                if (data.msg == "success") {
+                                    toast("验证码发送成功！")
+                                } else {
+                                    toast(data.msg)
+                                }
+
+                                var seconds = 60;
+                                var timer = setInterval(function () {
+                                    if (seconds == 0) {
+                                        clearInterval(timer);
+                                        index.$data.buttonVerifyCode = "获取验证码";
+                                        $('.verify-code-button').removeClass('add-class');
+                                    } else {
+                                        console.log(seconds);
+                                        seconds = seconds - 1;
+                                        index.$data.buttonVerifyCode = "还剩" + seconds + "s";
+                                        $('.verify-code-button').addClass('add-class');
+                                    }
+                                }, 1000);
+                            } else {
+                                if (data.msg == "该手机号已经注册") {
+                                    if (/iphone|ipod|ipad/.test(ua)) {
+                                        index.$data.showHaveRegisterIOS = true;
+                                    } else {
+                                        index.$data.showHaveRegister = true;
+                                    }
+                                } else {
+                                    if (data.msg == "success") {
+                                        toast("验证码已发送，请注意查收！")
+                                    } else {
+                                        toast(data.msg);
+                                    }
+                                }
+                            }
+                        }
+                    })
+
+                }
+            },
+            download: function () {
+                window.location.href = '/web/download/yingyongbao.html';
+            }
+        }
+    })
+
+    wx.ready(function () {
+        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+        try {
+            var title = config.shareTitle;
+            var desc = config.shareDesc;
+            var imgUrl = config.shareIcon;
+            var redirectUrl =
+                window.location.protocol + "//" + window.location.host + "/web/newShare/index.html?state=" +
+                getUrlParam("state");
+            link = redirectUrl;
+
+            wx.onMenuShareTimeline({
+                title: title, // 分享标题
+                link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: imgUrl, // 分享图标
+                type: link, // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareQQ({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareWeibo({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareQZone({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+        } catch (e) {
+            alert(e);
+        }
+
+    });
+
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+</script>
+</html>

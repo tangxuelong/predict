@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SocialEncirclePeriodRank">
+    <resultMap id="socialEncirclePeriodRankMap" type="socialEncirclePeriodRank">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="WEEK_ID" property="weekId" jdbcType="VARCHAR"/>
+        <result column="MONTH_ID" property="monthId" jdbcType="VARCHAR"/>
+        <result column="USER_SCORE" property="userScore" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="socialEncirclePeriodRank">
+        INSERT INTO TB_SOCIAL_ENCIRCLE_PERIOD_RANK(USER_ID, GAME_ID, PERIOD_ID, WEEK_ID, MONTH_ID, USER_SCORE,
+        CREATE_TIME, UPDATE_TIME)
+        VALUES (#{userId,jdbcType=BIGINT}, #{gameId,jdbcType=BIGINT}, #{periodId,jdbcType=VARCHAR},
+        #{weekId,jdbcType=VARCHAR}, #{monthId,jdbcType=VARCHAR}, #{userScore,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP},  #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="getSocialEncirclePeriodRank" resultMap="socialEncirclePeriodRankMap" parameterType="map">
+        select * from TB_SOCIAL_ENCIRCLE_PERIOD_RANK
+        where game_id = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+        ORDER BY USER_SCORE DESC
+    </select>
+
+    <select id="getSocialEncirclePeriodUserId" resultType="java.lang.Long" parameterType="map">
+        select USER_ID from TB_SOCIAL_ENCIRCLE_PERIOD_RANK
+        where game_id = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+        ORDER BY USER_SCORE DESC
+    </select>
+
+    <select id="getSocialEncirclePeriodRankByUserId" resultMap="socialEncirclePeriodRankMap" parameterType="map">
+        select * from TB_SOCIAL_ENCIRCLE_PERIOD_RANK
+        where GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+        AND USER_ID = #{userId,jdbcType=BIGINT}
+        <if test="isLock == true">
+            for update
+        </if>
+    </select>
+
+    <update id="updateSocialEncirclePeriodRank" parameterType="map">
+        UPDATE TB_SOCIAL_ENCIRCLE_PERIOD_RANK SET USER_SCORE = #{userScore,jdbcType=VARCHAR}
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND GAME_ID = #{gameId,jdbcType=BIGINT}
+        AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

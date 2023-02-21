@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <properties>
+        <property name="dialectClass" value="com.mojieai.predict.dialect.MySQLDialect"/>
+    </properties>
+
+    <typeAliases>
+        <typeAlias type="com.mojieai.predict.entity.po.Ini" alias="ini"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ActivityIni" alias="activityIni"/>
+        <typeAlias type="com.mojieai.predict.entity.po.Game" alias="game"/>
+        <typeAlias type="com.mojieai.predict.entity.po.CronTab" alias="cronTab"/>
+        <typeAlias type="com.mojieai.predict.entity.po.GamePeriod" alias="gamePeriod"/>
+        <typeAlias type="com.mojieai.predict.entity.po.AwardInfo" alias="awardInfo"/>
+        <typeAlias type="com.mojieai.predict.entity.po.Banner" alias="banner"/>
+        <typeAlias type="com.mojieai.predict.entity.po.MobileUser" alias="mobileUser"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ThirdUser" alias="thirdUser"/>
+        <typeAlias type="com.mojieai.predict.entity.po.User" alias="user"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserDeviceInfo" alias="userDeviceInfo"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserInfo" alias="userInfo"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserToken" alias="userToken"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserIdSequence" alias="userIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ProgramIdSequence" alias="programIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.FlowIdSequence" alias="flowIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PeriodSchedule" alias="periodSchedule"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PredictNumbers" alias="predictNumbers"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PredictSchedule" alias="predictSchedule"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PushSchedule" alias="pushSchedule"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PredictRedBall" alias="predictRedBall"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserFeedback" alias="userFeedback"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PredictNumbersOperate" alias="predictNumbersOperate"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialEncircle" alias="socialEncircle"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialKillCode" alias="socialKillCode"/>
+        <typeAlias type="com.mojieai.predict.entity.po.EncircleCodeIdSequence" alias="encircleCodeIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.KillCodeIdSequence" alias="killCodeIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.IndexUserSocialCode" alias="indexUserSocialCode"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialCodeSchedule" alias="socialCodeSchedule"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialRank" alias="socialEncirclePeriodRank"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialRank" alias="socialEncircleWeekRank"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialRank" alias="socialEncircleMonthRank"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialRank" alias="socialKillPeriodRank"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialRank" alias="socialKillWeekRank"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialRank" alias="socialKillMonthRank"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialEncircleAwardLevel" alias="socialEncircleAwardLevel"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialKillAwardLevel" alias="socialKillAwardLevel"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserSocialRecord" alias="userSocialRecord"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ActivityAwardLevel" alias="activityAwardLevel"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ActivityDateUserInfo" alias="activityDateUserInfo"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ActivityInfo" alias="activityInfo"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ActivityUserInfo" alias="activityUserInfo"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ActivityUserLog" alias="activityUserLog"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialUserFollow" alias="socialUserFollow"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialUserFans" alias="socialUserFans"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialUserFollowInfo" alias="socialUserFollowInfo"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialClassicEncircle" alias="socialClassicEncircle"/>
+        <typeAlias type="com.mojieai.predict.entity.po.VipMember" alias="vipMember"/>
+        <typeAlias type="com.mojieai.predict.entity.po.VipOperateFollow" alias="vipOperateFollow"/>
+        <typeAlias type="com.mojieai.predict.entity.po.VipPrice" alias="vipPrice"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserSign" alias="userSign"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserSignStatistic" alias="userSignStatistic"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserSignReward" alias="userSignReward"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SignIdSequence" alias="signIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserAccount" alias="userAccount"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserAccountFlow" alias="userAccountFlow"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PayChannelInfo" alias="payChannelInfo"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PayClientChannel" alias="payClientChannel"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PayClientVersionControl" alias="payClientVersionControl"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialRobot" alias="socialRobot"/>
+        <typeAlias type="com.mojieai.predict.entity.po.RobotEncircle" alias="robotEncircle"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ExchangeMall" alias="exchangeMall"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserAccess" alias="userAccess"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserAccessInfo" alias="userAccessInfo"/>
+        <typeAlias type="com.mojieai.predict.entity.po.VipIdSequence" alias="vipIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.VipOperateIdSequence" alias="vipOperateIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialStatistic" alias="socialStatistic"/>
+        <typeAlias type="com.mojieai.predict.entity.po.StatisticIdSequence" alias="statisticIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserSocialTaskIdSequence" alias="userSocialTaskIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserSocialTaskAward" alias="userSocialTaskAward"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserNumBookIdSequence" alias="userNumBookIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserNumberBook" alias="userNumberBook"/>
+        <typeAlias type="com.mojieai.predict.entity.po.TouristUser" alias="touristUser"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ButtonOrdered" alias="buttonOrdered"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PredictUserRecords" alias="predictUserRecords"/>
+        <typeAlias type="com.mojieai.predict.entity.po.Title" alias="title"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserTitle" alias="userTitle"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserTitleLog" alias="userTitleLog"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserTitleLogIdSequence" alias="userTitleLogIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PurchaseOrderStatistic" alias="purchaseOrderStatistic"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialLevelIntegral" alias="socialLevelIntegral"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialIntegralLog" alias="socialIntegralLog"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserSocialIntegral" alias="userSocialIntegral"/>
+        <typeAlias type="com.mojieai.predict.entity.po.FestivalQuestion" alias="festivalQuestion"/>
+        <typeAlias type="com.mojieai.predict.entity.po.FestivalAnswer" alias="festivalAnswer"/>
+        <typeAlias type="com.mojieai.predict.entity.po.Program" alias="program"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserProgram" alias="userProgram"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserWisdomCoinFlow" alias="userWisdomCoinFlow"/>
+        <typeAlias type="com.mojieai.predict.entity.po.WisdomFlowIdSequence" alias="wisdomFlowIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserProgramIdSequence" alias="userProgramIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PushTrigger" alias="pushTrigger"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ProgramSaleStats" alias="programSaleStats"/>
+        <typeAlias type="com.mojieai.predict.entity.po.AllProductBill" alias="allProductBill"/>
+        <typeAlias type="com.mojieai.predict.entity.po.Mission" alias="mission"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PredictColdHotModel" alias="predictColdHotModel"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SocialCodeMission" alias="socialCodeMission"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SsqSocialResonanceData" alias="ssqSocialResonanceData"/>
+        <typeAlias type="com.mojieai.predict.entity.po.DltSocialResonanceData" alias="dltSocialResonanceData"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SubscribeProgram" alias="subscribeProgram"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserSubscribeInfo" alias="userSubscribeInfo"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserSubscribeLog" alias="userSubscribeLog"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SubScribeIdSequence" alias="subScribeIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ResonanceLogIdSeq" alias="resonanceLogIdSeq"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserResonanceInfo" alias="userResonanceInfo"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserResonanceLog" alias="userResonanceLog"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserResonanceLogDetail" alias="userResonanceLogDetail"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserBuyRecommendIdSeq" alias="userBuyRecommendIdSeq"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserBuyRecommend" alias="userBuyRecommend"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserSportSocialRecommend" alias="userSportSocialRecommend"/>
+        <typeAlias type="com.mojieai.predict.entity.po.MatchSchedule" alias="matchSchedule"/>
+        <typeAlias type="com.mojieai.predict.entity.po.RecommendIdSequence" alias="recommendIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SportSocialRank" alias="sportSocialRank"/>
+        <typeAlias type="com.mojieai.predict.entity.po.IndexMatchRecommend" alias="indexMatchRecommend"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SportRobotRecommend" alias="sportRobotRecommend"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ActivityProgram" alias="activityProgram"/>
+        <typeAlias type="com.mojieai.predict.entity.po.AppChannel" alias="appChannel"/>
+        <typeAlias type="com.mojieai.predict.entity.po.AppVersion" alias="appVersion"/>
+        <typeAlias type="com.mojieai.predict.entity.po.AppChannelVersion" alias="appChannelVersion"/>
+        <typeAlias type="com.mojieai.predict.entity.po.BetOrder" alias="betOrder"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserActive" alias="userActive"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserCouponIdSequence" alias="userCouponIdSequence"/>
+        <typeAlias type="com.mojieai.predict.entity.po.CouponConfig" alias="couponConfig"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserCoupon" alias="userCoupon"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserCouponFlow" alias="userCouponFlow"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserCouponFlowIdSeq" alias="userCouponFlowIdSeq"/>
+        <typeAlias type="com.mojieai.predict.entity.po.StarUserMatch" alias="starUserMatch"/>
+        <typeAlias type="com.mojieai.predict.entity.po.InternetCelebrityRecommend" alias="internetCelebrityRecommend"/>
+        <typeAlias type="com.mojieai.predict.entity.po.MatchTag" alias="matchTag"/>
+        <typeAlias type="com.mojieai.predict.entity.po.MatchInfo" alias="matchInfo"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserFollowMatches" alias="userFollowMatches"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserStatisticTable" alias="userStatisticTable"/>
+        <typeAlias type="com.mojieai.predict.entity.po.PaymentStatisticReport" alias="paymentStatisticReport"/>
+        <typeAlias type="com.mojieai.predict.entity.po.OrderStatisticReport" alias="orderStatisticReport"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserDeviceWeekReport" alias="userDeviceWeekReport"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserStatisticTableDay" alias="userStatisticTableDay"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserDeviceMonthReport" alias="userDeviceMonthReport"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SportsRecommendOrderReport" alias="sportsRecommendOrderReport"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserBankCard" alias="userBankCard"/>
+        <typeAlias type="com.mojieai.predict.entity.po.RongShuAutLog" alias="rongShuAutLog"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserWithdrawFlowIdSeq" alias="userWithdrawFlowIdSeq"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserWithdrawFlow" alias="userWithdrawFlow"/>
+        <typeAlias type="com.mojieai.predict.entity.po.SysCardBin" alias="sysCardBin"/>
+        <typeAlias type="com.mojieai.predict.entity.po.ThirdPartyBillInfo" alias="thirdPartyBillInfo"/>
+        <typeAlias type="com.mojieai.predict.entity.po.VipProgram" alias="vipProgram"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserVipProgramDateTime" alias="userVipProgramDateTime"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserVipProgram" alias="userVipProgram"/>
+        <typeAlias type="com.mojieai.predict.entity.po.UserVipProgramIdSeq" alias="userVipProgramIdSeq"/>
+        <typeAlias type="com.mojieai.predict.entity.po.DanguanProgram" alias="danguanProgram"/>
+        <typeAlias type="com.mojieai.predict.entity.po.DanguanProgramCards" alias="danguanProgramCards"/>
+        <typeAlias type="com.mojieai.predict.entity.po.DanguanProgramUser" alias="danguanProgramUser"/>
+        <typeAlias type="com.mojieai.predict.entity.po.DanguanProgramUserTimes" alias="danguanProgramUserTimes"/>
+    </typeAliases>
+
+    <mappers>
+        <mapper resource="mybatis/IniDaoImpl.xml"/>
+        <mapper resource="mybatis/ActivityIniDaoImpl.xml"/>
+        <mapper resource="mybatis/GameDaoImpl.xml"/>
+        <mapper resource="mybatis/GamePeriodDaoImpl.xml"/>
+        <mapper resource="mybatis/AwardInfoDaoImpl.xml"/>
+        <mapper resource="mybatis/BannerDaoImpl.xml"/>
+        <mapper resource="mybatis/CronTabDaoImpl.xml"/>
+        <mapper resource="mybatis/MobileUserDaoImpl.xml"/>
+        <mapper resource="mybatis/ThirdUserDaoImpl.xml"/>
+        <mapper resource="mybatis/UserDaoImpl.xml"/>
+        <mapper resource="mybatis/UserDeviceInfoDaoImpl.xml"/>
+        <mapper resource="mybatis/UserInfoDaoImpl.xml"/>
+        <mapper resource="mybatis/UserTokenDaoImpl.xml"/>
+        <mapper resource="mybatis/UserIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/ProgramIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/FlowIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/TrendDaoImpl.xml"/>
+        <mapper resource="mybatis/PeriodScheduleDaoImpl.xml"/>
+        <mapper resource="mybatis/PeriodScheduleDaoImpl.xml"/>
+        <mapper resource="mybatis/PredictNumbersDaoImpl.xml"/>
+        <mapper resource="mybatis/PredictScheduleDaoImpl.xml"/>
+        <mapper resource="mybatis/PushScheduleDaoImpl.xml"/>
+        <mapper resource="mybatis/PredictRedBallDaoImpl.xml"/>
+        <mapper resource="mybatis/UserFeedbackDaoImpl.xml"/>
+        <mapper resource="mybatis/PredictNumbersOperateDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialEncircleCodeDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialKillCodeDaoImpl.xml"/>
+        <mapper resource="mybatis/EncircleCodeIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/KillCodeIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/IndexUserSocialCodeDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialCodeScheduleDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialEncirclePeriodRankDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialEncircleWeekRankDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialEncircleMonthRankDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialKillPeriodRankDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialKillWeekRankDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialKillMonthRankDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialEncircleAwardLevelDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialKillAwardLevelDaoImpl.xml"/>
+        <mapper resource="mybatis/UserSocialRecordDaoImpl.xml"/>
+        <mapper resource="mybatis/ActivityAwardLevelDaoImpl.xml"/>
+        <mapper resource="mybatis/ActivityDateUserInfoDaoImpl.xml"/>
+        <mapper resource="mybatis/ActivityInfoDaoImpl.xml"/>
+        <mapper resource="mybatis/ActivityUserInfoDaoImpl.xml"/>
+        <mapper resource="mybatis/ActivityUserLogDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialUserFollowInfoDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialUserFollowDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialUserFansDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialClassicEncircleCodeDaoImpl.xml"/>
+        <mapper resource="mybatis/VipMemberDaoImpl.xml"/>
+        <mapper resource="mybatis/VipOperateFollowDaoImpl.xml"/>
+        <mapper resource="mybatis/VipPriceDaoImpl.xml"/>
+        <mapper resource="mybatis/UserSignDaoImpl.xml"/>
+        <mapper resource="mybatis/UserSignStatisticDaoImpl.xml"/>
+        <mapper resource="mybatis/UserSignRewardDaoImpl.xml"/>
+        <mapper resource="mybatis/SignIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/UserAccountDaoImpl.xml"/>
+        <mapper resource="mybatis/UserAccountFlowDaoImpl.xml"/>
+        <mapper resource="mybatis/PayChannelInfoDaoImpl.xml"/>
+        <mapper resource="mybatis/PayClientChannelDaoImpl.xml"/>
+        <mapper resource="mybatis/PayClientVersionControlDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialRobotDaoImpl.xml"/>
+        <mapper resource="mybatis/RobotEncircleDaoImpl.xml"/>
+        <mapper resource="mybatis/ExchangeMallDaoImpl.xml"/>
+        <mapper resource="mybatis/UserAccessDaoImpl.xml"/>
+        <mapper resource="mybatis/UserAccessInfoDaoImpl.xml"/>
+        <mapper resource="mybatis/VipIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/VipOperateIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialStatisticDaoImpl.xml"/>
+        <mapper resource="mybatis/StatisticIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/UserSocialTaskIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/UserNumBookIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/UserNumberBookDaoImpl.xml"/>
+        <mapper resource="mybatis/UserSocialTaskAwardDaoImpl.xml"/>
+        <mapper resource="mybatis/TouristUserDaoImpl.xml"/>
+        <mapper resource="mybatis/ButtonOrderedDaoImpl.xml"/>
+        <mapper resource="mybatis/PredictUserRecordsDaoImpl.xml"/>
+        <mapper resource="mybatis/TitleDaoImpl.xml"/>
+        <mapper resource="mybatis/UserTitleDaoImpl.xml"/>
+        <mapper resource="mybatis/UserTitleLogDaoImpl.xml"/>
+        <mapper resource="mybatis/UserTitleLogIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/PurchaseOrderStatisticDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialLevelIntegralDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialIntegralLogDaoImpl.xml"/>
+        <mapper resource="mybatis/UserSocialIntegralDaoImpl.xml"/>
+        <mapper resource="mybatis/FestivalQuestionDaoImpl.xml"/>
+        <mapper resource="mybatis/FestivalAnswerDaoImpl.xml"/>
+        <mapper resource="mybatis/ProgramDaoImpl.xml"/>
+        <mapper resource="mybatis/UserProgramDaoImpl.xml"/>
+        <mapper resource="mybatis/UserWisdomCoinFlowDaoImpl.xml"/>
+        <mapper resource="mybatis/WisdomFlowsequenceIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/UserProgramIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/PushTriggerDaoImpl.xml"/>
+        <mapper resource="mybatis/ProgramSaleStatsDaoImpl.xml"/>
+        <mapper resource="mybatis/AllProductBillDaoImpl.xml"/>
+        <mapper resource="mybatis/MissionDaoImpl.xml"/>
+        <mapper resource="mybatis/SocialCodeMissionDaoImpl.xml"/>
+        <mapper resource="mybatis/SubscribeProgramDaoImpl.xml"/>
+        <mapper resource="mybatis/UserSubscribeInfoDaoImpl.xml"/>
+        <mapper resource="mybatis/UserSubscribeLogDaoImpl.xml"/>
+        <mapper resource="mybatis/UserSubscribeLogIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/PredictColdHotModelDaoImpl.xml"/>
+        <mapper resource="mybatis/SsqSocialResonanceDataDaoImpl.xml"/>
+        <mapper resource="mybatis/DltSocialResonanceDataDaoImpl.xml"/>
+        <mapper resource="mybatis/UserResonanceLogIdSeqDaoImpl.xml"/>
+        <mapper resource="mybatis/UserResonanceInfoDaoImpl.xml"/>
+        <mapper resource="mybatis/UserResonanceLogDaoImpl.xml"/>
+        <mapper resource="mybatis/UserResonanceLogDetailDaoImpl.xml"/>
+        <mapper resource="mybatis/UserBuyRecommendIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/UserBuyRecommendDaoImpl.xml"/>
+        <mapper resource="mybatis/UserSportSocialRecommendDaoImpl.xml"/>
+        <mapper resource="mybatis/MatchScheduleDaoImpl.xml"/>
+        <mapper resource="mybatis/RecommendIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/SportSocialRankDaoImpl.xml"/>
+        <mapper resource="mybatis/IndexMatchRecommendDaoImpl.xml"/>
+        <mapper resource="mybatis/SportsRobotRecommendDaoImpl.xml"/>
+        <mapper resource="mybatis/ActivityProgramDaoImpl.xml"/>
+        <mapper resource="mybatis/AppChannelDaoImpl.xml"/>
+        <mapper resource="mybatis/AppVersionDaoImpl.xml"/>
+        <mapper resource="mybatis/AppChannelVersionDaoImpl.xml"/>
+        <mapper resource="mybatis/BetOrderDaoImpl.xml"/>
+        <mapper resource="mybatis/UserActiveDaoImpl.xml"/>
+        <mapper resource="mybatis/UserCouponIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/CouponConfigDaoImpl.xml"/>
+        <mapper resource="mybatis/UserCouponDaoImpl.xml"/>
+        <mapper resource="mybatis/UserCouponFlowIdSeqDaoImpl.xml"/>
+        <mapper resource="mybatis/UserCouponFlowDaoImpl.xml"/>
+        <mapper resource="mybatis/StarUserMatchDaoImpl.xml"/>
+        <mapper resource="mybatis/InternetCelebrityRecommendDaoImpl.xml"/>
+        <mapper resource="mybatis/MatchTagDaoImpl.xml"/>
+        <mapper resource="mybatis/MatchInfoDaoImpl.xml"/>
+        <mapper resource="mybatis/UserFollowMatchesDaoImpl.xml"/>
+        <mapper resource="mybatis/UserStatisticTableDaoImpl.xml"/>
+        <mapper resource="mybatis/PaymentStatisticReportDaoImpl.xml"/>
+        <mapper resource="mybatis/OrderStatisticReportDaoImpl.xml"/>
+        <mapper resource="mybatis/UserDeviceWeekReportDaoImpl.xml"/>
+        <mapper resource="mybatis/UserStatisticTableDayDaoImpl.xml"/>
+        <mapper resource="mybatis/UserDeviceMonthReportDaoImpl.xml"/>
+        <mapper resource="mybatis/SportsRecommendOrderReportDaoImpl.xml"/>
+        <mapper resource="mybatis/UserBankCardDaoImpl.xml"/>
+        <mapper resource="mybatis/RongShuAutLogDaoImpl.xml"/>
+        <mapper resource="mybatis/UserWithdrawIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/UserWithdrawFlowDaoImpl.xml"/>
+        <mapper resource="mybatis/SysCardBinDaoImpl.xml"/>
+        <mapper resource="mybatis/ThirdPartyBillInfoDaoImpl.xml"/>
+        <mapper resource="mybatis/VipProgramDaoImpl.xml"/>
+        <mapper resource="mybatis/UserVipProgramDateTimeDaoImpl.xml"/>
+        <mapper resource="mybatis/UserVipProgramDaoImpl.xml"/>
+        <mapper resource="mybatis/UserVipProgramIdSequenceDaoImpl.xml"/>
+        <mapper resource="mybatis/DanguanProgramDaoImpl.xml"/>
+        <mapper resource="mybatis/DanguanProgramCardsDaoImpl.xml"/>
+        <mapper resource="mybatis/DanguanProgramUserDaoImpl.xml"/>
+        <mapper resource="mybatis/DanguanProgramUserTimesDaoImpl.xml"/>
+    </mappers>
+</configuration>

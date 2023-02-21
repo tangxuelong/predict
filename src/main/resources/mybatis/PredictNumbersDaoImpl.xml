@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PredictNumbers">
+    <resultMap id="predictNumbersMap" type="predictNumbers">
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="PREDICT_NUMBERS" property="predictNumbers" jdbcType="BLOB"/>
+        <result column="HISTORY_AWARD_SUM" property="historyAwardSum" jdbcType="DECIMAL"/>
+        <result column="HISTORY_AWARD_LEVEL_SUM" property="historyAwardLevelSum" jdbcType="VARCHAR"/>
+        <result column="AWARD_LEVEL" property="awardLevel" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="predictNumbers">
+        INSERT INTO TB_PREDICT_NUMBERS(GAME_ID, PERIOD_ID, PREDICT_NUMBERS, HISTORY_AWARD_SUM)
+        VALUES(#{gameId, jdbcType=BIGINT}, #{periodId, jdbcType=VARCHAR}, #{predictNumbers, jdbcType=BLOB},
+        #{historyAwardSum, jdbcType=BIGINT})
+    </insert>
+
+    <select id="getPredictNumsByGameId" resultMap="predictNumbersMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_NUMBERS
+        WHERE GAME_ID=#{gameId}
+    </select>
+
+    <select id="getPredictNums" resultMap="predictNumbersMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_NUMBERS
+        WHERE GAME_ID=#{gameId, jdbcType=BIGINT} and PERIOD_ID=#{periodId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="getPredictNumAwardLevel" resultType="java.lang.String" parameterType="map">
+        SELECT AWARD_LEVEL FROM TB_PREDICT_NUMBERS
+        WHERE GAME_ID=#{gameId, jdbcType=BIGINT} and PERIOD_ID=#{periodId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="getHistoryAwardLevelSum" resultType="java.lang.String" parameterType="map">
+        SELECT HISTORY_AWARD_LEVEL_SUM FROM TB_PREDICT_NUMBERS
+        WHERE GAME_ID=#{gameId, jdbcType=BIGINT} and PERIOD_ID=#{periodId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="getAllAwardLevelStr" resultType="java.util.HashMap" parameterType="map">
+        SELECT AWARD_LEVEL, HISTORY_AWARD_LEVEL_SUM FROM TB_PREDICT_NUMBERS
+        WHERE GAME_ID=#{gameId, jdbcType=BIGINT} and PERIOD_ID=#{periodId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="getPredictNumsPartInfo" resultType="map" parameterType="map">
+        SELECT GAME_ID ,PERIOD_ID FROM TB_PREDICT_NUMBERS WHERE GAME_ID=#{gameId, jdbcType=BIGINT} AND AWARD_LEVEL IS
+        NOT NULL ORDER BY PERIOD_ID DESC limit #{count, jdbcType=INTEGER}
+    </select>
+
+    <select id="getLastHistoryAwardSum" resultType="java.math.BigDecimal" parameterType="map">
+        SELECT HISTORY_AWARD_SUM FROM tb_predict_numbers
+        WHERE GAME_ID =#{gameId, jdbcType=BIGINT} AND PERIOD_ID &lt; #{periodId, jdbcType=VARCHAR}
+        ORDER BY PERIOD_ID DESC LIMIT 1
+    </select>
+
+    <update id="updatePredictNums" parameterType="predictNumbers">
+        UPDATE TB_PREDICT_NUMBERS
+        SET PREDICT_NUMBERS=#{predictNumbers, jdbcType=BLOB},
+        HISTORY_AWARD_SUM =#{historyAwardSum, jdbcType=BIGINT}, HISTORY_AWARD_LEVEL_SUM =
+        #{historyAwardLevelSum, jdbcType=VARCHAR}
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateHistoryAwardSum" parameterType="map">
+        UPDATE TB_PREDICT_NUMBERS
+        SET HISTORY_AWARD_SUM =#{historyAwardSum, jdbcType=BIGINT}
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+    </update>
+
+    <update id="updatePredictNumAwardLevel" parameterType="map">
+        UPDATE TB_PREDICT_NUMBERS
+        SET AWARD_LEVEL =#{awardLevel, jdbcType=VARCHAR}, HISTORY_AWARD_LEVEL_SUM =
+        #{historyAwardLevelSum, jdbcType=VARCHAR}
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+    </update>
+
+
+    <!-- 修复错误期次用的 -->
+    <update id="updatePeriodId" parameterType="map">
+        UPDATE TB_PREDICT_NUMBERS
+        SET PERIOD_ID =#{newPeriodId, jdbcType=VARCHAR}
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID = #{oldPeriodId, jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AppChannel">
+    <resultMap id="appChannelMap" type="appChannel">
+        <result column="CHANNEL_ID" property="channelId" jdbcType="INTEGER"/>
+        <result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        CHANNEL_ID, CHANNEL_NAME, CREATE_TIME
+    </sql>
+
+    <select id="getAllAppChannel" resultMap="appChannelMap">
+        SELECT * FROM TB_APP_CHANNEL
+    </select>
+
+    <select id="getAppChannelByChannelName" resultMap="appChannelMap" parameterType="map">
+        SELECT * FROM TB_APP_CHANNEL WHERE CHANNEL_NAME = #{channelName, jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="appChannel">
+        INSERT INTO TB_APP_CHANNEL (CHANNEL_ID, CHANNEL_NAME, CREATE_TIME)
+        VALUES (#{channelId, jdbcType=INTEGER}, #{channelName,jdbcType=VARCHAR}, now())
+    </insert>
+
+</mapper>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${jdbc_caipiao.url}"/>
+        <property name="connectionProperties"
+                  value="useUnicode=true;characterEncoding=UTF-8;rewriteBatchedStatements=true;useServerPrepStmts=true;zeroDateTimeBehavior=convertToNull"/>
+        <property name="username" value="${jdbc_caipiao.username}"/>
+        <property name="password" value="${jdbc_caipiao.password}"/>
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="initialSize" value="20"/>
+        <property name="minIdle" value="5"/>
+        <property name="maxActive" value="30"/>
+        <property name="maxWait" value="30000"/>
+        <property name="removeAbandoned" value="true"/>
+        <property name="removeAbandonedTimeoutMillis" value="300000"/>
+        <property name="defaultAutoCommit" value="false"/>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <property name="validationQuery" value="SELECT 1"/>
+        <property name="connectionInitSqls" value="set names utf8mb4;"/>
+    </bean>
+
+    <bean id="slaveDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${jdbc_caipiao.slave.url}"/>
+        <property name="connectionProperties"
+                  value="useUnicode=true;characterEncoding=UTF-8;rewriteBatchedStatements=true;useServerPrepStmts=true;zeroDateTimeBehavior=convertToNull"/>
+        <property name="username" value="${jdbc_caipiao.slave.username}"/>
+        <property name="password" value="${jdbc_caipiao.slave.password}"/>
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="initialSize" value="20"/>
+        <property name="minIdle" value="5"/>
+        <property name="maxActive" value="30"/>
+        <property name="maxWait" value="30000"/>
+        <property name="removeAbandoned" value="true"/>
+        <property name="removeAbandonedTimeoutMillis" value="300000"/>
+        <property name="defaultAutoCommit" value="false"/>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <property name="validationQuery" value="SELECT 1"/>
+        <property name="connectionInitSqls" value="set names utf8mb4;"/>
+    </bean>
+
+    <bean id="otterDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${jdbc_caipiao.otter.url}"/>
+        <property name="connectionProperties"
+                  value="useUnicode=true;characterEncoding=UTF-8;rewriteBatchedStatements=true;useServerPrepStmts=true;zeroDateTimeBehavior=convertToNull"/>
+        <property name="username" value="${jdbc_caipiao.otter.username}"/>
+        <property name="password" value="${jdbc_caipiao.otter.password}"/>
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="initialSize" value="20"/>
+        <property name="minIdle" value="5"/>
+        <property name="maxActive" value="30"/>
+        <property name="maxWait" value="30000"/>
+        <property name="removeAbandoned" value="true"/>
+        <property name="removeAbandonedTimeoutMillis" value="300000"/>
+        <property name="defaultAutoCommit" value="false"/>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <property name="validationQuery" value="SELECT 1"/>
+        <property name="connectionInitSqls" value="set names utf8mb4;"/>
+    </bean>
+
+    <!-- 事务控制   -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+    <bean id="paginationInterceptor" class="com.mojieai.predict.interceptor.PaginationInterceptor">
+        <property name="dialect">
+            <bean class="com.mojieai.predict.dialect.MySQLDialect"/>
+        </property>
+    </bean>
+
+    <bean id="tableShardInterceptor" class="com.mojieai.predict.interceptor.TableShardInterceptor"></bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:SqlMapConfig.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="plugins">
+            <array>
+                <ref bean="paginationInterceptor"/>
+                <ref bean="tableShardInterceptor"/>
+            </array>
+        </property>
+    </bean>
+
+    <bean id="slaveSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:SqlMapConfig.xml"/>
+        <property name="dataSource" ref="slaveDataSource"/>
+        <property name="plugins">
+            <array>
+                <ref bean="paginationInterceptor"/>
+                <ref bean="tableShardInterceptor"/>
+            </array>
+        </property>
+    </bean>
+
+    <bean id="otterSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:SqlMapConfig.xml"/>
+        <property name="dataSource" ref="otterDataSource"/>
+        <property name="plugins">
+            <array>
+                <ref bean="paginationInterceptor"/>
+                <ref bean="tableShardInterceptor"/>
+            </array>
+        </property>
+    </bean>
+
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="slaveSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="slaveSqlSessionFactory"/>
+    </bean>
+    <bean id="otterSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="otterSqlSessionFactory"/>
+    </bean>
+
+    <bean id="baseRedis" class="com.mojieai.predict.redis.base.BaseRedis" init-method="initPool"></bean>
+</beans>

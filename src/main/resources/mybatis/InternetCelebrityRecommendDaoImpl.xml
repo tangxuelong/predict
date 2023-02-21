@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InternetCelebrityRecommend">
+    <resultMap id="internetCelebrityRecommendMap" type="internetCelebrityRecommend">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="RECOMMEND_ID" property="recommendId" jdbcType="VARCHAR"/>
+        <result column="PRICE" property="price" jdbcType="BIGINT"/>
+        <result column="MATCH_ID" property="matchId" jdbcType="INTEGER"/>
+        <result column="LIKE_COUNT" property="likeCount" jdbcType="BIGINT"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="MATCH_TIME" property="matchTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="POPULAR_INDEX" property="popularIndex" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_sql">
+        USER_ID, RECOMMEND_ID, PRICE, MATCH_ID, LIKE_COUNT, REMARK, STATUS, POPULAR_INDEX, MATCH_TIME, CREATE_TIME
+    </sql>
+
+    <select id="getRecentEnableRecommend" resultMap="internetCelebrityRecommendMap" parameterType="map">
+		select * from tb_internet_celebrity where USER_ID =#{userId, jdbcType=BIGINT} and STATUS=1 and MATCH_TIME
+		&gt;= now() order by MATCH_TIME, CREATE_TIME limit 1
+	</select>
+
+    <select id="getHistoryLatestRecommend" resultMap="internetCelebrityRecommendMap" parameterType="map">
+        select * from tb_internet_celebrity where USER_ID =#{userId, jdbcType=BIGINT} and MATCH_TIME &lt; now() and
+        STATUS=1 order by
+        MATCH_TIME desc limit #{count, jdbcType=INTEGER}
+    </select>
+
+    <select id="getAllShowCelebrities" resultMap="internetCelebrityRecommendMap">
+        select * from tb_internet_celebrity where STATUS=1 order by MATCH_TIME desc
+    </select>
+
+    <select id="getAllCelebrityUser" resultType="java.lang.Long">
+        select USER_ID from tb_internet_celebrity group by USER_ID
+    </select>
+
+    <select id="getCelebrityRecommendCount" resultType="java.lang.Integer" parameterType="map">
+      select count(1) from tb_internet_celebrity where RECOMMEND_ID = #{recommendId,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateRecommendLikeCount" parameterType="map">
+        UPDATE tb_internet_celebrity
+        SET LIKE_COUNT = #{setCount,jdbcType=BIGINT}
+        WHERE RECOMMEND_ID = #{recommendId,jdbcType=VARCHAR}
+        <if test="originCount!=null">
+            and LIKE_COUNT = #{originCount,jdbcType=BIGINT}
+        </if>
+    </update>
+
+    <insert id="insert" parameterType="internetCelebrityRecommend">
+        INSERT INTO tb_internet_celebrity (
+        <include refid="Base_sql"/>
+        )
+        VALUES (#{userId,jdbcType=BIGINT}, #{recommendId,jdbcType=VARCHAR}, #{price,jdbcType=BIGINT},
+        #{matchId,jdbcType=INTEGER}, #{likeCount,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR},
+        #{status, jdbcType=INTEGER}, #{popularIndex, jdbcType=INTEGER}, #{matchTime,jdbcType=TIMESTAMP}, now())
+    </insert>
+
+    <insert id="update" parameterType="internetCelebrityRecommend">
+        UPDATE tb_internet_celebrity
+        SET
+        PRICE = #{price,jdbcType=BIGINT},
+        MATCH_ID = #{matchId,jdbcType=INTEGER}, LIKE_COUNT = #{likeCount,jdbcType=BIGINT},REMARK = #{remark,
+        jdbcType=VARCHAR},
+        STATUS = #{status, jdbcType=INTEGER}, POPULAR_INDEX = #{popularIndex, jdbcType=INTEGER},
+        MATCH_TIME = #{matchTime,jdbcType=TIMESTAMP},
+        UPDATE_TIME = now()
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND RECOMMEND_ID = #{recommendId,jdbcType=VARCHAR}
+    </insert>
+
+    <select id="getAllInternetCelebrityLastRecommend" resultMap="internetCelebrityRecommendMap">
+		SELECT * FROM (
+            SELECT *
+            FROM tb_internet_celebrity
+            WHERE STATUS = 1 AND MATCH_TIME >= now()
+            ORDER BY USER_ID, MATCH_TIME
+        ) AS temp
+        GROUP BY USER_ID
+        ORDER BY MATCH_TIME
+    </select>
+</mapper>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MatchSchedule">
+    <resultMap id="matchScheduleMap" type="matchSchedule">
+        <result column="MATCH_ID" property="matchId" jdbcType="INTEGER"/>
+        <result column="LOTTERY_CODE" property="lotteryCode" jdbcType="INTEGER"/>
+        <result column="IF_END" property="ifEnd" jdbcType="INTEGER"/>
+        <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_PURCHASE_LOG" property="ifPurchaseLog" jdbcType="INTEGER"/>
+        <result column="PURCHASE_LOG_TIME" property="purchaseLogTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_WITHDRAW" property="ifWithdraw" jdbcType="INTEGER"/>
+        <result column="WITHDRAW_TIME" property="withdrawTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_RANK" property="ifRank" jdbcType="INTEGER"/>
+        <result column="RANK_TIME" property="rankTime" jdbcType="TIMESTAMP"/>
+        <result column="LEAGUE_MATCH_NAME" property="leagueMatchName" jdbcType="VARCHAR"/>
+        <result column="IF_RANK_REDIS" property="ifRankRedis" jdbcType="INTEGER"/>
+        <result column="RANK_REDIS_TIME" property="rankRedisTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_VIP_PROGRAM" property="ifVipProgram" jdbcType="INTEGER"/>
+        <result column="VIP_PROGRAM_TIME" property="vipProgramTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        MATCH_ID, LOTTERY_CODE, IF_END, END_TIME, IF_PURCHASE_LOG, PURCHASE_LOG_TIME, IF_WITHDRAW, WITHDRAW_TIME,
+        IF_RANK, RANK_TIME, LEAGUE_MATCH_NAME, IF_RANK_REDIS, RANK_REDIS_TIME, IF_VIP_PROGRAM, VIP_PROGRAM_TIME
+    </sql>
+
+    <select id="getMatchScheduleByPk" resultMap="matchScheduleMap" parameterType="map">
+        SELECT * FROM TB_MATCH_SCHEDULE WHERE MATCH_ID = #{matchId, jdbcType=INTEGER} AND LOTTERY_CODE =
+        #{lotteryCode, jdbcType=INTEGER}
+    </select>
+
+    <select id="getNeedDealBuyRecommendMatch" resultMap="matchScheduleMap">
+        SELECT * FROM TB_MATCH_SCHEDULE WHERE IF_END = 2 AND IF_PURCHASE_LOG IS NULL
+    </select>
+
+    <select id="getNeedDealWithdrawMatch" resultMap="matchScheduleMap">
+        SELECT * FROM TB_MATCH_SCHEDULE WHERE IF_PURCHASE_LOG = 1 AND IF_WITHDRAW IS NULL
+    </select>
+
+    <select id="getNeedDealRankMatch" resultMap="matchScheduleMap">
+        SELECT * FROM TB_MATCH_SCHEDULE WHERE IF_END = 2 AND IF_RANK IS NULL
+    </select>
+
+    <select id="getAllNeedDealCancelRankMatch" resultMap="matchScheduleMap">
+        SELECT * FROM TB_MATCH_SCHEDULE WHERE IF_END = 3 AND IF_RANK IS NULL
+    </select>
+
+    <select id="getAllNotOpeningMatch" resultMap="matchScheduleMap">
+        SELECT * FROM TB_MATCH_SCHEDULE WHERE IF_END IS NULL or IF_END = 1 or IF_END = 4 or IF_END = 5
+    </select>
+
+    <select id="getMatchByMatchStatus" resultMap="matchScheduleMap" parameterType="map">
+        SELECT * FROM TB_MATCH_SCHEDULE WHERE IF_END = #{ifEnd, jdbcType=INTEGER}
+    </select>
+
+    <select id="getAllWaitRankRedisMatch" resultMap="matchScheduleMap">
+        SELECT * FROM TB_MATCH_SCHEDULE WHERE IF_RANK = 1 and IF_RANK_REDIS = 0
+    </select>
+
+    <select id="getVipProgramMatch" resultMap="matchScheduleMap">
+        SELECT * FROM TB_MATCH_SCHEDULE WHERE IF_END = 2 and IF_VIP_PROGRAM = 0
+    </select>
+
+    <select id="getNotBeginRecentMatchSchedule" resultMap="matchScheduleMap" parameterType="map">
+        select * from TB_MATCH_SCHEDULE where (IF_END is null or IF_END = 0)
+        <if test="leagueMatchName!=null">
+            and LEAGUE_MATCH_NAME =#{leagueMatchName, jdbcType=VARCHAR}
+        </if>
+        order by MATCH_ID limit 1
+    </select>
+
+    <select id="getLatestEndMatch" resultMap="matchScheduleMap" parameterType="map">
+        select * from TB_MATCH_SCHEDULE where IF_END = 2
+        <if test="leagueMatchName!=null">
+            and LEAGUE_MATCH_NAME =#{leagueMatchName, jdbcType=VARCHAR}
+        </if>
+        order by MATCH_ID desc limit #{count, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="matchSchedule">
+        INSERT INTO TB_MATCH_SCHEDULE (<include refid="Base_Column_List"/>)
+        VALUES (#{matchId, jdbcType=INTEGER}, #{lotteryCode, jdbcType=INTEGER}, null, null , null, null, null, null,
+        null, null, #{leagueMatchName, jdbcType=VARCHAR}, #{ifRankRedis, jdbcType=INTEGER}, null,
+        #{ifVipProgram, jdbcType=INTEGER}, null)
+    </insert>
+
+    <update id="updateMatchStatus" parameterType="map">
+        UPDATE TB_MATCH_SCHEDULE SET ${flagColumn} = #{status, jdbcType=INTEGER} , ${timeColumn} = now()
+        WHERE MATCH_ID = #{matchId, jdbcType=INTEGER} AND LOTTERY_CODE = #{lotteryCode, jdbcType=INTEGER}
+    </update>
+
+    <update id="updateMatchStatusBySetIds" parameterType="map">
+        UPDATE TB_MATCH_SCHEDULE SET IF_END = #{matchStatus, jdbcType=INTEGER} , END_TIME = now()
+        WHERE LOTTERY_CODE = #{lotteryCode, jdbcType=INTEGER} AND MATCH_ID IN
+        <foreach collection="matchEndIds" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+</mapper>

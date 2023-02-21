@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PredictUserRecords">
+    <resultMap id="predictUserRecordsMap" type="predictUserRecords">
+        <result column="RECORD_ID" property="recordId" jdbcType="VARCHAR"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="NUM_STR" property="numStr" jdbcType="VARCHAR"/>
+        <result column="TIME_SPAN" property="timeSpan" jdbcType="VARCHAR"/>
+        <result column="PREDICT_TYPE" property="predictType" jdbcType="INTEGER"/>
+        <result column="IS_AWARD" property="isAward" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="predictUserRecords">
+        INSERT INTO TB_PREDICT_USER_RECORDS(RECORD_ID, GAME_ID, PERIOD_ID, USER_ID, NUM_STR, TIME_SPAN, PREDICT_TYPE,
+        CREATE_TIME)
+        VALUES(#{recordId, jdbcType=VARCHAR}, #{gameId, jdbcType=BIGINT}, #{periodId, jdbcType=VARCHAR},
+        #{userId, jdbcType=BIGINT}, #{numStr, jdbcType=VARCHAR}, #{timeSpan, jdbcType=VARCHAR},
+        #{predictType, jdbcType=INTEGER}, now())
+    </insert>
+
+    <update id="updateNumStr" parameterType="map">
+        UPDATE TB_PREDICT_USER_RECORDS
+        SET NUM_STR=#{numStr, jdbcType=VARCHAR},  IS_AWARD = #{isAward, jdbcType=INTEGER}
+        WHERE RECORD_ID = #{recordId, jdbcType=VARCHAR}
+    </update>
+
+    <select id="getAwardPredictRecords" resultMap="predictUserRecordsMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_USER_RECORDS
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+        AND IS_AWARD = 1
+    </select>
+
+    <select id="getUnAwardPredictRecords" resultMap="predictUserRecordsMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_USER_RECORDS
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+        AND IS_AWARD = 0
+    </select>
+
+</mapper>

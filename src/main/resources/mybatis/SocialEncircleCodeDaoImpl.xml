@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SocialEncircle">
+    <resultMap id="socialEncircleMap" type="socialEncircle">
+        <result column="ENCIRCLE_CODE_ID" property="encircleCodeId" jdbcType="BIGINT"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="USER_ENCIRCLE_CODE" property="userEncircleCode" jdbcType="VARCHAR"/>
+        <result column="CODE_TYPE" property="codeType" jdbcType="INTEGER"/>
+        <result column="FOLLOW_KILL_NUMS" property="followKillNums" jdbcType="INTEGER"/>
+        <result column="ENCIRCLE_NUMS" property="encircleNums" jdbcType="INTEGER"/>
+        <result column="KILL_NUMS" property="killNums" jdbcType="VARCHAR"/>
+        <result column="RIGHT_NUMS" property="rightNums" jdbcType="INTEGER"/>
+        <result column="IS_DISTRIBUTE" property="isDistribute" jdbcType="INTEGER"/>
+        <result column="IS_HOT" property="isHot" jdbcType="INTEGER"/>
+        <result column="USER_AWARD_SCORE" property="userAwardScore" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ENCIRCLE_CODE_ID, USER_ID, GAME_ID, PERIOD_ID, USER_ENCIRCLE_CODE, CODE_TYPE, FOLLOW_KILL_NUMS, ENCIRCLE_NUMS,
+        KILL_NUMS, RIGHT_NUMS, IS_DISTRIBUTE, USER_AWARD_SCORE, IS_HOT,CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <insert id="insert" parameterType="socialEncircle">
+        INSERT INTO TB_USER_SOCIAL_ENCIRCLE_CODE
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{encircleCodeId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{gameId,jdbcType=BIGINT},
+        #{periodId,jdbcType=VARCHAR}, #{userEncircleCode,jdbcType=VARCHAR}, #{codeType,jdbcType=INTEGER},
+        #{followKillNums,jdbcType=INTEGER}, #{encircleNums,jdbcType=INTEGER}, #{killNums,jdbcType=VARCHAR},
+        #{rightNums,jdbcType=VARCHAR}, #{isDistribute,jdbcType=VARCHAR}, #{userAwardScore,jdbcType=VARCHAR},
+        #{isHot,jdbcType=VARCHAR}, now(), #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="getSocialEncircleByCondition" resultMap="socialEncircleMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SOCIAL_ENCIRCLE_CODE
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+        <if test="encircleCodeId!=null">
+            AND ENCIRCLE_CODE_ID = #{encircleCodeId,jdbcType=BIGINT}
+        </if>
+        <if test="userId!=null">
+            AND USER_ID = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="codeType!=null">
+            AND CODE_TYPE = #{codeType,jdbcType=INTEGER}
+        </if>
+        <if test="isHot!=null">
+            AND IS_HOT = #{isHot,jdbcType=INTEGER}
+        </if>
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+    <select id="getUnDistributeSocialEncircle" resultMap="socialEncircleMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SOCIAL_ENCIRCLE_CODE
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+        AND (IS_DISTRIBUTE = 0 OR IS_DISTRIBUTE IS NULL)
+    </select>
+
+    <select id="getSocialEncircleByPage" resultMap="socialEncircleMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SOCIAL_ENCIRCLE_CODE
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+    <update id="updateToDistribute" parameterType="map">
+        UPDATE TB_USER_SOCIAL_ENCIRCLE_CODE SET IS_DISTRIBUTE = 1
+        WHERE ENCIRCLE_CODE_ID = #{encircleCodeId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateRightNums" parameterType="map">
+        UPDATE TB_USER_SOCIAL_ENCIRCLE_CODE SET RIGHT_NUMS = #{rightNums,jdbcType=INTEGER}
+        WHERE ENCIRCLE_CODE_ID = #{encircleCodeId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateUserScore" parameterType="map">
+        UPDATE TB_USER_SOCIAL_ENCIRCLE_CODE SET USER_AWARD_SCORE = #{userAwardScore,jdbcType=INTEGER}
+        WHERE ENCIRCLE_CODE_ID = #{encircleCodeId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateSocialEncircle" parameterType="socialEncircle">
+        UPDATE TB_USER_SOCIAL_ENCIRCLE_CODE SET RIGHT_NUMS = #{rightNums,jdbcType=INTEGER},
+        USER_AWARD_SCORE = #{userAwardScore,jdbcType=INTEGER},
+        USER_ENCIRCLE_CODE = #{userEncircleCode,jdbcType=VARCHAR}, UPDATE_TIME = now()
+        WHERE ENCIRCLE_CODE_ID = #{encircleCodeId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateUserRankByencircleId" parameterType="map">
+        UPDATE TB_USER_SOCIAL_ENCIRCLE_CODE SET FOLLOW_KILL_NUMS = #{followKillNums, jdbcType=INTEGER}
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+        AND ENCIRCLE_CODE_ID = #{encircleCodeId,jdbcType=BIGINT}
+    </update>
+
+    <update id="setEncircleIsHot" parameterType="map">
+        UPDATE TB_USER_SOCIAL_ENCIRCLE_CODE SET IS_HOT = #{isHot, jdbcType=INTEGER}
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+        AND ENCIRCLE_CODE_ID = #{encircleCodeId,jdbcType=BIGINT} AND IS_HOT != #{isHot, jdbcType=INTEGER}
+    </update>
+
+</mapper>

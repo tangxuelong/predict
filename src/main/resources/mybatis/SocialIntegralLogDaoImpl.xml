@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SocialIntegralLog">
+    <resultMap id="socialIntegralLogMap" type="socialIntegralLog">
+        <result column="SOCIAL_TYPE" property="socialType" jdbcType="INTEGER"/>
+        <result column="SOCIAL_CODE" property="socialCode" jdbcType="BIGINT"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="SCORE" property="score" jdbcType="BIGINT"/>
+        <result column="IS_DISTRIBUTE" property="isDistribute" jdbcType="INTEGER"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        SOCIAL_TYPE, SOCIAL_CODE, USER_ID, GAME_ID, PERIOD_ID, NAME, SCORE, IS_DISTRIBUTE, UPDATE_TIME
+    </sql>
+
+    <select id="getSocialIntegralLogByPk" resultMap="socialIntegralLogMap" parameterType="map">
+        SELECT * FROM TB_USER_SOCIAL_INTEGRAL_LOG WHERE SOCIAL_TYPE = #{socialType, jdbcType=INTEGER} AND SOCIAL_CODE
+         = #{socialCode, jdbcType=BIGINT}
+    </select>
+
+    <select id="getSomePeriodIntervalPeriodId" resultType="java.lang.String" parameterType="map">
+        SELECT PERIOD_ID FROM TB_USER_SOCIAL_INTEGRAL_LOG WHERE USER_ID=#{userId,jdbcType=BIGINT} AND GAME_ID =
+        #{gameId,jdbcType=BIGINT} AND PERIOD_ID &lt; #{lastPeriodId, jdbcType=VARCHAR} GROUP BY PERIOD_ID ORDER BY
+        PERIOD_ID DESC limit #{pageSize, jdbcType=INTEGER}
+    </select>
+
+    <select id="getUserIntegralBySectionPeriodId" resultMap="socialIntegralLogMap" parameterType="map">
+        SELECT * FROM TB_USER_SOCIAL_INTEGRAL_LOG WHERE USER_ID=#{userId,jdbcType=BIGINT} AND GAME_ID =
+        #{gameId,jdbcType=BIGINT}
+        <if test="maxPeriodId!=null">
+            AND PERIOD_ID &lt; #{maxPeriodId,jdbcType=VARCHAR}
+        </if>
+        <if test="minPeriodId!=null">
+            AND PERIOD_ID &gt;= #{minPeriodId,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <update id="updateIntegralLogDistribute" parameterType="map">
+        UPDATE TB_USER_SOCIAL_INTEGRAL_LOG SET IS_DISTRIBUTE = #{isDistribute,jdbcType=INTEGER} WHERE SOCIAL_TYPE =
+        #{socialType, jdbcType=INTEGER} AND SOCIAL_CODE = #{socialCode, jdbcType=BIGINT}
+    </update>
+
+    <insert id="insert" parameterType="socialIntegralLog">
+        INSERT INTO TB_USER_SOCIAL_INTEGRAL_LOG (<include refid="Base_Column_List"/>)
+        VALUES (#{socialType, jdbcType=INTEGER}, #{socialCode,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+        #{gameId,jdbcType=BIGINT}, #{periodId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+        #{score,jdbcType=BIGINT}, #{isDistribute, jdbcType=VARCHAR}, NULL )
+    </insert>
+
+</mapper>

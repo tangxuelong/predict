@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserSocialRecord">
+    <resultMap id="userSocialRecordMap" type="userSocialRecord">
+        <result column="RECORD_ID" property="recordId" jdbcType="BIGINT"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="RECORD_TYPE" property="recordType" jdbcType="INTEGER"/>
+        <result column="SOCIAL_TYPE" property="socialType" jdbcType="INTEGER"/>
+        <result column="TOTAL_COUNT" property="totalCount" jdbcType="INTEGER"/>
+        <result column="MAX_CONTINUE_TIMES" property="maxContinueTimes" jdbcType="INTEGER"/>
+        <result column="CURRENT_CONTINUE_TIMES" property="currentContinueTimes" jdbcType="INTEGER"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        RECORD_ID, GAME_ID, USER_ID, RECORD_TYPE, SOCIAL_TYPE, TOTAL_COUNT, MAX_CONTINUE_TIMES,
+        CURRENT_CONTINUE_TIMES, PERIOD_ID, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserSocialRecordByUserIdAndPeriodIdAndType" resultMap="userSocialRecordMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_SOCIAL_USER_RECORD WHERE USER_ID = #{userId,jdbcType=BIGINT} AND GAME_ID = #{gameId,jdbcType=BIGINT} AND
+        PERIOD_ID = #{periodId,jdbcType=VARCHAR} AND RECORD_TYPE = #{recordType, jdbcType=INTEGER}
+    </select>
+
+    <select id="getLatestUserSocialRecord" resultMap="userSocialRecordMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_SOCIAL_USER_RECORD WHERE USER_ID = #{userId,jdbcType=BIGINT} AND GAME_ID = #{gameId,jdbcType=BIGINT} AND
+        RECORD_TYPE = #{recordType, jdbcType=INTEGER}
+        ORDER BY PERIOD_ID DESC LIMIT 1
+    </select>
+
+    <select id="getLatestUserSocialRecordBySocialType" resultType="java.lang.String" parameterType="map">
+        SELECT PERIOD_ID
+        FROM TB_SOCIAL_USER_RECORD WHERE USER_ID = #{userId,jdbcType=BIGINT} AND GAME_ID = #{gameId,jdbcType=BIGINT} AND
+        SOCIAL_TYPE = #{socialType, jdbcType=INTEGER}
+        ORDER BY PERIOD_ID DESC LIMIT 1
+    </select>
+
+    <select id="getAllUserRecordByPeriodId" resultMap="userSocialRecordMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_SOCIAL_USER_RECORD WHERE USER_ID = #{userId,jdbcType=BIGINT} AND GAME_ID = #{gameId,jdbcType=BIGINT} AND
+        PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+        <if test="socialType!=null">
+            AND SOCIAL_TYPE = #{socialType, jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getUserSocialRecordByCondition" resultMap="userSocialRecordMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_SOCIAL_USER_RECORD WHERE USER_ID = #{userId,jdbcType=BIGINT} AND GAME_ID = #{gameId,jdbcType=BIGINT}
+        <if test="recordType!=null">
+            AND RECORD_TYPE = #{recordType, jdbcType=INTEGER}
+        </if>
+        <if test="periodId!=null">
+            AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO TB_SOCIAL_USER_RECORD (<include refid="Base_Column_List"/>)
+        VALUES (#{recordId,jdbcType=BIGINT}, #{gameId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+        #{recordType,jdbcType=INTEGER}, #{socialType, jdbcType=INTEGER}, #{totalCount, jdbcType=INTEGER},
+        #{maxContinueTimes, jdbcType=INTEGER},#{currentContinueTimes, jdbcType=INTEGER}, #{periodId, jdbcType=VARCHAR},
+        now(), #{updateTime, jdbcType=TIMESTAMP})
+    </insert>
+
+
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PredictSchedule">
+    <resultMap id="predictScheduleMap" type="predictSchedule">
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="IF_AWARD" property="ifAward" jdbcType="INTEGER"/>
+        <result column="AWARD_TIME" property="awardTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_PREDICT" property="ifPredict" jdbcType="INTEGER"/>
+        <result column="IF_PREDICT_TIME" property="ifPredictTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_HISTORY_WINNING" property="ifHistoryWinning" jdbcType="INTEGER"/>
+        <result column="IF_HISTORY_WINNING_TIME" property="ifHistoryWinningTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_PREDICT_RED_BALL_TWENTY" property="ifPredictRedBallTwenty" jdbcType="INTEGER"/>
+        <result column="IF_PREDICT_RED_BALL_TWENTY_TIME" property="ifPredictRedBallTwentyTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_AWARD_INFO" property="ifAwardInfo" jdbcType="INTEGER"/>
+        <result column="IF_AWARD_INFO_TIME" property="ifAwardInfoTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_HISTORY_WIN_BONUS" property="ifHistoryWinBonus" jdbcType="INTEGER"/>
+        <result column="IF_HISTORY_WIN_BONUS_TIME" property="ifHistoryWinBonusTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_PREDICT_BLUE_THREE" property="ifPredictBlueThree" jdbcType="INTEGER"/>
+        <result column="IF_PREDICT_BLUE_THREE_TIME" property="ifPredictBlueThreeTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_PREDICT_LAST_KILL_CODE" property="ifPredictLastKillCode" jdbcType="INTEGER"/>
+        <result column="IF_PREDICT_LAST_KILL_CODE_TIME" property="ifPredictLastKillCodeTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="predictSchedule">
+        INSERT INTO TB_PREDICT_SCHEDULE(GAME_ID, PERIOD_ID, IF_AWARD, IF_PREDICT,
+        IF_HISTORY_WINNING, IF_PREDICT_RED_BALL_TWENTY,IF_AWARD_INFO,IF_HISTORY_WIN_BONUS,IF_PREDICT_BLUE_THREE
+        ,IF_PREDICT_LAST_KILL_CODE,CREATE_TIME)
+        VALUES (#{gameId,jdbcType=BIGINT}, #{periodId,jdbcType=VARCHAR}, #{ifAward,jdbcType=INTEGER},
+        #{ifPredict,jdbcType=INTEGER}, #{ifHistoryWinning,jdbcType=INTEGER},
+        #{ifPredictRedBallTwenty,jdbcType=INTEGER}, #{ifAwardInfo,jdbcType=INTEGER},
+        #{ifHistoryWinBonus,jdbcType=INTEGER}, #{ifPredictBlueThree,jdbcType=INTEGER},
+        #{ifPredictLastKillCode,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="getUnFinishedSchedules" resultMap="predictScheduleMap" parameterType="map">
+        select * from TB_PREDICT_SCHEDULE
+        where game_id = #{gameId,jdbcType=BIGINT} and <![CDATA[period_id <= #{periodId, jdbcType=VARCHAR}
+        ]]>
+        and (IF_AWARD = 0 OR IF_PREDICT = 0 OR IF_HISTORY_WINNING = 0 OR IF_PREDICT_RED_BALL_TWENTY = 0 OR
+        IF_AWARD_INFO = 0 OR IF_HISTORY_WIN_BONUS = 0 OR IF_PREDICT_BLUE_THREE = 0 OR IF_PREDICT_LAST_KILL_CODE = 0)
+    </select>
+
+    <update id="updatePredictSchedule" parameterType="map">
+        UPDATE TB_PREDICT_SCHEDULE
+        set ${flagColumn} = 1 , ${timeColumn} = now()
+        where game_id = #{gameId,jdbcType=BIGINT} AND period_id = #{periodId,jdbcType=VARCHAR} and ${flagColumn} = 0
+    </update>
+
+    <select id="getPredictSchedule" resultMap="predictScheduleMap" parameterType="map">
+        select * from TB_PREDICT_SCHEDULE where game_id = #{gameId,jdbcType=BIGINT}
+        AND period_id = #{periodId,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

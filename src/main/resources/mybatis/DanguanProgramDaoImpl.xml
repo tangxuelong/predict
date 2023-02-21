@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DanguanProgram">
+    <resultMap id="danguanProgramMap" type="danguanProgram">
+        <result column="MATCH_ID" property="matchId" jdbcType="VARCHAR"/>
+        <result column="PROGRAM_INFO" property="programInfo" jdbcType="VARCHAR"/>
+        <result column="PRICE" property="price" jdbcType="BIGINT"/>
+        <result column="VIP_PRICE" property="vipPrice" jdbcType="BIGINT"/>
+        <result column="RIGHT_ITEM" property="rightItem" jdbcType="VARCHAR"/>
+        <result column="IS_AWARDED" property="isAwarded" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        MATCH_ID, PROGRAM_INFO, PRICE, VIP_PRICE, RIGHT_ITEM, IS_AWARDED, REMARK, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getNotAwardDuanguanProgram" resultMap="danguanProgramMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_DANGUAN_PROGRAM
+        WHERE IS_AWARDED != '1'
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+    <select id="getAwardDuanguanProgram" resultMap="danguanProgramMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_DANGUAN_PROGRAM
+        WHERE IS_AWARDED = '1'
+        ORDER BY UPDATE_TIME DESC
+    </select>
+
+    <select id="getDuanguanProgram" resultMap="danguanProgramMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_DANGUAN_PROGRAM
+        WHERE MATCH_ID = #{matchId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getDanguanProgramListByLimitDate" resultMap="danguanProgramMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_DANGUAN_PROGRAM
+        WHERE CREATE_TIME &gt;= #{beginDate,jdbcType=TIMESTAMP} AND IS_AWARDED = '1'
+    </select>
+
+    <insert id="insert" parameterType="danguanProgram">
+        INSERT INTO TB_DANGUAN_PROGRAM(<include refid="Base_Column_List"/>)
+        VALUES (
+        #{matchId,jdbcType=VARCHAR}, #{programInfo,jdbcType=VARCHAR}, #{price,jdbcType=BIGINT},
+        #{vipPrice,jdbcType=BIGINT}, #{rightItem,jdbcType=VARCHAR}, #{isAwarded,jdbcType=INTEGER},
+        #{remark,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="danguanProgram">
+        UPDATE TB_DANGUAN_PROGRAM
+        SET PROGRAM_INFO = #{programInfo,jdbcType=VARCHAR},  REMARK = #{remark,jdbcType=VARCHAR},
+        UPDATE_TIME = now(), PRICE = #{price,jdbcType=BIGINT}, VIP_PRICE = #{vipPrice,jdbcType=BIGINT},
+        RIGHT_ITEM = #{rightItem,jdbcType=VARCHAR}, IS_AWARDED = #{isAwarded,jdbcType=INTEGER}
+        WHERE MATCH_ID = #{matchId,jdbcType=VARCHAR}
+    </update>
+</mapper>

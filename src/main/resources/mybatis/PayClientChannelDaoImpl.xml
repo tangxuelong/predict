@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PayClientChannel">
+    <resultMap id="payClientChannelMap" type="payClientChannel">
+        <result column="CLIENT_ID" property="clientId" jdbcType="INTEGER"/>
+        <result column="CHANNEL_ID" property="channelId" jdbcType="INTEGER"/>
+        <result column="PAY_KEY_STR" property="payKeyStr" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getAllClientChannel" resultMap="payClientChannelMap">
+		select * from TB_PAY_CLIENT_CHANNEL
+	</select>
+
+    <select id="getClientChannel" resultMap="payClientChannelMap" parameterType="map">
+        select * from TB_PAY_CLIENT_CHANNEL
+        WHERE CLIENT_ID = #{clientId,jdbcType=INTEGER} AND
+        CHANNEL_ID = #{channelId,jdbcType=INTEGER}
+    </select>
+
+    <update id="update" parameterType="payClientChannel">
+        UPDATE TB_PAY_CLIENT_CHANNEL
+        SET PAY_KEY_STR = #{payKeyStr,jdbcType=VARCHAR},
+        UPDATE_TIME = now()
+        WHERE CHANNEL_ID = #{channelId,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="payClientChannel">
+        INSERT INTO TB_PAY_CLIENT_CHANNEL (CLIENT_ID, CHANNEL_ID, PAY_KEY_STR, CREATE_TIME, UPDATE_TIME)
+        VALUES (#{clientId,jdbcType=INTEGER}, #{channelId,jdbcType=INTEGER}, #{payKeyStr,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="monitorDB" resultType="java.lang.Integer">
+        SELECT 1
+    </select>
+</mapper>

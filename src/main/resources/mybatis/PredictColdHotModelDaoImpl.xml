@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PredictColdHotModel">
+    <resultMap id="predictColdHotModelMap" type="predictColdHotModel">
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="PERIOD_COUNT" property="periodCount" jdbcType="INTEGER"/>
+        <result column="NUM_TYPE" property="numType" jdbcType="INTEGER"/>
+        <result column="NUMS" property="nums" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        GAME_ID, PERIOD_ID, PERIOD_COUNT, NUM_TYPE, NUMS, CREATE_TIME
+    </sql>
+
+    <select id="getColdHotModelByPk" resultMap="predictColdHotModelMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_COLD_HOT_MODEL WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID =
+        #{periodId, jdbcType=VARCHAR} AND NUM_TYPE = #{numType, jdbcType=INTEGER} AND PERIOD_COUNT=
+        #{periodCount, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="predictColdHotModel">
+        INSERT INTO TB_PREDICT_COLD_HOT_MODEL (<include refid="Base_Column_List"/>)
+        VALUES (#{gameId, jdbcType=BIGINT}, #{periodId, jdbcType=VARCHAR}, #{periodCount, jdbcType=INTEGER},
+        #{numType, jdbcType=INTEGER}, #{nums,jdbcType=VARCHAR}, now())
+    </insert>
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SocialStatistic">
+    <resultMap id="socialStatisticMap" type="socialStatistic">
+        <result column="STATISTIC_ID" property="statisticId" jdbcType="BIGINT"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="SOCIAL_DATA" property="socialData" jdbcType="VARCHAR"/>
+        <result column="DATA_TYPE" property="dataType" jdbcType="INTEGER"/>
+        <result column="STATISTIC_TIME" property="statisticTime" jdbcType="TIMESTAMP"/>
+        <result column="NEXT_TIME" property="nextTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_column_list">
+        STATISTIC_ID, GAME_ID, PERIOD_ID, SOCIAL_DATA, DATA_TYPE, STATISTIC_TIME, NEXT_TIME, CREATE_TIME
+    </sql>
+
+    <select id="getOnePeriodSocialStatistic" resultMap="socialStatisticMap" parameterType="map">
+		SELECT * FROM TB_SOCIAL_STATISTIC WHERE GAME_ID =#{gameId,jdbcType=BIGINT} AND
+		PERIOD_ID=#{periodId, jdbcType=VARCHAR}
+        <choose>
+            <when test="ifContainEnd==true">
+                AND STATISTIC_TIME &lt;= #{statisticTime,jdbcType=TIMESTAMP}
+            </when>
+            <otherwise>
+                AND STATISTIC_TIME &lt; #{statisticTime,jdbcType=TIMESTAMP}
+            </otherwise>
+        </choose>
+		 ORDER BY STATISTIC_TIME DESC
+	</select>
+
+    <select id="getSocialStatisticByIdForUpdate" resultMap="socialStatisticMap" parameterType="map">
+        SELECT * FROM TB_SOCIAL_STATISTIC WHERE STATISTIC_ID = #{statisticId,jdbcType=BIGINT}
+        <if test="isLock==true">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <select id="getSocialStatisticByUnitKey" resultMap="socialStatisticMap" parameterType="map">
+        SELECT * FROM TB_SOCIAL_STATISTIC WHERE GAME_ID =#{gameId,jdbcType=BIGINT} AND
+		PERIOD_ID = #{periodId, jdbcType=VARCHAR} AND STATISTIC_TIME = #{statisticTime, jdbcType=TIMESTAMP} AND
+		DATA_TYPE = #{dataType, jdbcType=INTEGER}
+    </select>
+
+    <update id="updateSocialBigData" parameterType="map">
+        UPDATE TB_SOCIAL_STATISTIC SET SOCIAL_DATA=#{socialData,jdbcType=VARCHAR} WHERE STATISTIC_ID =
+        #{statisticId,jdbcType=BIGINT}
+    </update>
+
+    <insert id="insert" parameterType="map">
+        INSERT INTO TB_SOCIAL_STATISTIC (<include refid="Base_column_list"/>) VALUES (#{statisticId,jdbcType=BIGINT},
+        #{gameId, jdbcType=BIGINT}, #{periodId, jdbcType=VARCHAR}, #{socialData,jdbcType=VARCHAR},
+        #{dataType, jdbcType=INTEGER}, #{statisticTime, jdbcType=TIMESTAMP}, #{nextTime, jdbcType=TIMESTAMP},
+        #{createTime, jdbcType=TIMESTAMP})
+    </insert>
+
+
+</mapper>

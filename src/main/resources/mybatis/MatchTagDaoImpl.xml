@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MatchTag">
+    <resultMap id="matchTagMap" type="matchTag">
+        <result column="TAG_ID" property="tagId" jdbcType="INTEGER"/>
+        <result column="TAG_NAME" property="tagName" jdbcType="VARCHAR"/>
+        <result column="TAG_TYPE" property="tagType" jdbcType="INTEGER"/>
+        <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="getAllMatchTag" resultMap="matchTagMap">
+		select * from tb_match_tag where STATUS = 1 order by WEIGHT desc
+	</select>
+
+    <select id="getAllMatchTagIncludeEnable" resultMap="matchTagMap" parameterType="map">
+        select * from tb_match_tag where 1=1
+        <if test="status!=null">
+            and STATUS = #{status, jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getMatchTag" resultMap="matchTagMap" parameterType="java.lang.Integer">
+        select * from tb_match_tag WHERE TAG_ID = #{tagId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getMatchTagByTagName" resultMap="matchTagMap" parameterType="java.lang.String">
+        select * from tb_match_tag WHERE TAG_NAME = #{matchName,jdbcType=INTEGER} limit 1
+    </select>
+
+    <update id="update" parameterType="matchTag">
+        UPDATE tb_match_tag
+        SET TAG_NAME = #{tagName,jdbcType=VARCHAR}, TAG_TYPE = #{tagType,jdbcType=INTEGER}, STATUS =
+        #{status,jdbcType=INTEGER}
+        WHERE TAG_ID = #{tagId,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="matchTag">
+        INSERT INTO tb_match_tag (TAG_NAME, TAG_TYPE, WEIGHT, STATUS)
+        VALUES (#{tagName,jdbcType=VARCHAR}, #{tagType,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER},
+        #{status,jdbcType=INTEGER})
+    </insert>
+</mapper>

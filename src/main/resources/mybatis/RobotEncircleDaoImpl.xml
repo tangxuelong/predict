@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="RobotEncircle">
+    <resultMap id="BaseResultMap" type="robotEncircle">
+        <id column="ROBOT_ID" property="robotId" jdbcType="INTEGER"/>
+        <id column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <id column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="ENCIRCLE_TIMES" property="encircleTimes" jdbcType="INTEGER"/>
+        <result column="KILL_NUM_TIMES" property="killNumTimes" jdbcType="INTEGER"/>
+        <result column="ENCIRCLE_CODE" property="encircleCode" jdbcType="VARCHAR"/>
+        <result column="KILL_CODE" property="killCode" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    ROBOT_ID, GAME_ID, PERIOD_ID, ENCIRCLE_TIMES, KILL_NUM_TIMES, ENCIRCLE_CODE, KILL_CODE
+    </sql>
+
+    <select id="getRobotEncircleById" parameterType="map" resultMap="BaseResultMap">
+      select * from tb_robot_encircle WHERE ROBOT_ID = #{robotId, jdbcType=INTEGER} AND PERIOD_ID =
+      #{periodId,jdbcType=VARCHAR} AND GAME_ID = #{gameId, jdbcType=BIGINT}
+    </select>
+
+
+    <update id="robotKillNumSuccessUpdateInfo" parameterType="map">
+        UPDATE tb_robot_encircle SET KILL_NUM_TIMES = KILL_NUM_TIMES+1 WHERE ROBOT_ID = #{robotId, jdbcType=INTEGER}
+        AND PERIOD_ID = #{periodId,jdbcType=VARCHAR} AND GAME_ID = #{gameId, jdbcType=BIGINT}
+    </update>
+
+    <update id="robotEncircleNumSuccessUpdateInfo" parameterType="map">
+        UPDATE tb_robot_encircle SET ENCIRCLE_TIMES = ENCIRCLE_TIMES+1 WHERE ROBOT_ID = #{robotId, jdbcType=INTEGER}
+        AND PERIOD_ID = #{periodId,jdbcType=VARCHAR} AND GAME_ID = #{gameId, jdbcType=BIGINT}
+    </update>
+
+    <insert id="insert" parameterType="robotEncircle">
+        insert into tb_robot_encircle (ROBOT_ID, GAME_ID, PERIOD_ID, ENCIRCLE_TIMES, KILL_NUM_TIMES, ENCIRCLE_CODE,
+        KILL_CODE) values (#{robotId,jdbcType=INTEGER}, #{gameId, jdbcType=BIGINT}, #{periodId,jdbcType=VARCHAR},
+        #{encircleTimes,jdbcType=INTEGER}, #{killNumTimes,jdbcType=INTEGER}, #{encircleCode,jdbcType=VARCHAR},
+        #{killCode,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- auto generate-->
+    <update id="updateByPrimaryKeySelective" parameterType="com.mojieai.predict.entity.po.RobotEncircle">
+        update tb_robot_encircle
+        <set>
+            <if test="encircleTimes != null">
+                ENCIRCLE_TIMES = #{encircleTimes,jdbcType=INTEGER},
+            </if>
+            <if test="killNumTimes != null">
+                KILL_NUM_TIMES = #{killNumTimes,jdbcType=INTEGER},
+            </if>
+            <if test="encircleCode != null">
+                ENCIRCLE_CODE = #{encircleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="killCode != null">
+                KILL_CODE = #{killCode,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ROBOT_ID = #{robotId,jdbcType=INTEGER}
+        and PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.mojieai.predict.entity.po.RobotEncircle">
+    update tb_robot_encircle
+    set ENCIRCLE_TIMES = #{encircleTimes,jdbcType=INTEGER},
+      KILL_NUM_TIMES = #{killNumTimes,jdbcType=INTEGER},
+      ENCIRCLE_CODE = #{encircleCode,jdbcType=VARCHAR},
+      KILL_CODE = #{killCode,jdbcType=VARCHAR}
+    where ROBOT_ID = #{robotId,jdbcType=INTEGER}
+      and PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+  </update>
+</mapper>

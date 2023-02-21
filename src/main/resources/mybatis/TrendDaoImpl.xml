@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Trend">
+    <insert id="insertTrend" parameterType="map">
+        INSERT INTO ${tableName}
+        <foreach collection="trendMap.keys" item="mapKey" open="(" separator="," close=")">
+            ${mapKey}
+        </foreach>
+        VALUES
+        <foreach collection="trendMap" item="value" open="(" separator="," close=")">
+            ${value}
+        </foreach>
+    </insert>
+
+    <select id="getTrendById" resultType="java.util.HashMap" parameterType="map">
+        select * from ${tableName}
+        where period_id = #{periodId,jdbcType=VARCHAR}
+        <if test="gameId != null">
+            AND GAME_ID = #{gameId,jdbcType=BIGINT}
+        </if>
+    </select>
+
+
+    <select id="existTrend" resultType="java.util.HashMap" parameterType="map">
+        select 1 from ${tableName}
+        where period_id = #{periodId,jdbcType=VARCHAR}
+        <if test="gameId != null">
+            AND GAME_ID = #{gameId,jdbcType=BIGINT}
+        </if>
+        limit 1
+    </select>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PayClientVersionControl">
+    <resultMap id="payClientVersionControlMap" type="payClientVersionControl">
+        <result column="CLIENT_ID" property="clientId" jdbcType="INTEGER"/>
+        <result column="CHANNEL_ID" property="channelId" jdbcType="INTEGER"/>
+        <result column="VERSION_CODE" property="versionCode" jdbcType="INTEGER"/>
+        <result column="IS_DELETE" property="isDelete" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getAllPayClientVersionControl" resultMap="payClientVersionControlMap">
+		select * from TB_PAY_CLIENT_VERSION_CONTROL
+	</select>
+
+    <select id="getPayClientVersionControl" resultMap="payClientVersionControlMap" parameterType="map">
+        select * from TB_PAY_CLIENT_VERSION_CONTROL
+        WHERE CHANNEL_ID = #{channelId,jdbcType=INTEGER} AND CLIENT_ID = #{clientId,jdbcType=INTEGER}
+        AND VERSION_CODE = #{versionCode,jdbcType=INTEGER}
+    </select>
+
+    <update id="update" parameterType="payClientVersionControl">
+        UPDATE TB_PAY_CLIENT_VERSION_CONTROL
+        SET IS_DELETE = #{isDelete,jdbcType=INTEGER},
+        UPDATE_TIME = now()
+        WHERE CHANNEL_ID = #{channelId,jdbcType=INTEGER}, CLIENT_ID = #{clientId,jdbcType=INTEGER},
+        VERSION_CODE = #{versionCode,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="payClientVersionControl">
+        INSERT INTO TB_PAY_CHANNEL_INFO (CLIENT_ID, CHANNEL_ID, VERSION_CODE, IS_DELETE, CREATE_TIME, UPDATE_TIME)
+        VALUES (#{clientId,jdbcType=INTEGER}, #{channelId,jdbcType=INTEGER}, #{versionCode,jdbcType=INTEGER},
+        #{isDelete,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="monitorDB" resultType="java.lang.Integer">
+        SELECT 1
+    </select>
+</mapper>

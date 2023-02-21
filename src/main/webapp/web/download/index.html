@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>正在下载app</title>
+</head>
+<body>
+
+</body>
+<script>
+    window.onload = function () {
+        var url = {
+            down: "https://ohduoklem.qnssl.com/zhcp.apk",
+            IOS: "https://itunes.apple.com/cn/app/%E6%99%BA%E6%85%A7%E5%BD%A9%E7%A5%A8%E9%A2%84%E6%B5%8B%E4%B8%93%E4%B8%9A%E7%89%88-%E5%8F%8C%E8%89%B2%E7%90%83%E9%80%89%E5%8F%B7/id1291221326?mt=8"
+        };
+
+        var ua = navigator.userAgent.toLowerCase();
+
+        if (/iphone|ipod|ipad/.test(ua)) {
+            window.location.href = url.IOS;
+        } else {
+            window.location.href = url.down;
+        }
+    }
+
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+</script>
+
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserSign">
+    <resultMap id="userSignMap" type="userSign">
+        <result column="SIGN_CODE" property="signCode" jdbcType="BIGINT"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="SIGN_TYPE" property="signType" jdbcType="INTEGER"/>
+        <result column="SIGN_DATE" property="signDate" jdbcType="VARCHAR"/>
+        <result column="IF_REWARD" property="ifReward" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        SIGN_CODE, USER_ID, SIGN_TYPE, SIGN_DATE, IF_REWARD, CREATE_TIME
+    </sql>
+
+    <select id="getUserSignByUserIdAndDate" resultMap="userSignMap" parameterType="map">
+        SELECT * FROM TB_USER_SIGN WHERE USER_ID = #{userId, jdbcType=BIGINT} AND SIGN_DATE =
+        #{signDate, jdbcType=VARCHAR} and SIGN_TYPE = #{signType, jdbcType=INTEGER}
+    </select>
+
+    <select id="getAllNeedRewardSign" resultMap="userSignMap" parameterType="map">
+        SELECT * FROM TB_USER_SIGN WHERE IF_REWARD = #{ifReward, jdbcType=INTEGER}
+    </select>
+
+    <select id="getUserSignCountByIntervalDate" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) FROM TB_USER_SIGN WHERE IF_REWARD = 1 AND USER_ID = #{userId, jdbcType=BIGINT}
+        AND SIGN_DATE &lt;= #{endDate, jdbcType=VARCHAR} AND SIGN_DATE &gt;= #{beginDate, jdbcType=VARCHAR}
+        and SIGN_TYPE = #{signType, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="userSign">
+        INSERT INTO TB_USER_SIGN (<include refid="Base_Column_List"/>)
+        VALUES (#{signCode, jdbcType=BIGINT}, #{userId, jdbcType=BIGINT},
+        #{signType, jdbcType=INTEGER}, #{signDate, jdbcType=VARCHAR},
+        #{ifReward, jdbcType=INTEGER}, now())
+    </insert>
+
+    <update id="updateUserSignRewardStatus" parameterType="map">
+        UPDATE TB_USER_SIGN SET IF_REWARD = #{ifReward, jdbcType=INTEGER} WHERE USER_ID = #{userId, jdbcType=BIGINT}
+        AND SIGN_DATE = #{signDate, jdbcType=VARCHAR} and SIGN_TYPE = #{signType, jdbcType=INTEGER}
+    </update>
+
+    <update id="updateSignRewardStatusBySignCode" parameterType="map">
+        UPDATE TB_USER_SIGN SET IF_REWARD = #{ifReward, jdbcType=INTEGER} WHERE SIGN_CODE = #{signCode, jdbcType=BIGINT}
+    </update>
+
+</mapper>

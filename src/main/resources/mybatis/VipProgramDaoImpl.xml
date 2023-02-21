@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="VipProgram">
+    <resultMap id="vipProgramMap" type="vipProgram">
+        <result column="PROGRAM_ID" property="programId" jdbcType="VARCHAR"/>
+        <result column="AWARD_NUM" property="awardNum" jdbcType="INTEGER"/>
+        <result column="RECOMMEND_NUM" property="recommendNum" jdbcType="INTEGER"/>
+        <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="PRICE" property="price" jdbcType="BIGINT"/>
+        <result column="ICON_IMG" property="iconImg" jdbcType="VARCHAR"/>
+        <result column="PROGRAM_INFO" property="programInfo" jdbcType="VARCHAR"/>
+        <result column="IS_RIGHT" property="isRight" jdbcType="INTEGER"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CAL_MATCH_COUNT" property="calMatchCount" jdbcType="INTEGER"/>
+        <result column="MATCH_IDS" property="matchIds" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        PROGRAM_ID, AWARD_NUM, RECOMMEND_NUM, END_TIME, PRICE, ICON_IMG, PROGRAM_INFO, IS_RIGHT, STATUS,
+        CAL_MATCH_COUNT, MATCH_IDS, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getVipProgramByProgramId" resultMap="vipProgramMap" parameterType="map">
+        select * from TB_VIP_PROGRAM where PROGRAM_ID = #{programId,jdbcType=VARCHAR}
+        <if test="isLock==true">
+            for update
+        </if>
+    </select>
+
+    <select id="getVipProgramNotStart" resultMap="vipProgramMap">
+		select * from TB_VIP_PROGRAM where END_TIME &gt;= now() order by END_TIME
+	</select>
+
+    <select id="getVipProgramEnded" resultMap="vipProgramMap">
+		select * from TB_VIP_PROGRAM where END_TIME &lt;= now()
+	</select>
+
+    <select id="getNotCalculateMatchVipProgram" resultMap="vipProgramMap">
+		select * from TB_VIP_PROGRAM where (STATUS = 0 or STATUS =1) AND (IS_RIGHT = 0 OR IS_RIGHT = 1)
+		AND PROGRAM_INFO LIKE CONCAT('%', CONCAT(#{matchId, jdbcType=VARCHAR}, '%'))
+	</select>
+
+    <select id="getVipProgramByStatus" resultMap="vipProgramMap" parameterType="map">
+        select * from TB_VIP_PROGRAM where STATUS = #{status,jdbcType=INTEGER}
+        <if test="beginTime!=null">
+            and CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endTime!=null">
+            AND CREATE_TIME &lt;= #{endTime,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
+    <select id="getVipProgramByIsRight" resultType="java.lang.Integer" parameterType="map">
+        select count(1) from TB_VIP_PROGRAM where IS_RIGHT = #{isRight,jdbcType=INTEGER} and
+        CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP} AND CREATE_TIME &lt;= #{endTime,jdbcType=TIMESTAMP}
+    </select>
+
+    <update id="update" parameterType="vipProgram">
+        UPDATE TB_VIP_PROGRAM
+        SET AWARD_NUM = #{awardNum,jdbcType=INTEGER}, RECOMMEND_NUM = #{recommendNum,jdbcType=INTEGER},
+        END_TIME = #{endTime,jdbcType=TIMESTAMP}, PRICE = #{price,jdbcType=BIGINT}, ICON_IMG = #{iconImg,jdbcType=VARCHAR}
+        , PROGRAM_INFO = #{programInfo,jdbcType=VARCHAR}, IS_RIGHT = #{isRight,jdbcType=INTEGER}, STATUS = #{status,jdbcType=INTEGER}
+        , UPDATE_TIME = now()
+        WHERE PROGRAM_ID = #{programId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateVipProgramStatus" parameterType="map">
+        UPDATE TB_VIP_PROGRAM set PROGRAM_INFO = #{programInfo,jdbcType=VARCHAR}, IS_RIGHT =
+        #{isRight,jdbcType=INTEGER}, STATUS = #{status,jdbcType=INTEGER}, CAL_MATCH_COUNT =
+        #{newMatchCount,jdbcType=INTEGER}
+        WHERE PROGRAM_ID = #{programId,jdbcType=VARCHAR}
+        <if test="oldIsRight!=null">
+            and IS_RIGHT = #{oldIsRight,jdbcType=INTEGER}
+        </if>
+        <if test="oldStatus!=null">
+            and STATUS = #{oldStatus,jdbcType=INTEGER}
+        </if>
+        <if test="oldMatchCount!=null">
+            and CAL_MATCH_COUNT = #{oldMatchCount,jdbcType=INTEGER}
+        </if>
+    </update>
+
+    <insert id="insert" parameterType="vipProgram">
+        INSERT INTO TB_VIP_PROGRAM (<include refid="Base_Column_List"/>)
+        VALUES (#{programId,jdbcType=VARCHAR}, #{awardNum,jdbcType=INTEGER}, #{recommendNum,jdbcType=INTEGER}
+        , #{endTime,jdbcType=TIMESTAMP}, #{price,jdbcType=BIGINT}, #{iconImg,jdbcType=VARCHAR},
+        #{programInfo,jdbcType=VARCHAR}, #{isRight,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+        #{calMatchCount,jdbcType=INTEGER}, #{matchIds,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+</mapper>

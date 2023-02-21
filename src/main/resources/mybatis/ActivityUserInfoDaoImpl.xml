@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ActivityUserInfo">
+    <resultMap id="activityUserInfoMap" type="activityUserInfo">
+        <result column="ACTIVITY_ID" property="activityId" jdbcType="INTEGER"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="TOTAL_TIMES" property="totalTimes" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ACTIVITY_ID, USER_ID, TOTAL_TIMES, REMARK, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserTotalTimes" resultMap="activityUserInfoMap" parameterType="activityUserInfo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_ACTIVITY_USER_INFO
+        WHERE ACTIVITY_ID = #{activityId,jdbcType=INTEGER} AND USER_ID = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getUsers" resultMap="activityUserInfoMap" parameterType="activityUserInfo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_ACTIVITY_USER_INFO
+        WHERE ACTIVITY_ID = #{activityId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="activityUserInfo">
+        INSERT INTO TB_ACTIVITY_USER_INFO(ACTIVITY_ID, USER_ID, TOTAL_TIMES, REMARK, CREATE_TIME, UPDATE_TIME)
+        VALUES (
+        #{activityId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT},
+        #{totalTimes,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="activityUserInfo">
+        UPDATE TB_ACTIVITY_USER_INFO
+        SET TOTAL_TIMES = #{totalTimes,jdbcType=INTEGER}, REMARK = #{remark,jdbcType=VARCHAR},
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, UPDATE_TIME = now()
+        WHERE ACTIVITY_ID = #{activityId,jdbcType=INTEGER} AND USER_ID = #{userId,jdbcType=BIGINT}
+    </update>
+</mapper>

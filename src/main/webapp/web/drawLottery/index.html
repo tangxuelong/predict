@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>天天抽大奖</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <link rel="stylesheet" href="style/pure-min.css"/>
+    <link rel="stylesheet" href="style/layout.css"/>
+    <meta name="format-detection" content="telephone=no">
+    <script src="script/jswxsdk.js"></script>
+    <script src="script/config.js"></script>
+    <link rel="stylesheet" href="script/swiper-3.4.2.min.css">
+    <script src="script/swiper-3.4.2.min.js"></script>
+    <style>
+        body {
+            background-image: -webkit-linear-gradient(to bottom, #ff7f4d, #ff5455);
+            background-image: linear-gradient(to bottom, #ff7f4d, #ff5455);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        .award-title {
+            text-align: center;
+            padding: 0 0 0.2rem 0;
+            margin-top: -0.3rem;
+        }
+
+        .award-title-p {
+            background: #ff9571;
+            width: 80%;
+            text-align: center;
+            display: inline-block;
+            padding: 0 0.2rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            overflow: hidden;
+        }
+
+        .award-title-p p {
+            color: #fff;
+            font-size: 0.28rem;
+            line-height: 0.6rem;
+        }
+
+        .swiper-container {
+            height: 1.2rem;
+        }
+
+        .award-top {
+            background: url('img/award-top.png') no-repeat;
+            background-size: 100% auto;
+            width: 82%;
+            margin: 0 auto;
+            font-size: 0.24rem;
+            color: #fff;
+            padding-bottom: 0.3rem;
+        }
+
+        .award-top p {
+            margin: 0.1rem 0.2rem;
+        }
+
+        .color-yellow {
+            color: #ffe631;
+            font-size: 0.4rem;
+        }
+
+        .fl {
+            float: left;
+        }
+
+        .fr {
+            float: right;
+        }
+
+        .cl {
+            clear: both;
+        }
+
+        .award-bg {
+            position: relative;
+            width: 100%;
+            margin-top: -0.25rem;
+        }
+
+        .award {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+        .award-bg-color {
+            position: absolute;
+            top: 0.5rem;
+            left: 10%;
+            bottom: 40px;
+            right: 10%;
+            background: #f89f1e;
+        }
+
+        .award div {
+            margin: 0;
+            padding: 0;
+        }
+
+        .award-item {
+            position: absolute;
+            top: 0.53rem;
+            left: 0.68rem;
+            bottom: 0.5rem;
+            right: 0.68rem;
+        }
+
+        .award-item div {
+            position: relative;
+        }
+
+        .award-item div img.gift {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+        }
+
+        .show-share-txt p {
+            text-align: center;
+            font-size: 0.26rem;
+            color: #fff;
+            width: 88%;
+            margin: -0.6rem auto 0 auto;
+        }
+
+        .show-share-txt p span {
+            font-size: 0.26rem;
+            display: inline-block;
+            padding: 0 0.05rem;
+        }
+
+        .show-share-txt p span.color-yellow {
+            font-size: 0.4rem;
+        }
+
+        .award-intro {
+            text-align: center;
+            padding-top: 0.2rem;
+        }
+
+        .award-intro a {
+            display: inline-block;
+            width: 44%;
+        }
+
+        .award-intro-2 {
+            text-align: center;
+        }
+
+        .award-intro-2 a {
+            display: inline-block;
+        }
+
+        .award-intro-4 {
+            color: #fff;
+            font-size: 0.24rem;
+            margin-left: 6%;
+            line-height: 0.45rem;
+        }
+
+        .my-award-list {
+            width: 88%;
+            min-height: 200px;
+            margin: 0 auto;
+        }
+
+        .footer-txt {
+            font-size: 0.24rem;
+            color: #b42518;
+            text-align: center;
+            padding: 0.25rem;
+        }
+
+        .award-popup {
+            background: #000;
+            opacity: 0.7;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .award-popup-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .award-right {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            height: 6rem;
+            margin-top: -3rem;
+            width: 100%;
+            margin-left: -50%;
+        }
+
+        .award-relative {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .close {
+            position: absolute;
+            top: 0.4rem;
+            right: 0.4rem;
+            width: 0.4rem;
+        }
+
+        .popup-gift-img {
+            position: absolute;
+            top: 2.6rem;
+            left: 50%;
+            width: 1rem;
+            margin-left: -0.5rem;
+        }
+
+        .popup-gift-txt {
+            position: absolute;
+            top: 3.6rem;
+            left: 50%;
+            width: 80%;
+            margin-left: -40%;
+            text-align: center;
+            font-size: 0.32rem;
+        }
+
+        .popup-gift-intro {
+            position: absolute;
+            top: 4.1rem;
+            left: 50%;
+            width: 80%;
+            margin-left: -40%;
+            text-align: center;
+            font-size: 0.24rem;
+            color: #666;
+        }
+
+        .popup-button-p {
+            position: absolute;
+            top: 4.7rem;
+            left: 50%;
+            width: 100%;
+            margin-left: -50%;
+            text-align: center;
+            font-size: 0.26rem;
+        }
+
+        .continue-button {
+            width: 100%;
+            text-align: center;
+        }
+
+        .continue-button img {
+            width: 2rem;
+            display: inline-block;
+        }
+
+        .share-button img {
+            width: 2rem;
+            display: inline-block;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .not-right .popup-gift-img {
+            width: 1rem;
+            margin-left: -0.5rem;
+            top: 2.8rem;
+        }
+
+        .banner {
+            position: relative;
+        }
+
+        .banner-img {
+            top: 0;
+        }
+
+        .banner-img-rule {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0.8rem;
+        }
+
+        p.share-top-button {
+            width: 1.9rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .list-middle-none {
+            font-size: 0.24rem;
+            height: 1.3rem;
+            line-height: 1.3rem;
+            color: #999;
+            text-align: center;
+            background: url("img/my-award-middle.png") repeat-y;
+            background-size: 100% auto;
+        }
+
+        .award-rule {
+            font-size: 0.26rem;
+            color: #772d00;
+            background: #fff;
+            width: 90%;
+            margin-left: -45%;
+            height: 8rem;
+            border-radius: 0.1rem;
+        }
+
+        .award-rule .overflow {
+            overflow: scroll;
+        }
+
+        .award-rule p {
+            margin: 0 5%;
+        }
+
+        .award-rule p span {
+            font-weight: 900;
+            margin: 0.1rem 0 0 0;
+            display: block;
+        }
+
+        .award-rule img {
+            width: 44%;
+            margin-left: 28%;
+            margin-top: 0.3rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .award-rule img.close {
+            width: 0.5rem;
+            top: -0.2rem;
+            right: -0.2rem;
+            margin-top: 0;
+        }
+
+        .list-middle-item {
+            font-size: 0.24rem;
+            height: 1.3rem;
+            color: #999;
+            text-align: center;
+            background: url("img/my-award-middle.png") repeat-y;
+            background-size: 100% auto;
+            position: relative;
+        }
+
+        .list-middle-item .gift-img {
+            position: absolute;
+            width: 0.8rem;
+            left: 0.3rem;
+            top: 0.25rem;
+        }
+
+        .list-middle-item .gift-intro {
+            position: absolute;
+            top: 0.3rem;
+            left: 1.3rem;
+            font-size: 0.28rem;
+            color: #333;
+        }
+
+        .list-middle-item .gift-intro-date {
+            position: absolute;
+            top: 0.7rem;
+            left: 1.3rem;
+            font-size: 0.22rem;
+        }
+
+        .gift-intro-button {
+            width: 1.3rem;
+            top: 0.35rem;
+            right: 0.2rem;
+            position: absolute;
+        }
+
+        .border-bottom {
+            height: 1px;
+            border-bottom: 1px solid #efefef;
+            width: 90%;
+            margin-left: 5%;
+            position: absolute;
+            bottom: 0;
+        }
+
+        #gift-2 + p {
+            position: absolute;
+            font-size: 0.17rem;
+            bottom: 0.13rem;
+            width: 50%;
+            left: 25%;
+            color: #ff5050;
+            text-align: center;
+        }
+
+        .getGiftFunc {
+            margin-top: 0;
+            width: 66%;
+            margin-left: -33%;
+            border-radius: 0.1rem;
+            background: #fff7ef;
+            font-size: 0.32rem;
+            text-align: center;
+            height: auto;
+            padding: 0.2rem 0;
+        }
+
+        .getGiftFunc img {
+            width: 2rem;
+            margin: 0 auto;
+        }
+
+        .lqff-2 {
+            margin-top: 0.2rem;
+            font-size: 0.26rem;
+            color: #999;
+        }
+
+        .lqff-3 {
+            margin-bottom: 0.2rem;
+            font-size: 0.26rem;
+            color: #999;
+        }
+
+        [v-cloak] {
+            display: none
+        }
+
+        .footer-intro {
+            font-size: 0.26rem;
+            text-align: center;
+            color: #fff;
+            margin-top: -0.2rem;
+        }
+
+        .fotter-ad {
+            bottom: 0;
+        }
+
+        #start-button {
+            animation: myfirst 0.4s linear 0s infinite alternate;
+            -moz-animation: myfirst 0.4s linear 0s infinite alternate;
+            -webkit-animation: myfirst 0.4s linear 0s infinite alternate;
+            -o-animation: myfirst 0.4s linear 0s infinite alternate;
+        }
+
+        @keyframes myfirst {
+            from {
+                transform: scale(0.95)
+            }
+            to {
+                transform: scale(1.1)
+            }
+        }
+
+        @-moz-keyframes myfirst /* Firefox */
+        {
+            from {
+                transform: scale(0.95)
+            }
+            to {
+                transform: scale(1.1)
+            }
+        }
+
+        @-webkit-keyframes myfirst /* Safari 和 Chrome */
+        {
+            from {
+                transform: scale(0.95)
+            }
+            to {
+                transform: scale(1.1)
+            }
+        }
+
+        @-o-keyframes myfirst /* Opera */
+        {
+            from {
+                transform: scale(0.95)
+            }
+            to {
+                transform: scale(1.1)
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="banner">
+        <img class="banner-img" src="img/banner.png" alt="">
+        <img class="banner-img-rule" v-on:click="showRule" src="img/banner-rule.png" alt="">
+    </div>
+    <div class="award-title ">
+        <div class="award-title-p">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" v-for="m in marquee">
+                        <p v-text="m"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--<div class="award-top">-->
+    <!--<p class="fl">今天还有<span class="color-yellow" v-text="leftTimes">0</span>次机会</p>-->
+    <!--<p class="fr share-top-button"><img v-on:click="share" src="img/share-top-button.png" alt=""></p>-->
+    <!--<div class="cl"></div>-->
+    <!--</div>-->
+    <div class="award-bg">
+        <img src="img/1.png" alt="">
+        <!--<div class="award-bg-color">-->
+        <!--</div>-->
+        <div class="award">
+            <img id="light" src="img/light.png" alt="">
+        </div>
+
+        <div class="award-item pure-g">
+
+            <div class="pure-u-1-3">
+                <img src="img/1.png" alt="">
+                <img class="gift active" id="gift-1" src="img/gift-1.png" alt="">
+            </div>
+            <div class="pure-u-1-3"><img src="img/1.png" alt="">
+                <img class="gift" id="gift-2" src="img/gift-2.png" alt="">
+                <p>还剩3台</p>
+            </div>
+            <div class="pure-u-1-3"><img src="img/1.png" alt="">
+                <img class="gift" id="gift-3" src="img/gift-3.png" alt=""></div>
+            <div class="pure-u-1-3"><img src="img/1.png" alt="">
+                <img class="gift" id="gift-8" src="img/gift-8.png" alt="">
+            </div>
+
+            <div class="pure-u-1-3"><img src="img/1.png" alt="">
+                <img class="gift" v-on:click="draw" id="start-button" src="img/start-button-1.png" alt="">
+            </div>
+            <div class="pure-u-1-3"><img src="img/1.png" alt="">
+                <img class="gift" id="gift-4" src="img/gift-4.png" alt="">
+            </div>
+            <div class="pure-u-1-3"><img src="img/1.png" alt="">
+                <img class="gift" id="gift-7" src="img/gift-7.png" alt="">
+            </div>
+            <div class="pure-u-1-3"><img src="img/1.png" alt="">
+                <img class="gift" id="gift-6" src="img/gift-6.png" alt=""></div>
+
+            <div class="pure-u-1-3">
+                <img src="img/1.png">
+                <img class="gift" id="gift-5" src="img/gift-5.png" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="footer-intro">
+        <p>点击“开始抽奖”即可帮助好友增加一次抽奖机会</p>
+        <p>自己也有机会抽中iPhone X</p>
+    </div>
+
+    <div class="footer-txt">
+        <p>本活动最终解释权归智慧彩票预测所有</p>
+    </div>
+    <div class="award-popup" v-show="showRuleFlag||showNoRightFlag||showRightFlag||showGetFuncFlag">
+    </div>
+    <div class="award-popup-fixed" v-show="showRuleFlag||showNoRightFlag||showRightFlag||showGetFuncFlag">
+        <div class="award-right" v-show="showRightFlag">
+            <div class="award-relative">
+                <img src="img/award-right.png" alt="">
+                <img class="close" v-on:click="close" src="img/close.png" alt="">
+                <img class="popup-gift-img" v-bind:src="giftImg" alt="">
+                <p class="popup-gift-txt" v-text="giftText"></p>
+                <p class="popup-gift-intro">下载app即可领取,还可以继续抽IPhone</p>
+
+                <p class="popup-button-p">
+                    <span href="#"
+                          class="continue-button"><img v-on:click="nextTime" src="img/quxiazai1.png"
+                                                       alt=""></span>
+                    <span href="#" class="share-button"><img v-on:click="share" src="img/quxiazai2.png"
+                                                             alt=""></span>
+                </p>
+
+            </div>
+        </div>
+        <div class="award-right" v-show="showNoRightFlag">
+            <div class="award-relative not-right">
+                <img src="img/not-right.png" alt="">
+                <img class="close" v-on:click="close" src="img/close.png" alt="">
+                <img class="popup-gift-img" src="img/not-right-icon.png" alt="">
+                <p class="popup-gift-intro">差一点就抽中IphoneX了</p>
+
+                <p class="popup-button-p">
+                    <span href="#"
+                          class="continue-button"><img v-on:click="nextTime" src="img/continue-button.png"
+                                                       alt=""></span>
+                    <span href="#"
+                          class="share-button"><img v-on:click="share" src="img/share-button.png" alt=""></span>
+                </p>
+
+            </div>
+        </div>
+        <div class="award-right hidden">
+            <div class="award-relative not-right">
+                <img src="img/no-times.png" alt="">
+                <img class="close" v-on:click="close" src="img/close.png" alt="">
+                <img class="popup-gift-img" src="img/no-times-icon.png" alt="">
+                <p class="popup-gift-intro">分享给好友，中奖概率提高50%</p>
+
+                <p class="popup-button-p">
+                    <span href="#" class="share-button"><img src="img/share-button.png" alt=""></span>
+                </p>
+            </div>
+        </div>
+
+        <div class="award-right award-rule" v-show="showRuleFlag">
+            <div class="award-relative not-right">
+                <img class="close" v-on:click="closeRule" src="img/rule-close.png" alt="">
+                <div class="overflow">
+                    <img src="img/activity-rule.png" alt="">
+                    <p><span>活动时间：</span></p>
+                    <p>11月26日-12月3日</p>
+                    <p><span>抽奖次数：</span></p>
+                    <p>每人每天免费抽取一次，分享给好友可以额外增加抽奖机会，每天最多抽10次。</p>
+                    <p>每日免费的抽奖次数如果当天不用，第二天清0；</p>
+                    <p>好友助力获得的次数，整个活动期间都可以使用，不会清零；</p>
+                    <p><span>如何增加次数</span></p>
+                    <p>分享活动链接给好友，好友进入分享页面，点击页面中的抽奖按钮即可增加一次机会，每个好友只能增加一次</p>
+                    <p><span>如何领奖:</span></p>
+                    <p>抽中奖品后，除了智慧注数+1外，其他的奖品添加客服微信：zhihuicp，即可领取</p>
+                    <p> **一经发现作弊，智慧有权取消获奖资格**</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="award-right getGiftFunc" v-show="showGetFuncFlag">
+            <div class="award-relative not-right">
+                <p class="lqff">活动须知</p>
+                <p class="lqff-2">次数已用完</p>
+                <p class="lqff-3">下载app免费抽iPhone X</p>
+                <img v-on:click="closeGetFunc" src="img/no-times-button-2.png" alt="">
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="fotter-ad">
+    <a href="/web/download/yingyongbao.html"><img src="img/ad.png" alt=""></a>
+</div>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+
+    var data = [
+        '恭喜幺鸡抽中1元红包',
+        '恭喜139****8579抽中1元红包',
+        '恭喜152****5507抽中1元红包',
+        '恭喜189****7818抽中10元红包',
+        '恭喜天机神算抽中1元红包',
+        '恭喜188****0186抽中1元红包',
+        '恭喜170****4806抽中1元红包',
+        '恭喜182****5726抽中1元红包',
+        '恭喜152****3832抽中1元红包',
+        '恭喜是星抽中2元红包',
+        '恭喜153****0345抽中1元红包',
+        '恭喜魔艾迪阳抽中1元红包',
+        '恭喜185****9194抽中2元红包',
+        '恭喜专攻一等奖抽中1元红包',
+        '恭喜189****8479抽中50元京东卡',
+        '恭喜182****2578抽中2元红包',
+        '恭喜ZBQ抽中1元红包',
+        '恭喜189****9026抽中50元京东卡',
+        '恭喜郑先生抽中1元红包',
+        '恭喜189****1551抽中50元京东卡',
+        '恭喜何须执手以终老抽中2元红包',
+        '恭喜巴扎嘿抽中1元红包',
+        '恭喜我要嫁给抽中1元红包',
+        '恭喜133****9211抽中1元红包',
+        '恭喜133****9211抽中1元红包',
+        '恭喜139****2237抽中1元红包',
+        '恭喜一朵梨花抽中100元京东卡',
+        '恭喜189****2094抽中2元红包',
+        '恭喜189****6188抽中100元京东卡',
+        '恭喜姚县长抽中1元红包',
+        '恭喜183****1606抽中1元红包',
+        '恭喜是星抽中1元红包',
+        '恭喜159****2238抽中1元红包',
+        '恭喜神奇宝贝之迷抽中2元红包',
+        '恭喜189****7208抽中2元红包',
+        '恭喜182****1025抽中1元红包',
+        '恭喜189****6672抽中50元京东卡',
+        '恭喜155****2335抽中1元红包',
+        '恭喜双色坑抽中1元红包',
+        '恭喜180****7028抽中2元红包',
+        '恭喜赤发鬼抽中1元红包',
+        '恭喜饥饿的小明抽中1元红包',
+        '恭喜135****9337抽中1元红包',
+        '恭喜180****7028抽中1元红包',
+        '恭喜时代的稻草人抽中2元红包',
+        '恭喜189****7837抽中10元红包',
+        '恭喜一注定乾坤抽中1元红包',
+        '恭喜中个二等奖抽中1元红包',
+        '恭喜想你不需要理由抽中1元红包',
+        '恭喜189****6037抽中2元红包',
+        '恭喜随风抽中1元红包',
+        '恭喜天松道人抽中1元红包',
+        '恭喜189****0756抽中10元红包',
+        '恭喜清虚道人4xP抽中10元红包',
+        '恭喜只想中二等奖抽中1元红包',
+        '恭喜189****4388抽中100元京东卡',
+        '恭喜189****4688抽中10元红包',
+        '恭喜罪美的思念抽中1元红包',
+        '恭喜189****3795抽中2元红包',
+        '恭喜189****9300抽中2元红包',
+        '恭喜幸福原来那么简单抽中2元红包',
+        '恭喜L丨R抽中1元红包',
+        '恭喜love总裁抽中2元红包',
+        '恭喜156****0920抽中1元红包',
+        '恭喜恍若梦醒抽中50元京东卡',
+        '恭喜189****9775抽中50元京东卡',
+        '恭喜啊没有头脑啊抽中10元红包',
+        '恭喜是星抽中1元红包',
+        '恭喜159****3961抽中1元红包',
+        '恭喜159****1309抽中1元红包',
+        '恭喜中个二等奖抽中1元红包',
+        '恭喜189****0870抽中2元红包',
+        '恭喜中个二等奖抽中10元红包',
+        '恭喜打酱油抽中1元红包',
+        '恭喜五百上下抽中1元红包',
+        '恭喜189****8608抽中10元红包',
+        '恭喜189****5551抽中2元红包',
+        '恭喜智光大师9eg抽中10元红包',
+        '恭喜兰慧平抽中2元红包',
+        '恭喜185****0863抽中1元红包',
+        '恭喜念初°抽中50元京东卡',
+        '恭喜189****5499抽中50元京东卡',
+        '恭喜159****3464抽中1元红包',
+        '恭喜L丨R抽中2元红包'
+    ];
+    var giftImg = {
+        '8': "img/g-1.png",
+        '2': "img/g-3.png",
+        '3': "img/g-4.png",
+        '5': "img/g-6.png",
+        '6': "img/g-7.png",
+        '7': "img/g-8.png"
+    };
+    var giftText = {
+        '8': "2元现金",
+        '2': "双色球大奖号码1注",
+        '3': "1元现金",
+        '5': "100元京东E卡",
+        '6': "10元现金",
+        '7': "50元京东E卡",
+    };
+
+    var token = getCookie('token');
+
+    var ua = navigator.userAgent.toLowerCase();
+    function uuid() {
+        var s = [];
+        var hexDigits = "0123456789abcdef";
+        for (var i = 0; i < 36; i++) {
+            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        }
+        s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+        s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+        s[8] = s[13] = s[18] = s[23] = "-";
+
+        var uuid = s.join("");
+        return uuid;
+    }
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+
+    if (getUrlParam('token') == null && getUrlParam('uid') == null && getUrlParam('code') == null) {
+        var redirectUrl = window.location.protocol + "//" + window.location.host + "/web/drawLottery/index.html";
+        var link = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9fea09e960df08c0&redirect_uri=" +
+            redirectUrl + "&response_type=code&scope=snsapi_userinfo&state=" + getUrlParam("state") +
+            "#wechat_redirect";
+        window.location.href = link;
+    }
+
+    //需要数据绑定的代码
+    var app = new Vue({
+        el: '#app',
+        data: {
+            currentIndex: 1,     //抽奖状态
+            showRuleFlag: false, //活动规则
+            showNoRightFlag: false, //活动规则
+            showRightFlag: false,
+            showGetFuncFlag: false,
+            marquee: data,       //走马灯
+            leftTimes: 0,        //剩余次数
+            totalTimes: 0,        //总次数
+            levelIds: [],        //奖品列表
+            shareUsers: 0,        //分享点击人数
+            awardLevelId: 4,        //分享点击人数
+            giftImg: '',        //分享点击人数
+            giftText: '',        //分享点击人数
+            openId: ''
+        },
+        mounted: function () {
+            var index = this;
+            /*灯光效果*/
+            setInterval(function () {
+                if ($('#light').attr('src') == 'img/light.png') {
+                    $('#light').attr('src', 'img/light2.png')
+                    return;
+                }
+                if ($('#light').attr('src') == 'img/light2.png') {
+                    $('#light').attr('src', 'img/light.png')
+                    return;
+                }
+            }, 500);
+
+
+            //alert(ua);
+            if (/micromessenger/.test(ua)) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/wx/getUserInfoByCode',
+                    data: {
+                        'code': getUrlParam("code")
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        index.$data.openId = data.data.openid;
+
+                    }
+                })
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/wx/getJsApiTicket',
+                    data: {
+                        'pageUrl': window.location.href
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        try {
+                            wx.config({
+                                debug: false,
+                                // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                                appId: data.data.appId, // 必填，公众号的唯一标识
+                                timestamp: data.data.timestamp, // 必填，生成签名的时间戳
+                                nonceStr: data.data.nonceStr, // 必填，生成签名的随机串
+                                signature: data.data.signature,// 必填，签名，见附录1
+                                jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage", "onMenuShareQQ", "onMenuShareWeibo", "onMenuShareQZone"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                            });
+                        } catch (e) {
+                            alert(e);
+                        }
+
+                    }
+                })
+            } else {
+                if (getUrlParam("#access_token") == "") {
+                    QC.Login.showPopup({
+                        appId: "101441090",
+                        redirectURI: "http://predictdebug.mojieai.com/web/drawLottery/index.html"
+                    })
+                } else {
+                    QC.Login.getMe(function (openId, accessToken) {
+                        index.$data.openId = openId;
+                    })
+                }
+
+            }
+        },
+        methods: {
+            draw: function () {
+                var index = this;
+                if (!stop) {
+                    return;
+                }
+                var uuidStr = localStorage.getItem('uids');
+                if (null == uuidStr) {
+                    uuidStr = uuid();
+                    localStorage.setItem('uids', uuidStr);
+                } else {
+                    index.$data.showGetFuncFlag = true;
+                    return;
+                }
+                if (index.$data.openId == '') {
+                    index.$data.openId = uuidStr;
+                }
+                if (/micromessenger/.test(ua)) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/activity/drawLotteryShare',
+                        data: {
+                            'activityId': config.activityId,
+                            'token': getUrlParam('state'),
+                            'openId': index.$data.openId,
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+
+                        }
+                    })
+                } else {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/activity/drawLotteryShare',
+                        data: {
+                            'activityId': config.activityId,
+                            'userId': getUrlParam('uid'),
+                            'openId': index.$data.openId,
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+
+                        }
+                    })
+                    $.ajax({
+                        type: 'POST',
+                        url: '/activity/drawLotteryShare',
+                        data: {
+                            'activityId': config.activityId,
+                            'userId': getUrlParam('token'),
+                            'openId': index.$data.openId,
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+
+                        }
+                    })
+                }
+
+                var index = this;
+                if (typeof (timer) != 'undefined') {
+                    clearTimeout(timer);
+                }
+                $('#start-button').attr('src', 'img/start-button-2.png');
+                setTimeout(function () {
+                    $('#start-button').attr('src', 'img/start-button-1.png');
+                }, 200);
+                // 检查用户次数
+                var speed = 1;
+                stop = false;
+                startStopCheck = false;
+                function start() {
+                    speed++;
+                    timer = setTimeout(function () {
+                        var currentIndex = parseInt($($('.active')[0]).attr('id').split('-')[1]);
+                        var nextIndex = currentIndex + 1;
+                        var lastIndex = currentIndex - 1;
+                        if (lastIndex < 1) {
+                            lastIndex = 8;
+                        }
+                        if (nextIndex > 8) {
+                            nextIndex = 1;
+                        }
+                        // 灭上一个灯
+                        if ($('#gift-' + lastIndex).attr('src').indexOf('activte') > 0) {
+                            $('#gift-' + lastIndex).attr('src', $('#gift-' + lastIndex).attr('src').replace('/activte-', '/'));
+                        }
+                        // 点亮当前
+                        if ($('#gift-' + currentIndex).attr('src').indexOf('activte') < 0) {
+                            $('#gift-' + currentIndex).attr('src', $('#gift-' + currentIndex).attr('src').replace('/', '/activte-'));
+                        }
+                        // 把active交给下一个
+                        // 去掉当前的active
+                        $('#gift-' + currentIndex).removeClass('active');// 去掉当前的active
+                        $('#gift-' + nextIndex).addClass('active');
+                        index.$data.currentIndex = currentIndex;
+                        if (!stop) {
+                            start();
+                        }
+                    }, 1 + 5 * speed);
+                }
+
+                start();
+                index.$data.awardLevelId = 3
+                setTimeout(function () {
+                    startStopCheck = true;
+                }, 4000);
+
+            },
+            close: function () {
+                this.$data.showRuleFlag = false;
+                this.$data.showNoRightFlag = false;
+                this.$data.showRightFlag = false;
+            },
+            showRule: function () {
+                var index = this;
+                index.$data.showRuleFlag = true;
+            },
+            closeRule: function () {
+                this.$data.showRuleFlag = false;
+            },
+            share: function () {
+                this.download();
+            },
+            nextTime: function () {
+                this.download();
+            },
+            getLevelImg: function (level) {
+                award = level - 1;
+                if (award == 0) {
+                    award = 8;
+                }
+                return giftImg[award];
+            },
+            getLevelText: function (level) {
+                award = level - 1;
+                if (award == 0) {
+                    award = 8;
+                }
+                return giftText[award];
+            },
+            showGetFunc: function () {
+                this.$data.showGetFuncFlag = true;
+            },
+            closeGetFunc: function () {
+                this.$data.showGetFuncFlag = false;
+                this.download();
+            },
+            download: function () {
+                window.location.href = '/web/download/yingyongbao.html';
+            }
+        },
+        watch: {
+            'currentIndex': function (curVal, oldVal) {
+                var index = this;
+                if (startStopCheck) {
+                    var award = index.$data.awardLevelId - 1;
+
+                    if (award == 0) {
+                        award = 8;
+                    }
+                    if (curVal == award) {
+                        stop = true;
+                        setTimeout(function () {
+                            // 中奖在这里
+                            if (award == 4) {
+                                index.$data.showNoRightFlag = true;
+                            } else {
+                                console.log("8888--" + award);
+                                index.$data.giftImg = giftImg[award];
+                                index.$data.giftText = giftText[award];
+                                index.$data.showRightFlag = true;
+                            }
+                        }, 1000)
+                    }
+                }
+                console.log(curVal, oldVal);
+            }
+        }
+    })
+
+
+    //打开客户端
+    function openNativePage(params) {
+        if (typeof(window.webkit) != "undefined") {
+            window.webkit.messageHandlers.goNative.postMessage({body: params})
+        } else {
+            if (typeof(webViewNative) != "undefined") {
+                webViewNative.goNative(params)
+            } else {
+                window.location.href = params
+            }
+        }
+    }
+    // 右上角分享
+    function shareRight(params) {
+        if (typeof(window.webkit) != "undefined") {
+            window.webkit.messageHandlers.outerShareSetData.postMessage({body: params})
+        } else {
+            if (typeof(webViewNative) != "undefined") {
+                webViewNative.outerShareSetData(params)
+            }
+        }
+    }
+    // 调用分享按钮
+    function share(params) {
+        if (typeof(window.webkit) != "undefined") {
+            window.webkit.messageHandlers.innerShareOpen.postMessage({body: params})
+        } else {
+            if (typeof(webViewNative) != "undefined") {
+                //alert("android share");
+                webViewNative.innerShareOpen(params)
+            }
+        }
+    }
+    function copyWxFunction() {
+        var params = {"popupStr": "复制成功", "copyStr": "zhihuicp"};
+        if (typeof(window.webkit) != "undefined") {
+            window.webkit.messageHandlers.copyString.postMessage({body: JSON.stringify(params)})
+        } else {
+            if (typeof(webViewNative) != "undefined") {
+                webViewNative.copyString(JSON.stringify(params));
+            } else {
+                window.location.href = data.data.qqShow.url
+            }
+        }
+    }
+    ;
+
+    function getCookie(c_name) {
+        if (document.cookie.length > 0) {
+            c_start = document.cookie.indexOf(c_name + "=")
+            if (c_start != -1) {
+                c_start = c_start + c_name.length + 1
+                c_end = document.cookie.indexOf(";", c_start)
+                if (c_end == -1) c_end = document.cookie.length
+                return unescape(document.cookie.substring(c_start, c_end))
+            }
+        }
+        return ""
+    }
+    function setCookie(c_name, value, expiredays) {
+        var exdate = new Date()
+        exdate.setDate(exdate.getDate() + expiredays)
+        document.cookie = c_name + "=" + escape(value) +
+            ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString())
+    }
+
+
+    wx.ready(function () {
+        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+        try {
+            var title = config.shareTitle;
+            var desc = config.shareDesc;
+            var imgUrl = config.shareIcon;
+            var redirectUrl =
+                window.location.protocol + "//" + window.location.host + "/web/drawLottery/index.html?state=" +
+                getUrlParam("state");
+            link = redirectUrl;
+
+            wx.onMenuShareTimeline({
+                title: title, // 分享标题
+                link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: imgUrl, // 分享图标
+                type: link, // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareQQ({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareWeibo({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareQZone({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+        } catch (e) {
+            alert(e);
+        }
+
+    });
+
+
+    var mySwiper = new Swiper('.swiper-container', {
+        direction: 'vertical',
+        loop: true,
+        autoplay: 2000,
+        speed: 700
+    })
+    // growingIO统计代码
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+</script>
+</html>

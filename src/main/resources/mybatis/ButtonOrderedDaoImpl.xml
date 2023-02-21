@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ButtonOrdered">
+    <resultMap id="buttonOrderedMap" type="buttonOrdered">
+        <result column="BTN_ID" property="btnId" jdbcType="INTEGER"/>
+        <result column="TYPE" property="type" jdbcType="INTEGER"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="IMG" property="img" jdbcType="VARCHAR"/>
+        <result column="JUMP_URL" property="jumpUrl" jdbcType="VARCHAR"/>
+        <result column="UNIQUE_STR" property="uniqueStr" jdbcType="VARCHAR"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+        <result column="MEMO" property="memo" jdbcType="VARCHAR"/>
+        <result column="ENABLE" property="enable" jdbcType="INTEGER"/>
+        <result column="VERSION_CODE" property="versionCode" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_column">
+        BTN_ID, TYPE, NAME, IMG, JUMP_URL, UNIQUE_STR, GAME_ID, WEIGHT, MEMO, ENABLE, VERSION_CODE
+    </sql>
+
+    <select id="getAllBtnOrdered" resultMap="buttonOrderedMap">
+        SELECT * FROM TB_BUTTON_ORDERED WHERE ENABLE = 1
+    </select>
+
+</mapper>

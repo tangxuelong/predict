@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserSubscribeLog">
+    <resultMap id="userSubscribeLogMap" type="userSubscribeLog">
+        <result column="SUBSCRIBE_ID" property="subscribeId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="PROGRAM_ID" property="programId" jdbcType="INTEGER"/>
+        <result column="PAY_STATUS" property="payStatus" jdbcType="INTEGER"/>
+        <result column="PAY_AMOUNT" property="payAmount" jdbcType="BIGINT"/>
+        <result column="PROGRAM_AMOUNT" property="programAmount" jdbcType="BIGINT"/>
+        <result column="BEGIN_PERIOD" property="beginPeriod" jdbcType="INTEGER"/>
+        <result column="LAST_PERIOD" property="lastPeriod" jdbcType="INTEGER"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        SUBSCRIBE_ID, USER_ID, PROGRAM_ID, PAY_STATUS, PAY_AMOUNT, PROGRAM_AMOUNT,BEGIN_PERIOD, LAST_PERIOD, STATUS,
+        CREATE_TIME
+    </sql>
+
+    <select id="getUserSubscribeLogByPk" resultMap="userSubscribeLogMap" parameterType="map">
+        SELECT * FROM TB_USER_SUBSCRIBE_LOG WHERE SUBSCRIBE_ID = #{subscribeId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="getUserSubScribeLogByUniqueKey" resultMap="userSubscribeLogMap" parameterType="map">
+        SELECT * FROM TB_USER_SUBSCRIBE_LOG WHERE USER_ID = #{userId, jdbcType=BIGINT} AND  PROGRAM_ID =
+        #{programId, jdbcType=INTEGER} AND PROGRAM_AMOUNT = #{programAmount, jdbcType=BIGINT} AND BEGIN_PERIOD =
+        #{beginPeriod, jdbcType=INTEGER} AND LAST_PERIOD = #{endPeriod, jdbcType=INTEGER} AND STATUS = 0
+    </select>
+
+    <select id="getRepeatUserSubscribeLog" resultMap="userSubscribeLogMap" parameterType="map">
+        SELECT * FROM TB_USER_SUBSCRIBE_LOG WHERE USER_ID = #{userId, jdbcType=BIGINT} AND  PROGRAM_ID =
+        #{programId, jdbcType=INTEGER} AND PROGRAM_AMOUNT = #{programAmount, jdbcType=BIGINT} AND LAST_PERIOD &gt;=
+        #{beginPeriod, jdbcType=INTEGER} AND BEGIN_PERIOD &lt; #{beginPeriod, jdbcType=INTEGER} AND STATUS = 0
+        limit 1
+    </select>
+
+    <insert id="insert" parameterType="map">
+        INSERT INTO TB_USER_SUBSCRIBE_LOG (<include refid="Base_Column"/>) VALUES (
+        #{subscribeId, jdbcType=VARCHAR}, #{userId, jdbcType=BIGINT}, #{programId, jdbcType=INTEGER},
+        #{payStatus, jdbcType=INTEGER},#{payAmount, jdbcType=BIGINT}, #{programAmount, jdbcType=BIGINT},
+        #{beginPeriod, jdbcType=INTEGER}, #{lastPeriod, jdbcType=INTEGER}, #{status, jdbcType=INTEGER}, now())
+    </insert>
+
+    <update id="updateUserSubscribeLogStatus" parameterType="map">
+        UPDATE TB_USER_SUBSCRIBE_LOG SET STATUS = #{setStatus, jdbcType=INTEGER} WHERE SUBSCRIBE_ID =
+        #{subscribeId, jdbcType=VARCHAR} AND STATUS = #{originStatus, jdbcType=INTEGER} AND PAY_STATUS =0
+    </update>
+
+    <update id="updateUserSubscribeLogPayStatus" parameterType="map">
+        UPDATE TB_USER_SUBSCRIBE_LOG SET PAY_STATUS = #{setPayStatus, jdbcType=INTEGER} WHERE SUBSCRIBE_ID =
+        #{subscribeId, jdbcType=VARCHAR} AND PAY_STATUS = #{originPayStatus, jdbcType=INTEGER}
+    </update>
+</mapper>

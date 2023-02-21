@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserAccount">
+    <resultMap id="userAccountMap" type="userAccount">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="ACCOUNT_BALANCE" property="accountBalance" jdbcType="BIGINT"/>
+        <result column="ACCOUNT_TYPE" property="accountType" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, ACCOUNT_BALANCE, ACCOUNT_TYPE, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserAccountBalance" resultMap="userAccountMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_ACCOUNT
+        where USER_ID = #{userId,jdbcType=BIGINT} AND ACCOUNT_TYPE = #{accountType,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="userAccount">
+        INSERT INTO TB_USER_ACCOUNT
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{userId,jdbcType=BIGINT},
+        #{accountBalance,jdbcType=BIGINT}, #{accountType,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="userAccount">
+        UPDATE TB_USER_ACCOUNT SET ACCOUNT_BALANCE = #{accountBalance,jdbcType=BIGINT},
+        UPDATE_TIME = now()
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND ACCOUNT_TYPE = #{accountType,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateUserBalance" parameterType="map">
+        UPDATE TB_USER_ACCOUNT SET ACCOUNT_BALANCE = #{setBalance,jdbcType=BIGINT},
+        UPDATE_TIME = now()
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND ACCOUNT_TYPE = #{accountType,jdbcType=INTEGER}
+        <if test="oldBalance!=null">
+            and ACCOUNT_BALANCE = #{oldBalance,jdbcType=BIGINT}
+        </if>
+    </update>
+</mapper>

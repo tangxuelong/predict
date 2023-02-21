@@ -1,0 +1,116 @@
+[
+  {
+    "k": "meta",
+    "c": {
+      "title": "",
+      "description": "",
+      "bgColor": "#ffffff",
+      "bgImage": "",
+      "keywords": "",
+      "appid": "daily",
+      "type": "0",
+      "baseFont": "fontBase",
+      "linkTarget": "blank"
+    }
+  },
+  {
+    "k": "pic",
+    "c": {
+      "image": "https://ohduoklem.qnssl.com/zhihui.png",
+      "link": "",
+      "cmd": "",
+      "imgText": "",
+      "aniOpac": false,
+      "aniDown": false,
+      "aniZoom": false,
+      "bgcolor": "transparent",
+      "padtop": "0",
+      "padbtm": "0",
+      "padl": "0",
+      "padr": "0",
+      "martop": "0",
+      "marbtm": "30",
+      "marl": "24",
+      "marr": "24",
+      "NAME": "图片"
+    }
+  },
+  {
+    "k": "p",
+    "c": {
+      "text": "加入智慧预测QQ群，畅谈双色球技巧",
+      "color": "#5d5d5d",
+      "brNewLine": true,
+      "indent": false,
+      "bigLH": true,
+      "bigP": false,
+      "noline": false,
+      "radius": false,
+      "bgcolor": "transparent",
+      "bgimage": "",
+      "padtop": "0",
+      "padbtm": "0",
+      "padl": "0",
+      "padr": "0",
+      "martop": "0",
+      "marbtm": "30",
+      "marl": "24",
+      "marr": "24",
+      "pos": "center",
+      "size": "2",
+      "NAME": "正文"
+    }
+  },
+  {
+    "k": "p",
+    "c": {
+      "text": "<a target=\"_blank\" href=\"//shang.qq.com/wpa/qunwpa?idkey=85220213370110c8c5a31719c97d3a6924a590a22f81b4506aafa1ac9bde5630\"><img border=\"0\" src=\"https://ohduoklem.qnssl.com/WX20170802-173236@2x.png\" alt=\"智慧预测交流群\" title=\"智慧预测交流群\"></a>",
+      "color": "#5d5d5d",
+      "brNewLine": true,
+      "indent": true,
+      "bigLH": true,
+      "bigP": false,
+      "noline": false,
+      "radius": false,
+      "bgcolor": "transparent",
+      "bgimage": "",
+      "padtop": "0",
+      "padbtm": "0",
+      "padl": "0",
+      "padr": "0",
+      "martop": "0",
+      "marbtm": "30",
+      "marl": "24",
+      "marr": "24",
+      "pos": "left",
+      "size": "2",
+      "NAME": "正文"
+    }
+  },
+  {
+    "k": "p",
+    "c": {
+      "text": "如果点击按钮无法直接加入QQ群，请复制群号159879058，打开QQ申请加入。",
+      "color": "#5d5d5d",
+      "brNewLine": true,
+      "indent": true,
+      "bigLH": true,
+      "bigP": false,
+      "noline": false,
+      "radius": false,
+      "bgcolor": "transparent",
+      "bgimage": "",
+      "padtop": "0",
+      "padbtm": "0",
+      "padl": "0",
+      "padr": "0",
+      "martop": "320",
+      "marbtm": "30",
+      "marl": "24",
+      "marr": "24",
+      "pos": "left",
+      "size": "2",
+      "NAME": "正文"
+    }
+  }
+]

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserSignStatistic">
+    <resultMap id="userSignStatisticMap" type="userSignStatistic">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="SIGN_TYPE" property="signType" jdbcType="INTEGER"/>
+        <result column="MAX_CONTINUE_SIGN_COUNT" property="maxCountinueSignCount" jdbcType="INTEGER"/>
+        <result column="TOTAL_SIGN_COUNT" property="totalSignCount" jdbcType="INTEGER"/>
+        <result column="CONTINUE_SIGN_COUNT" property="continueSignCount" jdbcType="INTEGER"/>
+        <result column="LAST_SIGN_TIME" property="lastSignTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, SIGN_TYPE, MAX_CONTINUE_SIGN_COUNT, TOTAL_SIGN_COUNT, CONTINUE_SIGN_COUNT, LAST_SIGN_TIME, CREATE_TIME
+    </sql>
+
+    <select id="getUserSignStatisticByUserId" resultMap="userSignStatisticMap" parameterType="map">
+        SELECT * FROM TB_USER_SIGN_STATISTIC WHERE USER_ID = #{userId, jdbcType=BIGINT} AND
+        SIGN_TYPE=#{signType, jdbcType=INTEGER}
+    </select>
+
+    <update id="updateUserStatistic" parameterType="userSignStatistic">
+        UPDATE TB_USER_SIGN_STATISTIC SET MAX_CONTINUE_SIGN_COUNT = #{maxCountinueSignCount, jdbcType=BIGINT},
+        TOTAL_SIGN_COUNT = #{totalSignCount, jdbcType=INTEGER}, CONTINUE_SIGN_COUNT =
+        #{continueSignCount, jdbcType=VARCHAR}, LAST_SIGN_TIME = #{lastSignTime, jdbcType=TIMESTAMP}
+        WHERE USER_ID = #{userId, jdbcType=BIGINT} AND SIGN_TYPE=#{signType, jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="userSignStatistic">
+        INSERT INTO TB_USER_SIGN_STATISTIC (<include refid="Base_Column_List"/>)
+        VALUES (#{userId, jdbcType=BIGINT}, #{signType, jdbcType=INTEGER}, #{maxCountinueSignCount, jdbcType=BIGINT},
+        #{totalSignCount, jdbcType=INTEGER}, #{continueSignCount, jdbcType=VARCHAR},
+        #{lastSignTime, jdbcType=TIMESTAMP}, now())
+    </insert>
+
+
+</mapper>

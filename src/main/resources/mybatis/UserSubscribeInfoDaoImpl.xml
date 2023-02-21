@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserSubscribeInfo">
+    <resultMap id="userSubscribeInfoMap" type="userSubscribeInfo">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PREDICT_TYPE" property="predictType" jdbcType="INTEGER"/>
+        <result column="PROGRAM_TYPE" property="programType" jdbcType="INTEGER"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        USER_ID, GAME_ID, PREDICT_TYPE,PROGRAM_TYPE, PERIOD_ID, CREATE_TIME
+    </sql>
+
+    <select id="getUserSubscribeInfoByPk" resultMap="userSubscribeInfoMap" parameterType="map">
+        SELECT * FROM TB_USER_SUBSCRIBE_INFO WHERE USER_ID = #{userId, jdbcType=BIGINT} AND PREDICT_TYPE =
+        #{predictType, jdbcType=INTEGER} AND GAME_ID = #{gameId, jdbcType=BIGINT}
+        <if test="isLock==true">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <select id="getUserSubscribeProgramCount" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) FROM TB_USER_SUBSCRIBE_INFO WHERE USER_ID = #{userId, jdbcType=BIGINT} AND PERIOD_ID IS NOT
+        NULL AND PROGRAM_TYPE= #{programType, jdbcType=INTEGER} AND GAME_ID = #{gameId, jdbcType=BIGINT}
+    </select>
+
+    <update id="updatePeriodIdByPk" parameterType="map">
+        UPDATE TB_USER_SUBSCRIBE_INFO SET PERIOD_ID = #{setPeriodId, jdbcType=INTEGER}
+        WHERE USER_ID = #{userId, jdbcType=BIGINT} AND PREDICT_TYPE =#{predictType, jdbcType=INTEGER} AND GAME_ID =
+        #{gameId, jdbcType=BIGINT}
+        <if test="originPeriodId!=null">
+            AND PERIOD_ID = #{originPeriodId, jdbcType=INTEGER}
+        </if>
+    </update>
+
+    <insert id="insert" parameterType="map">
+        INSERT INTO TB_USER_SUBSCRIBE_INFO (<include refid="Base_Column"/>) VALUES (
+        #{userId, jdbcType=BIGINT}, #{gameId, jdbcType=BIGINT}, #{predictType, jdbcType=INTEGER},
+        #{programType, jdbcType=INTEGER}, #{periodId, jdbcType=INTEGER}, now())
+    </insert>
+
+</mapper>

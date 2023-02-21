@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PaymentStatisticReport">
+    <resultMap id="paymentStatisticReportMap" type="paymentStatisticReport">
+        <result column="STATISTIC_DATE" property="statisticDate" jdbcType="INTEGER"/>
+        <result column="INCOME_AMOUNT" property="incomeAmount" jdbcType="BIGINT"/>
+        <result column="PAY_PERSON_COUNT" property="payPersonCount" jdbcType="INTEGER"/>
+        <result column="INCOME_DETAIL" property="incomeDetail" jdbcType="VARCHAR"/>
+        <result column="PAY_CHANNEL_DETAIL" property="payChannelDetail" jdbcType="VARCHAR"/>
+        <result column="REPURCHASE_AMOUNT" property="repurchaseAmount" jdbcType="BIGINT"/>
+        <result column="STATISTIC_FLAG" property="statisticFlag" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        STATISTIC_DATE, INCOME_AMOUNT, PAY_PERSON_COUNT, INCOME_DETAIL, PAY_CHANNEL_DETAIL, REPURCHASE_AMOUNT,
+        STATISTIC_FLAG, CREATE_TIME
+    </sql>
+
+    <select id="getPaymentStatisticReportByDate" resultMap="paymentStatisticReportMap"
+            parameterType="java.lang.Integer">
+      SELECT * FROM tb_payment_statistic_report where STATISTIC_DATE = #{statisticDate, jdbcType=INTEGER}
+    </select>
+
+    <select id="getAllPaymentStatisticReport" resultMap="paymentStatisticReportMap" parameterType="map">
+        SELECT * FROM tb_payment_statistic_report order by STATISTIC_DATE desc limit #{count, jdbcType=INTEGER}
+    </select>
+
+    <update id="update" parameterType="map">
+        UPDATE tb_payment_statistic_report SET INCOME_AMOUNT = #{incomeAmount,jdbcType=BIGINT}
+        <if test="payPersonCount!=null">
+            , PAY_PERSON_COUNT = #{payPersonCount, jdbcType=INTEGER}
+        </if>
+        <if test="incomeDetail!=null">
+            , INCOME_DETAIL = #{incomeDetail, jdbcType=VARCHAR}
+        </if>
+        <if test="payChannelDetail!=null">
+            , PAY_CHANNEL_DETAIL = #{payChannelDetail, jdbcType=VARCHAR}
+        </if>
+        <if test="repurchaseAmount!=null">
+            , REPURCHASE_AMOUNT = #{repurchaseAmount, jdbcType=BIGINT}
+        </if>
+        <if test="statisticFlag!=null">
+            , STATISTIC_FLAG = #{statisticFlag, jdbcType=INTEGER}
+        </if>
+        WHERE STATISTIC_DATE = #{statisticDate,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="paymentStatisticReport">
+        INSERT INTO tb_payment_statistic_report (<include refid="Base_Column_List"/>)
+        VALUES (#{statisticDate, jdbcType=INTEGER}, #{incomeAmount,jdbcType=BIGINT}, #{payPersonCount,jdbcType=INTEGER},
+        #{incomeDetail,jdbcType=VARCHAR}, #{payChannelDetail,jdbcType=VARCHAR}, #{repurchaseAmount,jdbcType=BIGINT},
+        #{statisticFlag, jdbcType=INTEGER}, now())
+    </insert>
+
+</mapper>

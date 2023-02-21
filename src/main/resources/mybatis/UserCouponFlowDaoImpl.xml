@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserCouponFlow">
+    <resultMap id="userCouponFlowMap" type="userCouponFlow">
+        <result column="COUPON_FLOW_ID" property="couponFlowId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="COUPON_ID" property="couponId" jdbcType="VARCHAR"/>
+        <result column="EXCHANGE_ID" property="exchangeId" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        COUPON_FLOW_ID, USER_ID, COUPON_ID, EXCHANGE_ID, REMARK, CREATE_TIME
+    </sql>
+
+    <select id="getUserCouponFlowById" resultMap="userCouponFlowMap" parameterType="map">
+        select * from tb_user_coupon_flow where COUPON_FLOW_ID=#{couponFlowId, jdbcType=VARCHAR} AND USER_ID =
+        #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getUserCouponFlowByUniqueKey" resultMap="userCouponFlowMap" parameterType="map">
+        select * from tb_user_coupon_flow where USER_ID = #{userId, jdbcType=BIGINT} and  EXCHANGE_ID =
+        #{exchangeId,jdbcType=VARCHAR} and COUPON_ID = #{couponId, jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="userCouponFlow">
+        insert into tb_user_coupon_flow (<include refid="Base_Column_List"/>)
+        values (#{couponFlowId, jdbcType=VARCHAR}, #{userId, jdbcType=BIGINT}, #{couponId, jdbcType=BIGINT},
+        #{exchangeId,jdbcType=VARCHAR}, #{remark, jdbcType=VARCHAR}, now())
+    </insert>
+</mapper>

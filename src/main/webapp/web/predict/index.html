@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>双色球预测</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <link rel="stylesheet" href="style/pure-min.css"/>
+    <link rel="stylesheet" href="style/layout.css"/>
+    <meta name="format-detection" content="telephone=no">
+    <style>
+        body {
+            background: #fff;
+        }
+
+        #app {
+            background: url('img/bg@3x.png') no-repeat;
+            background-size: 100% auto;
+            margin-top: -2px;
+        }
+
+        .process {
+            position: relative;
+            width: 4.8rem;
+            margin: 0 auto;
+            margin-top: 0.5rem;
+            padding: 1rem 0 0 0;
+            height: 2rem;
+        }
+
+        .wrapper {
+            position: absolute;
+            width: 4.8rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            font-size: 0.3rem;
+            color: #fff;
+            background: #E6E6E6;
+            text-align: center;
+            line-height: 0.6rem;
+            z-index: 100;
+        }
+
+        .wrapper-process {
+            position: absolute;
+            width: 0;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            font-size: 0.3rem;
+            color: #fff;
+            text-align: center;
+            line-height: 0.6rem;
+            z-index: 200;
+            left: 0;
+            background-image: -webkit-linear-gradient(to left, #FF5555, #FF8A4E);
+            background-image: linear-gradient(to left, #FF5555, #FF8A4E);
+        }
+
+        .wrapper-text {
+            position: absolute;
+            width: 4.8rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            font-size: 0.3rem;
+            color: #fff;
+            text-align: center;
+            line-height: 0.6rem;
+            z-index: 300;
+        }
+
+        .result {
+            margin-top: 1rem;
+        }
+
+        .result .code {
+            width: 5.8rem;
+            padding-top: 0.52rem;
+            margin: 0 auto;
+            height: 1.4rem;
+            background: url('img/result-bg@3x.png') no-repeat;
+            background-size: 100% auto;
+            text-align: center;
+        }
+
+        .result-red-ball {
+            display: inline-block;
+            text-align: center;
+            line-height: 0.6rem;
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            background: #FF5050;
+            font-size: 0.32rem;
+            color: #fff;
+            margin: -0.05rem;
+        }
+
+        .result-blue-ball {
+            display: inline-block;
+            text-align: center;
+            line-height: 0.6rem;
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            background: #5B8BF0;
+            font-size: 0.32rem;
+            color: #fff;
+            margin: -0.05rem;
+        }
+
+        .result-text p {
+            text-align: center;
+            font-size: 0.24rem;
+            color: #999;
+            margin-top: 0.05rem;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="pure-g index-title">
+        <div class="pure-u-1-3 title"><p><span v-text="'·'+currentPeriodId+'期'"></span></p></div>
+        <div class="pure-u-1-3"></div>
+        <div class="pure-u-1-3 history"><p><span><a href="history.html"><img src="img/history.png" alt=""></a></span>
+        </p></div>
+    </div>
+    <div class="predict">
+        <div class="bg-animation"></div>
+        <div class="bg-animation-repeat"></div>
+        <div class="bg-animation-repeat2"></div>
+        <div class="bg-animation-repeat3"></div>
+        <div class="bg-animation-repeat4"></div>
+        <div class="bg-animation-repeat5"></div>
+        <div class="bg-animation-repeat6"></div>
+        <div class="bg-animation-repeat7"></div>
+        <div class="button" v-on:click="getPredictNumber">
+            <p class="total-nums">共<span class="color-red" v-text="predictTimes"></span>次</p>
+        </div>
+    </div>
+    <p class="instr">每期科学预测10000注，点击智慧获取</p>
+
+    <div class="process" v-show="process">
+        <p class="wrapper-process"></p>
+        <p class="wrapper"></p>
+        <p class="wrapper-text">正从10000注里为您精选</p>
+    </div>
+    <div class="result" v-show="result">
+        <div class="code">
+            <span class="result-red-ball" v-text="redBalls[0]"></span>
+            <span class="result-red-ball" v-text="redBalls[1]"></span>
+            <span class="result-red-ball" v-text="redBalls[2]"></span>
+            <span class="result-red-ball" v-text="redBalls[3]"></span>
+            <span class="result-red-ball" v-text="redBalls[4]"></span>
+            <span class="result-red-ball" v-text="redBalls[5]"></span>
+            <span class="result-blue-ball" v-text="blueBalls[0]"></span>
+        </div>
+        <div class="result-text" v-show="text">
+            <p>*本期官方投注已截止，预测结果仅供参考</p>
+        </div>
+    </div>
+    <div class="getPredict">
+        <a href="killNum.html">查看本期杀号</a>
+    </div>
+    <div class="footer">
+        <p>本页由“智慧彩票预测”App提供技术服务</p>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+    function uuid() {
+        var s = [];
+        var hexDigits = "0123456789abcdef";
+        for (var i = 0; i < 36; i++) {
+            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        }
+        s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+        s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+        s[8] = s[13] = s[18] = s[23] = "-";
+
+        var uuid = s.join("");
+        return uuid;
+    }
+    var uuidStr = localStorage.getItem('uuid');
+    if (null == uuidStr) {
+        uuidStr = uuid();
+        localStorage.setItem('uuid', uuidStr);
+    }
+    //alert('本期正在开奖，为了保证预测的准确性，请稍后再试');
+    // 该对象被加入到一个 Vue 实例中
+    var app = new Vue({
+        el: '#app',
+        data: {
+            predictTimes: "",
+            currentPeriodId: "",
+            process: false,
+            result: false,
+            text: false,
+            redBalls: [],
+            blueBalls: []
+        },
+        mounted: function () {
+            var index = this;
+            // 获取预测号码
+            $.ajax({
+                type: 'POST',
+                url: '/analysis/predictIndex',
+                data: {
+                    'gameEn': 'ssq',
+                    'deviceId': uuidStr
+                },
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    index.$data.currentPeriodId = data.data.currentPeriodId;
+                    index.$data.predictTimes = data.data.leftCount;
+                }
+            })
+        },
+        methods: {
+            getPredictNumber: function () {
+                var index = this;
+                // 获取预测号码
+                index.$data.result = false;
+                index.$data.text = false;
+                if (index.$data.predictTimes > 0) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/analysis/predictNum',
+                        data: {
+                            'gameEn': 'ssq',
+                            'deviceId': uuidStr
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+                            if (data.data.openAwardFlag == 2) {
+                                alert('本期正在开奖，为了保证预测的准确性，请稍后再试');
+                            }
+                            else {
+                                if (data.data.openAwardFlag == 1) {
+                                    index.$data.text = true;
+                                }
+                                index.$data.process = true;
+                                $('.getPredict a').css('margin-top', '0rem');
+                                $('.wrapper-process').animate({width: "4.8rem"}, 2500, 'linear', function () {
+                                    $('.getPredict a').css('margin-top', '1.2rem');
+                                    index.$data.predictTimes = data.data.leftCount;
+                                    index.$data.process = false;
+                                    index.$data.result = true;
+                                    index.$data.redBalls = data.data.predictWinNum.split(":")[0].split(" ");
+                                    index.$data.blueBalls[0] = data.data.predictWinNum.split(":")[1];
+                                    $('.wrapper-process').animate({width: "0rem"});
+
+                                });
+                            }
+                        }
+                    })
+                } else {
+                    window.location.href = 'history.html';
+                }
+            }
+        }
+    })
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+</script>
+</html>

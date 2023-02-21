@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BetOrder">
+    <resultMap id="betOrderMap" type="betOrder">
+        <result column="ORDER_ID" property="orderId" jdbcType="INTEGER"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="MATCH_ID" property="matchId" jdbcType="VARCHAR"/>
+        <result column="AMOUNT" property="amount" jdbcType="INTEGER"/>
+        <result column="AWARD" property="award" jdbcType="INTEGER"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CONTENT" property="content" jdbcType="VARCHAR"/>
+        <result column="IS_MORE_AWARD" property="isMoreAward" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ORDER_ID, USER_ID, MATCH_ID, AMOUNT, AWARD, STATUS, CONTENT, IS_MORE_AWARD,
+        CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getBetOrderByOrderId" resultMap="betOrderMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_BET_ORDER
+        WHERE ORDER_ID = #{orderId,jdbcType=INTEGER}
+        <if test="isLock == true">
+            for update
+        </if>
+    </select>
+
+    <select id="getBetOrdersByUserId" resultMap="betOrderMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_BET_ORDER
+        WHERE USER_ID = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getBetOrdersByMatchId" resultMap="betOrderMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_BET_ORDER
+        WHERE MATCH_ID = #{matchId,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="betOrder">
+        INSERT INTO TB_BET_ORDER(
+        <include refid="Base_Column_List"/>
+        )
+        VALUES (
+        #{orderId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT},#{matchId,jdbcType=VARCHAR},
+        #{amount,jdbcType=INTEGER},#{award,jdbcType=INTEGER},#{status,jdbcType=INTEGER},
+        #{content,jdbcType=VARCHAR},
+        #{isMoreAward,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="betOrder">
+        UPDATE TB_BET_ORDER
+        SET AWARD = #{award,jdbcType=VARCHAR}, STATUS = #{status,jdbcType=VARCHAR}, UPDATE_TIME = now()
+        WHERE ORDER_ID = #{orderId,jdbcType=INTEGER}
+    </update>
+</mapper>

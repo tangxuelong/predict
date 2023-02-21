@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PayChannelInfo">
+    <resultMap id="payChannelInfoMap" type="payChannelInfo">
+        <result column="CHANNEL_ID" property="channelId" jdbcType="INTEGER"/>
+        <result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR"/>
+        <result column="CHANNEL_ICON" property="channelIcon" jdbcType="VARCHAR"/>
+        <result column="SHOW_TEXT" property="showText" jdbcType="VARCHAR"/>
+        <result column="IS_DEFAULT" property="isDefault" jdbcType="INTEGER"/>
+        <result column="PAY_URL" property="payUrl" jdbcType="VARCHAR"/>
+        <result column="NOTIFY_URL" property="notifyUrl" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getAllChannel" resultMap="payChannelInfoMap">
+        select * from TB_PAY_CHANNEL_INFO ORDER BY WEIGHT DESC
+	</select>
+
+    <select id="getChannel" resultMap="payChannelInfoMap" parameterType="java.lang.Integer">
+        select * from TB_PAY_CHANNEL_INFO WHERE CHANNEL_ID = #{channelId,jdbcType=INTEGER}
+    </select>
+
+    <update id="update" parameterType="payChannelInfo">
+        UPDATE TB_PAY_CHANNEL_INFO
+        SET CHANNEL_NAME = #{channelName,jdbcType=VARCHAR}, CHANNEL_ICON = #{channelIcon,jdbcType=VARCHAR},
+        SHOW_TEXT = #{showText,jdbcType=VARCHAR}, IS_DEFAULT = #{isDefault,jdbcType=INTEGER},
+        PAY_URL = #{payUrl,jdbcType=VARCHAR}, NOTIFY_URL = #{isDefault,jdbcType=VARCHAR},
+        UPDATE_TIME = now()
+        WHERE CHANNEL_ID = #{channelId,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="payChannelInfo">
+        INSERT INTO TB_PAY_CHANNEL_INFO (CHANNEL_ID, CHANNEL_NAME, CHANNEL_ICON, SHOW_TEXT, IS_DEFAULT, PAY_URL,
+        NOTIFY_URL, CREATE_TIME, UPDATE_TIME, WEIGHT, REMARK)
+        VALUES (#{channelId,jdbcType=INTEGER}, #{channelName,jdbcType=VARCHAR}, #{channelIcon,jdbcType=VARCHAR},
+        #{showText,jdbcType=INTEGER}, #{isDefault,jdbcType=INTEGER}, #{payUrl,jdbcType=VARCHAR},
+        #{notifyUrl,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{weight,jdbcType=INTEGER},
+        #{remark, jdbcType=VARCHAR} )
+    </insert>
+
+    <select id="monitorDB" resultType="java.lang.Integer">
+        SELECT 1
+    </select>
+</mapper>

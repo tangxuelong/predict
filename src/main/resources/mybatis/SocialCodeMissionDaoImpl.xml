@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SocialCodeMission">
+    <resultMap id="socialCodeMissionMap" type="socialCodeMission">
+        <result column="MISSION_ID" property="missionId" jdbcType="BIGINT"/>
+        <result column="KEY_INFO" property="keyInfo" jdbcType="VARCHAR"/>
+        <result column="MISSION_TYPE" property="missionType" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        MISSION_ID, KEY_INFO, MISSION_TYPE, REMARK, STATUS, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <insert id="insert" parameterType="socialCodeMission">
+        INSERT INTO TB_SOCIAL_CODE_MISSION (KEY_INFO, MISSION_TYPE, REMARK, STATUS, CREATE_TIME)
+        VALUES(#{keyInfo,jdbcType=VARCHAR}, #{missionType,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
+        #{status, jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatchForCollect" parameterType="java.util.List">
+        <foreach collection="missionList" item="item" open="" close="" separator=";">
+            INSERT INTO TB_SOCIAL_CODE_MISSION (KEY_INFO, MISSION_TYPE, REMARK, STATUS, CREATE_TIME)
+            VALUES(#{item.keyInfo,jdbcType=VARCHAR}, #{item.missionType,jdbcType=INTEGER},
+            #{item.remark,jdbcType=VARCHAR}, #{item.status, jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <select id="getTaskById" resultMap="socialCodeMissionMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_SOCIAL_CODE_MISSION
+        WHERE MISSION_ID = #{missionId,jdbcType=BIGINT}
+    </select>
+
+    <update id="updateMissionStatus" parameterType="java.util.Map">
+        UPDATE TB_SOCIAL_CODE_MISSION
+        SET STATUS = #{setStatus, jdbcType=INTEGER}
+        WHERE MISSION_ID = #{missionId,jdbcType=BIGINT} AND STATUS = #{status, jdbcType=INTEGER}
+    </update>
+
+    <!--below sql are only used for testing purpose-->
+    <select id="getMissionByKeyInfo" parameterType="java.util.Map" resultMap="socialCodeMissionMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_SOCIAL_CODE_MISSION
+        WHERE KEY_INFO = #{keyInfo,jdbcType=BIGINT} AND MISSION_TYPE = #{missionType,jdbcType=INTEGER}
+    </select>
+
+    <select id="getSlaveMissionsByDate" parameterType="java.util.Map" resultMap="socialCodeMissionMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_SOCIAL_CODE_MISSION
+        WHERE <![CDATA[CREATE_TIME <= #{date,jdbcType=TIMESTAMP}]]>
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+    <insert id="insert2Bak" parameterType="socialCodeMission">
+        INSERT INTO TB_MISSION_BAK (MISSION_ID, KEY_INFO, MISSION_TYPE, REMARK, STATUS, CREATE_TIME, UPDATE_TIME)
+        VALUES(#{missionId, jdbcType=BIGINT}, #{keyInfo,jdbcType=VARCHAR}, #{missionType,jdbcType=INTEGER},
+        #{remark,jdbcType=VARCHAR}, #{status, jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <delete id="deleteCompleteMissionById" parameterType="java.util.Map">
+        DELETE FROM TB_SOCIAL_CODE_MISSION
+        WHERE MISSION_ID = #{missionId,jdbcType=BIGINT}
+    </delete>
+
+    <select id="getSlaveBakMissionById" parameterType="java.util.Map" resultMap="socialCodeMissionMap">
+        SELECT * FROM TB_SOCIAL_CODE_MISSION
+        WHERE MISSION_ID = #{missionId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getSlaveMissionIdsByTaskType" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT MISSION_ID
+        FROM TB_SOCIAL_CODE_MISSION
+        WHERE MISSION_TYPE = #{missionType,jdbcType=INTEGER} AND STATUS = #{status, jdbcType=INTEGER}
+        AND REMARK = #{gameEn,jdbcType=INTEGER}
+    </select>
+
+    <update id="updateMissionStatusByPartKey" parameterType="map">
+        UPDATE TB_SOCIAL_CODE_MISSION SET STATUS = #{setStatus, jdbcType=INTEGER} WHERE KEY_INFO LIKE
+        CONCAT(#{partKey, jdbcType=VARCHAR}, '%')  AND STATUS = #{originStatus, jdbcType=INTEGER}
+        AND <![CDATA[CREATE_TIME >= #{date,jdbcType=TIMESTAMP}]]>
+    </update>
+
+</mapper>

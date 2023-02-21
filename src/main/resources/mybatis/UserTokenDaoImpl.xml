@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserToken">
+    <resultMap id="userTokenMap" type="userToken">
+        <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="EXPIRE_TIME" property="expireTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        TOKEN, USER_ID, EXPIRE_TIME, CREATE_TIME
+    </sql>
+
+    <select id="getTokenByUserIdByShardType" resultMap="userTokenMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_TOKEN
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getUserIdByToken" resultType="java.lang.Long" parameterType="map">
+        select user_id
+        from TB_USER_TOKEN
+        where TOKEN = #{token,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getUserByUserId" resultType="java.lang.Long" parameterType="map">
+        select user_id
+        from TB_USER_TOKEN
+        where USER_ID = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getUserTokenByToken" resultMap="userTokenMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_TOKEN
+        where token = #{token,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateExpireTime" parameterType="map">
+        update TB_USER_TOKEN set EXPIRE_TIME = #{newExpireTime,jdbcType=TIMESTAMP}
+        where USER_ID = #{userId,jdbcType=BIGINT} and EXPIRE_TIME = #{oldExpireTime,jdbcType=TIMESTAMP}
+    </update>
+
+    <insert id="insert" parameterType="awardInfo">
+        INSERT INTO TB_USER_TOKEN
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{token,jdbcType=VARCHAR},
+        #{userId,jdbcType=BIGINT}, #{expireTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+</mapper>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="expires" content="0"/>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <title>京东支付</title>
+</head>
+<body>
+<form method="post" action="https://h5pay.jd.com/jdpay/saveOrder" id="batchForm">
+
+    <input type="hidden" type="submit"/>
+</form>
+<script src="js/jquery-2.3.js"></script>
+<script src="js/jquery-object.js"></script>
+<script>
+    $(function() {
+        var input_str = '<input name="merchant" type="hidden" id="merchant" value="'+$.query.get('merchant')+'"/><br/>';
+        input_str+='<input name="notifyUrl" type="hidden" id="notifyUrl" value="'+$.query.get('notifyUrl')+'"/>';
+        input_str+='<input name="userId" type="hidden" id="userId" value="'+$.query.get('userId')+'"/>';
+        input_str+='<input name="sign" type="hidden" id="sign" value="'+$.query.get('sign')+'"/>';
+        input_str+='<input name="currency" type="hidden" id="currency" value="'+$.query.get('currency')+'"/>';
+        input_str+='<input name="orderType" type="hidden" id="orderType" value="'+$.query.get('orderType')+'"/>';
+        input_str+='<input name="tradeNum" type="hidden" id="tradeNum" value="'+$.query.get('tradeNum')+'"/>';
+        input_str+='<input name="amount" type="hidden" id="amount" value="'+$.query.get('amount')+'"/>';
+        input_str+='<input name="version" type="hidden" id="version" value="'+$.query.get('version')+'"/>';
+        input_str+='<input name="tradeTime" type="hidden" id="tradeTime" value="'+$.query.get('tradeTime')+'"/>';
+        input_str+='<input name="tradeName" type="hidden" id="tradeName" value="'+$.query.get('tradeName')+'"/>';
+        input_str+='<input name="callbackUrl" type="hidden" id="callbackUrl" value="'+$.query.get('callbackUrl')+'"/>';
+        input_str+='<input name="specCardNo" type="hidden" id="specCardNo" value="'+$.query.get('specCardNo')+'"/>';
+        input_str+='<input name="ip" type="hidden" id="ip" value="'+$.query.get('ip')+'"/>';
+        $('#batchForm').append(input_str);
+        document.getElementById("batchForm").submit();
+    })
+</script>
+
+</body>
+</html>

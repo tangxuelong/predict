@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserBankCard">
+    <resultMap id="userBankCardMap" type="userBankCard">
+        <result column="BANK_ID" property="bankId" jdbcType="INTEGER"/>
+        <result column="BANK_CARD" property="bankCard" jdbcType="VARCHAR"/>
+        <result column="CARD_TYPE" property="cardType" jdbcType="INTEGER"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="ACCOUNT_NAME" property="accountName" jdbcType="VARCHAR"/>
+        <result column="MOBILE" property="mobile" jdbcType="VARCHAR"/>
+        <result column="BANK_CN" property="bankCn" jdbcType="VARCHAR"/>
+        <result column="AUTHENTICATE_STATUS" property="authenticateStatus" jdbcType="INTEGER"/>
+        <result column="AUTHENTICATE_MERCHANT" property="authenticateMerchant" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        BANK_ID, BANK_CARD, CARD_TYPE, USER_ID, ACCOUNT_NAME,  MOBILE, BANK_CN, AUTHENTICATE_STATUS,
+        AUTHENTICATE_MERCHANT, REMARK, STATUS, CREATE_TIME
+    </sql>
+
+    <select id="getUserAllBankCard" resultMap="userBankCardMap" parameterType="map">
+        SELECT * FROM tb_user_bank_card where USER_ID = #{userId, jdbcType=BIGINT}
+        <if test="cardType">
+            and CARD_TYPE = #{cardType, jdbcType=INTEGER}
+        </if>
+        and STATUS = 1 order by CREATE_TIME desc
+    </select>
+
+    <select id="getUserBankCardById" resultMap="userBankCardMap" parameterType="map">
+      SELECT * FROM tb_user_bank_card where BANK_ID = #{bankId, jdbcType=INTEGER}
+    </select>
+
+    <select id="getUserBankCardByBankNo" resultMap="userBankCardMap" parameterType="map">
+        SELECT * FROM tb_user_bank_card where BANK_CARD = #{bankCard, jdbcType=VARCHAR} and USER_ID =
+        #{userId, jdbcType=BIGINT}
+    </select>
+
+    <select id="getUserBankCardCount" resultType="java.lang.Integer" parameterType="map">
+        select count(1) FROM tb_user_bank_card where USER_ID = #{userId, jdbcType=BIGINT} and STATUS = 1
+    </select>
+
+    <update id="updateBankCardStatus" parameterType="map">
+        update tb_user_bank_card set STATUS = #{status, jdbcType=INTEGER}
+        <if test="accountName!=null">
+            , ACCOUNT_NAME = #{accountName, jdbcType=VARCHAR}
+        </if>
+        WHERE BANK_ID = #{bankId, jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="userBankCard">
+        INSERT INTO tb_user_bank_card (<include refid="Base_Column_List"/>)
+        VALUES (#{bankId, jdbcType=INTEGER}, #{bankCard,jdbcType=VARCHAR}, #{cardType, jdbcType=INTEGER},
+        #{userId,jdbcType=BIGINT}, #{accountName, jdbcType=VARCHAR}, #{mobile,jdbcType=INTEGER},
+        #{bankCn,jdbcType=VARCHAR}, #{authenticateStatus,jdbcType=INTEGER}, #{authenticateMerchant,jdbcType=INTEGER},
+        #{remark, jdbcType=VARCHAR}, #{status, jdbcType=INTEGER}, now())
+    </insert>
+
+</mapper>

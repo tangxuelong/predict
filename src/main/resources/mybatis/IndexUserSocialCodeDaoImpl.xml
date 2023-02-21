@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IndexUserSocialCode">
+    <resultMap id="indexUserSocialCodeMap" type="indexUserSocialCode">
+        <result column="INDEX_ID" property="indexId" jdbcType="INTEGER"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="SOCIAL_CODE_TYPE" property="socialCodeType" jdbcType="INTEGER"/>
+        <result column="SOCIAL_CODE_ID" property="socialCodeId" jdbcType="BIGINT"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="SOCIAL_COUNT" property="socialCount" jdbcType="INTEGER"/>
+        <result column="SOCIAL_RIGHT_COUNT" property="socialRightCount" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        INDEX_ID, USER_ID, GAME_ID, PERIOD_ID, SOCIAL_CODE_TYPE, SOCIAL_CODE_ID, REMARK, SOCIAL_COUNT,
+        SOCIAL_RIGHT_COUNT, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <insert id="insert" parameterType="indexUserSocialCode">
+        INSERT INTO TB_INDEX_USER_SOCIAL_CODE (<include refid="Base_Column_List"/>)
+        VALUES (#{indexId, jdbcType=BIGINT}, #{userId, jdbcType=BIGINT}, #{gameId, jdbcType=BIGINT},
+        #{periodId, jdbcType=VARCHAR}, #{socialCodeType, jdbcType=INTEGER}, #{socialCodeId, jdbcType=BIGINT},
+        #{remark, jdbcType=VARCHAR}, #{socialCount, jdbcType=INTEGER}, #{socialRightCount, jdbcType=INTEGER}, now(),
+        #{updateTime, jdbcType=TIMESTAMP} )
+    </insert>
+
+    <select id="getIndexUserSocialCodeByGameIdAndUserIdByPage" parameterType="map" resultMap="indexUserSocialCodeMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_INDEX_USER_SOCIAL_CODE
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND SOCIAL_CODE_TYPE =#{socialCodeType, jdbcType=INTEGER}
+        <if test="userId!=null">
+            AND USER_ID = #{userId, jdbcType=BIGINT}
+        </if>
+        <if test="periodId!=null">
+            AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+        </if>
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+    <select id="ifUserKillEncircle" parameterType="map" resultMap="indexUserSocialCodeMap">
+        SELECT INDEX_ID FROM TB_INDEX_USER_SOCIAL_CODE WHERE USER_ID = #{userId, jdbcType=BIGINT}
+        AND GAME_ID = #{gameId, jdbcType=BIGINT} AND SOCIAL_CODE_TYPE =#{socialCodeType, jdbcType=INTEGER} AND
+        SOCIAL_CODE_ID = #{socialCodeId, jdbcType=BIGINT}
+    </select>
+
+    <select id="getUserPartTakePeriodId" parameterType="map" resultMap="indexUserSocialCodeMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_INDEX_USER_SOCIAL_CODE
+        WHERE USER_ID = #{userId, jdbcType=BIGINT}
+        <if test="socialCodeType!=null">
+            AND SOCIAL_CODE_TYPE = #{socialCodeType, jdbcType=INTEGER}
+        </if>
+        <if test="indexId!=null">
+            AND INDEX_ID &lt; #{indexId, jdbcType=INTEGER}
+        </if>
+        GROUP BY PERIOD_ID ORDER BY CREATE_TIME DESC
+        <if test="periodCount!=null">
+            LIMIT #{periodCount, jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getIndexSocialByCondition" resultMap="indexUserSocialCodeMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_INDEX_USER_SOCIAL_CODE
+        WHERE 1=1
+        <if test="gameId!=null">
+            AND GAME_ID = #{gameId, jdbcType=BIGINT}
+        </if>
+        <if test="userId!=null">
+            AND USER_ID = #{userId, jdbcType=BIGINT}
+        </if>
+        <if test="periodId!=null">
+            AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+        </if>
+        <if test="socialCodeType!=null">
+            AND SOCIAL_CODE_TYPE = #{socialCodeType, jdbcType=INTEGER}
+        </if>
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+    <select id="getUserAwardIndexSocials" resultType="map" parameterType="map">
+        SELECT PERIOD_ID, SOCIAL_CODE_TYPE, SOCIAL_COUNT, SOCIAL_RIGHT_COUNT FROM TB_INDEX_USER_SOCIAL_CODE
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND USER_ID = #{userId, jdbcType=BIGINT} AND SOCIAL_CODE_TYPE =
+        #{socialType, jdbcType=INTEGER} AND PERIOD_ID &lt;= #{periodId, jdbcType=VARCHAR}
+        ORDER BY PERIOD_ID DESC LIMIT #{total, jdbcType=INTEGER}
+    </select>
+
+    <select id="getUserMaxScoreEncircleByTime" resultMap="indexUserSocialCodeMap" parameterType="map">
+        SELECT * FROM TB_INDEX_USER_SOCIAL_CODE WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND USER_ID =
+        #{userId, jdbcType=BIGINT} AND SOCIAL_CODE_TYPE = #{socialCodeType, jdbcType=INTEGER} AND CREATE_TIME &gt;=
+        #{beginTime, jdbcType=TIMESTAMP} AND CREATE_TIME &lt;= #{endTime, jdbcType=TIMESTAMP} ORDER BY
+        SOCIAL_RIGHT_COUNT DESC limit 1
+    </select>
+
+    <update id="updateRightNums" parameterType="map">
+        UPDATE TB_INDEX_USER_SOCIAL_CODE
+        SET SOCIAL_RIGHT_COUNT = #{socialRightCount, jdbcType=INTEGER}
+        <if test="socialCount!=null">
+            ,SOCIAL_COUNT = #{socialCount, jdbcType=INTEGER}
+        </if>
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND USER_ID = #{userId, jdbcType=BIGINT}
+        AND PERIOD_ID = #{periodId, jdbcType=VARCHAR} AND SOCIAL_CODE_TYPE = #{socialCodeType, jdbcType=INTEGER} AND
+        SOCIAL_CODE_ID = #{socialCodeId, jdbcType=BIGINT}
+    </update>
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ActivityAwardLevel">
+    <resultMap id="activityAwardLevelMap" type="activityAwardLevel">
+        <result column="ACTIVITY_ID" property="activityId" jdbcType="INTEGER"/>
+        <result column="LEVEL_ID" property="levelId" jdbcType="INTEGER"/>
+        <result column="LEVEL_NAME" property="levelName" jdbcType="VARCHAR"/>
+        <result column="GOODS_NAME" property="goodsName" jdbcType="VARCHAR"/>
+        <result column="DAY_AWARD_COUNT" property="dayAwardCount" jdbcType="INTEGER"/>
+        <result column="DAY_LEFT_COUNT" property="dayLeftCount" jdbcType="INTEGER"/>
+        <result column="LAST_AWARD_TIME" property="lastAwardTime" jdbcType="TIMESTAMP"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ACTIVITY_ID, LEVEL_ID, LEVEL_NAME, GOODS_NAME, DAY_AWARD_COUNT, DAY_LEFT_COUNT, LAST_AWARD_TIME, REMARK,
+        CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getAwardLevelByActivityId" resultMap="activityAwardLevelMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_ACTIVITY_AWARD_LEVEL
+        WHERE ACTIVITY_ID = #{activityId,jdbcType=INTEGER} ORDER BY LEVEL_ID
+    </select>
+
+    <select id="getAwardLevel" resultMap="activityAwardLevelMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_ACTIVITY_AWARD_LEVEL
+        WHERE ACTIVITY_ID = #{activityId,jdbcType=INTEGER} AND LEVEL_ID = #{levelId,jdbcType=INTEGER}
+        <if test="isLock == true">
+            for update
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="activityAwardLevel">
+        INSERT INTO TB_ACTIVITY_AWARD_LEVEL(ACTIVITY_ID, LEVEL_ID, LEVEL_NAME, GOODS_NAME, DAY_AWARD_COUNT,
+        DAY_LEFT_COUNT,LAST_AWARD_TIME,
+        REMARK, CREATE_TIME, UPDATE_TIME)
+        VALUES (
+        #{activityId,jdbcType=INTEGER}, #{levelId,jdbcType=INTEGER},#{levelName,jdbcType=VARCHAR},
+        #{goodsName,jdbcType=VARCHAR},#{dayAwardCount,jdbcType=INTEGER},#{dayLeftCount,jdbcType=INTEGER},
+        #{lastAwardTime,jdbcType=TIMESTAMP},
+        #{remark,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="activityAwardLevel">
+        UPDATE TB_ACTIVITY_AWARD_LEVEL
+        SET LEVEL_NAME =
+        #{levelName,jdbcType=VARCHAR}, GOODS_NAME = #{goodsName,jdbcType=VARCHAR}, DAY_AWARD_COUNT =
+        #{dayAwardCount,jdbcType=INTEGER}, DAY_LEFT_COUNT = #{dayLeftCount,jdbcType=INTEGER},
+        LAST_AWARD_TIME = #{lastAwardTime,jdbcType=TIMESTAMP}, REMARK = #{remark,jdbcType=VARCHAR},
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE ACTIVITY_ID = #{activityId,jdbcType=INTEGER} AND LEVEL_ID = #{levelId,jdbcType=INTEGER}
+    </update>
+</mapper>

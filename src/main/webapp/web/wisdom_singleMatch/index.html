@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>智慧单关</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=0, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="format-detection" content="telephone=no" />
+    <script src="./script/vue.min.js"></script>
+    <script type="text/javascript" src="./script/jquery.min.js"></script>
+    <script src="./script/config.js"></script>
+    <style>
+        body,div,p {
+            font-family: PingFangSC-Regular;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background: #f5f5f5;
+        }
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+
+    <style>
+        /*head 中的布局*/
+        .current-victory {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            width: 95vw;
+            height: 9vw;
+            border-collapse: separate;
+            border-spacing: 2vw 2vw;
+            font-size: 4vw;
+            position: absolute;
+            top: 46vw;
+            background: white;
+            border-radius: 4.5vw;
+            margin-left: 2.5%;
+        }
+
+        .current-victory .lineView {
+            width: 1px;
+            height: 7.5vw;
+            background: rgba(76, 0, 201, 1);
+            margin-left: 49.85%;
+            margin-top: 0.5vw;
+        }
+
+        .current-victory .left-div {
+            width: 47.5vw;
+            height: 8vw;
+            margin-left: 0vw;
+            margin-top: -8vw;
+        }
+
+        .current-victory .right-div {
+            width: 47.5vw;
+            height: 8vw;
+            margin-left: 50.15%;
+            margin-top: -8vw;
+        }
+
+        .current-victory .card-text {
+            margin-top: -21vw;
+            font-size: 3.5vw;
+            color: white;
+        }
+
+        .current-victory .card-price {
+            margin-top: -3vw;
+            font-size: 5vw;
+            color: white;
+
+        }
+    </style>
+
+    <style>
+        /*switchButton的布局*/
+        .switchButton {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            width: 100vw;
+            height: 11vw;
+            position: absolute;
+            background: white;
+            margin-top: 3vw;
+        }
+
+        .switchButton .switchButtonLineView {
+            width: 1px;
+            height: 9vw;
+            background: #f0f0f0;
+            margin-left: 50%;
+            margin-top: 1vw;
+            margin-bottom: -1vw;
+        }
+    </style>
+
+    <style>
+        .forecastMatchNameStyle{
+            width: 16vw;
+            height:7.1vw;
+            margin-left: 4vw;
+            margin-top: -8.5vw;
+            text-align: center;
+            font-size: 3vw;
+            color: white;
+        }
+        .forecastMatchTimeStyle{
+            text-align: center;
+            font-size: 3.5vw;
+            color: white;
+            margin-top: -5vw;
+        }
+
+    </style>
+</head>
+<body>
+<div style="width: 100%" id="app"  v-cloak>
+    <div>
+        <img src="./img/head.png" style="width: 100%" alt="head">
+        <div class="current-victory">
+            <div class="lineView"></div>
+            <div class="left-div" style="font-size: 4vw;color: RGBA(76, 0, 201, 1);">{{currentvictory[0].text}}<b
+                    style="font-size: 6vw;color: #ff5050">{{currentvictory[0].number}}</b> <span style="color: #FF5050">{{currentvictory[0].unit}}</span>
+            </div>
+            <div class="right-div" style="font-size: 4vw;color: RGBA(76, 0, 201, 1);">{{currentvictory[1].text}}<b
+                    style="font-size: 6vw;color: #ff5050">{{currentvictory[1].number}}</b> <span style="color: #FF5050">{{currentvictory[1].unit}}</span>
+            </div>
+            <div style="color: white;font-size: 5vw;text-align: center;margin-top: 2vw">剩余特权任选 <b
+                    style="font-size: 7vw">{{restPrivilegeCount}}</b> 场
+            </div>
+
+            <table style="table-layout: fixed;width: 100%;mso-cellspacing:2vw">
+                <tbody>
+                <tr>
+                    <td @click="buyPrivilegeCard(item)" v-for="(item,index) of wosdomCardlist " :key="'buyPrivilegeCard' + index">
+                        <img style="width: 30vw;" :src="getcardSrcFor(item.cardId)" alt="">
+                        <p class="card-text" v-text="item.cardDesc"></p>
+                        <p class="card-price">
+                            <span style='text-decoration:line-through;' v-text="wosdomCardlist[index].originPrice/100"></span> <span v-text="wosdomCardlist[index].price/100"></span>
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="switchButton">
+            <div class="switchButtonLineView"></div>
+
+
+            <table style="table-layout: fixed;width: 100%;margin-top: -8vw">
+                <tbody>
+
+                <tr>
+                    <td>
+                        <div :style="leftLabelStyle" @click="chengeSlect('forecastMatchs')">精选预测</div>
+                    </td>
+                    <td>
+                        <div :style="rightLabelStyle" @click="chengeSlect('historyMatchs')">历史战绩</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div :style="switchButtonleftLineViewStyle"></div>
+                    </td>
+                    <td>
+                        <div :style="switchButtonRightLineViewStyle"></div>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+
+    <div v-show="selectStr != 'historyMatchs'" style="width: 100%;margin-top: 19vw;">
+        <div v-show="(forecastMatchs || []).length == 0 && selectStr != 'historyMatchs'"
+             style="width: 100%;
+                    height: 50vw;
+            text-align: center;
+               padding-top: 50vw;">
+            <span style="color: #828282">暂无比赛</span>
+        </div>
+
+        <div v-for="(item, index) in forecastMatchs" :style="matchUnLockCellColors[index%3]">
+            <img src="./img/lian-sai.png" alt="联赛标志" style="width: 16vw;height: 7.1vw;margin-left: 4vw;">
+            <p class="forecastMatchNameStyle" v-text="item.matchName"></p>
+            <p class="forecastMatchTimeStyle" v-text="item.matchDate + ' ' + item.matchTime"></p>
+            <table style="table-layout: fixed;width: 100%;margin-top: -4vw;" key="teameNametable">
+                <tbody>
+
+                <tr>
+                    <td>
+                        <img style="width: 11vw;height: 11vw;margin-left: 5vw;" :src="item.hostImg" alt="球队名称">
+                    </td>
+
+                    <td>
+                        <div style="color: white;font-size: 4vw;text-align: center;" v-text="item.hostName"></div>
+                    </td>
+
+                    <td>
+                        <div style="color: white;font-size: 4.8vw;text-align: center;">VS</div>
+                    </td>
+
+                    <td>
+                        <div style="color: white;font-size: 4vw;text-align: center;" v-text="item.awayName"></div>
+                    </td>
+
+                    <td>
+                        <img style="width: 11vw;height: 11vw;" :src="item.awayImg" alt="球队名称">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div @click="buyProgram(item)" v-show="item.isBuyed == 0" style="color: #FF5050;font-size: 4vw;text-align: center;width: 73vw;height: 8vw;background-color: white;border-radius: 4vw; margin-left: 10vw; margin-top: -3vw;">
+                <p style="padding-top: 1.3vw;" v-text="item.btnMsg"></p>
+            </div>
+
+            <div style="margin-top: -4vw; margin-left: 1vw;" v-show="item.isBuyed != 0">
+
+                <div style="width: 77vw;height: 14vw;border-radius: 1vw;background-color: #E8E0FD;    margin-left: 8vw;margin-top: 4vw;">
+
+                </div>
+                <div style="width: 80vw;height: 2.13vw;border-radius: 1vw;opacity: 0.7;background-color: #8062C4;margin-left: 7vw;margin-left: 6.5vw;margin-top: -15vw;">
+                </div>
+
+
+                <div style="margin-left: 12vw; font-size: 4vw; color: #666666;">总进球：<span style="color: #FF5050" v-text="oprationsPlayInfos(item.programInfo)[0]"></span></div>
+
+                <div style= "margin-left: 12vw; font-size: 4vw;color: #666666;">半全场：<span style="color: #FF5050" v-text="oprationsPlayInfos(item.programInfo)[1]"></span></div>
+            </div>
+
+            <p style="height: 1vw;"></p>
+
+        </div>
+
+    </div>
+
+    <div v-show="selectStr == 'historyMatchs'" style="width: 100%;margin-top: 19vw;">
+
+        <div v-for="(item, index) in historyMatchs" :style="matchUnLockCellColors[index%3]">
+
+
+            <img src="./img/lian-sai.png" alt="联赛标志" style="width: 16vw;height: 7.1vw;margin-left: 4vw;">
+            <p class="forecastMatchNameStyle" v-text="item.matchName"></p>
+            <p class="forecastMatchTimeStyle" v-text="item.matchDate + ' ' + item.matchTime"></p>
+            <table style="table-layout: fixed;width: 100%;margin-top: -4vw;" key="teameNametable">
+                <tbody>
+
+                <tr>
+                    <td>
+                        <img style="width: 11vw;height: 11vw;margin-left: 5vw;" :src="item.hostImg" alt="球队名称">
+                    </td>
+
+                    <td>
+                        <div style="color: white;font-size: 4vw;text-align: center;" v-text="item.hostName"></div>
+                    </td>
+
+                    <td>
+                        <div style="color: white;font-size: 4.8vw;text-align: center;" v-text="item.hostScore + ' : ' + item.awayScore"></div>
+                    </td>
+
+                    <td>
+                        <div style="color: white;font-size: 4vw;text-align: center;" v-text="item.awayName"></div>
+                    </td>
+
+                    <td>
+                        <img style="width: 11vw;height: 11vw;" :src="item.awayImg" alt="球队名称">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div style="color: #666666;font-size: 4vw;text-align: center;width: 73vw;height: 8vw;background-color: white;border-radius: 4vw; margin-left: 10vw; margin-top: -3vw;" @click="handleShowMessageClick(index)">
+                <p v-if="item.isRight == 0" style="padding-top: 1.3vw;" v-text="item.rightItem"></p>
+                <div v-if="item.isRight == 1" style="width: 16vw;height: 8vw;margin-top: 4vw;border-radius: 4vw;background-color: #FF5520;">
+                    <p style="color: white;padding-top: 1vw;">赢</p>
+                </div>
+
+                <div v-if="item.isRight == 1" style="width: 57vw;height: 8vw; margin-left: 16vw;
+    margin-top: -14vw;color: #FF5520;text-align: center;font-size: 4vw;">
+                    <p style="padding-top: 3vw;" v-text="buttonMessge(item.rightItem)"></p>
+                </div>
+            </div>
+
+            <p v-show="!item.islock" style="    margin-bottom: -4vw;margin-top: 2vw;font-size: 3vw;min-height: 4vw;width: 99%;margin-left: 0.5vw;color: #666666;text-align: center;" v-text="'总进球:' + oprationsPlayInfos(item.leftItem)[0] + ' ' + '半全场:' + oprationsPlayInfos(item.leftItem)[1]"></p>
+
+            <p style="height: 1vw;line-height: 1vw;"></p>
+        </div>
+
+    </div>
+    <div
+         style="width: 100%;
+                    height: 25vw;
+            text-align: center;
+               padding-top: 5vw;font-size: 3vw;">
+        <span style="color: #828282">合理参考，谨慎投注。</span>
+    </div>
+
+    <div v-if="isVip != 1" style="position: fixed;bottom: 0;width: 100%;height: 15vw;z-index: 3;background-repeat: no-repeat;background-size: 100%;background-color: #ffddd2">
+        <div style="background-color: #FF5520;width: 95%;height: 11vw;margin-left: 2.5vw;text-align: center;margin-top: 2vw;border-radius: 1vw">
+        </div>
+        <p @click="gotoNativeVipPage" style="color: white;width: 95%;font-size: 5vw;height: 11vw;margin-left: 2.5vw;text-align: center;margin-top: -8.5vw" v-text="adMessage"></p>
+    </div>
+</div>
+<script>
+    token = getCookie('token');
+    function nativePaySuccess() {
+        vm.initPage();
+    }
+
+    var vm = new Vue({
+        el: "#app",
+        data: {
+
+            selectStr: 'forecastMatchs',
+            matchUnLockCellColors:[
+                {
+                    backgroundColor:'#B396F7',
+                              width: '95vw',
+                           //  height: '44vw',
+                       borderRadius: '3vw',
+                         marginLeft: '2.5vw',
+                          marginTop: '4vw',
+                },
+                {
+                    backgroundColor:'#90A9FF',
+                    width: '95vw',
+                  //  height: '44vw',
+                    borderRadius: '3vw',
+                    marginLeft: '2.5vw',
+                    marginTop: '4vw',
+                },
+                {
+                    backgroundColor:'#FFBD66',
+                    width: '95vw',
+                  //  height: '44vw',
+                    borderRadius: '3vw',
+                    marginLeft: '2.5vw',
+                    marginTop: '4vw',
+                }
+            ],
+            leftLabelStyle: {
+                color: '#ff5050',
+                width: '49vw',
+                fontSize: '4vw',
+                height: '8vw',
+            },
+            rightLabelStyle: {
+                color: '#828282',
+                width: '49vw',
+                height: '8vw',
+                fontSize: '4vw',
+            },
+            switchButtonleftLineViewStyle: {
+                backgroundColor: '#ff5050',
+                width: '49vw',
+                height: '2px',
+                marginTop:'-1vw',
+            }, switchButtonRightLineViewStyle: {
+                backgroundColor: '#f0f0f0',
+                width: '49vw',
+                height: '2px',
+                marginTop:'-1vw',
+            },
+            currentvictory: [{
+                text: '近期命中率 ',
+                unit: '%',
+                number: '0'
+            }, {
+                text: '近期收益率 ',
+                unit: '%',
+                number: '0'
+            }],
+            restPrivilegeCount: 0,
+            isVip:0,
+            adMessage:'购买会员，5折查看稳胆',
+            wosdomCardlist: [],
+            forecastMatchs: [],
+            historyMatchs: []
+
+            //http://7vzspj.com2.z0.glb.clouddn.com/develop/football/466.png
+
+        },
+        beforeMount: function () {
+            this.initPage()
+        },
+        methods: {
+            chengeSlect: function (str) {
+                if (str != this.selectStr) {
+                    this.selectStr = str
+                    if (this.selectStr == 'historyMatchs') {
+
+                        this.rightLabelStyle.color = '#ff5050'
+                        this.leftLabelStyle.color = "#828282"
+                        this.switchButtonleftLineViewStyle.backgroundColor = '#f0f0f0'
+                        this.switchButtonRightLineViewStyle.backgroundColor = '#ff5050'
+                        // if () {
+                        this.getHistoryList()
+                        //}
+                    } else {
+                        this.rightLabelStyle.color = "#828282"
+                        this.leftLabelStyle.color = '#ff5050'
+                        this.switchButtonleftLineViewStyle.backgroundColor = '#ff5050'
+                        this.switchButtonRightLineViewStyle.backgroundColor = '#f0f0f0'
+                    }
+                }
+            },
+            getcardSrcFor:function (cardId) {
+                if (cardId == 1) {
+                    return './img/yin-card.png';
+                }else if (cardId == 2){
+                    return './img/jin-card.png';
+                }else  {
+                    return './img/zuan-card.png';
+                }
+
+            },
+            handleShowMessageClick: function (index) {
+                vm.historyMatchs[index].islock = !vm.historyMatchs[index].islock
+            },buyPrivilegeCard: function (item) {//购买特权卡
+
+                vm.pay(item.price/100,item.memo)
+
+            },buyProgram:function(item){
+                var that = this
+                if (that.restPrivilegeCount > 0 ){
+                    $.ajax({
+                        type: 'GET',
+                        url: '/activity/privilegeBuyProgram',
+                        data: {
+                            token: token,
+                            matchId:item.matchId
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+                            if (data.code == 0) {
+                                that.initPage()
+                            }
+                        }
+                    })
+                }else{
+                   if (that.isVip == 0) {
+                       that.pay(item.price/100,item.memo)
+                    }else {
+                       that.pay(item.vipPrice/100,item.memo)
+                    }
+
+                }
+
+            },initPage: function () {
+                var that = this
+                var param = {};
+                param.token = token;
+                $.ajax({
+                    type: 'GET',
+                    url: '/activity/danguanProgramInfo',
+                    data: param,
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            console.log(data.data)
+                            that.forecastMatchs = data.data.matchList || []
+                            that.wosdomCardlist = data.data.cardList || []
+                            that.currentvictory[0].number = data.data.rightNums
+                            that.currentvictory[1].number = data.data.awardNums
+                            that.restPrivilegeCount = data.data.LeftTimes
+                            that.isVip = data.data.isVip
+                        }
+                    }
+                })
+
+            },getHistoryList: function () {
+                var that = this
+                $.ajax({
+                    type: 'GET',
+                    url: '/activity/danguanProgramHistory',
+                    data: {
+                        token: token,
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            console.log(data.data)
+                            var list = []
+                            var length = (data.data.matchList || []).length
+                            for (i = 0 ;i < length ;i++ ){
+                                 data.data.matchList[i].islock = true
+                                 list.push(data.data.matchList[i])
+                            }
+                            that.historyMatchs  = list
+                        }
+                    }
+                })
+
+            },gotoNativeVipPage: function () {
+                if (token == "") {
+                    this.loginFuc();
+                    return;
+                }
+                openNativePage('mjlottery://mjnative?page=buyVip&type=1');
+            }, loginFuc: function () {
+
+                openNativePage("mjlottery://mjNative?page=login");
+                this.keepCheckToken();
+            },//递归检测token
+            keepCheckToken: function () {
+                var vm = this
+                token = getCookie('token');
+                if (token.length > 0){
+                    this.initPage()
+                    return
+                }else{
+                    setTimeout(function () {
+                        vm.keepCheckToken()
+                    },500);
+                }
+            },
+            //跳转充值页面
+            pay: function (price, payMemo) {
+                if (token == "") {
+                    this.loginFuc();
+                    return;
+                }
+                if (typeof(window.webkit) != "undefined") {
+                    window.webkit.messageHandlers.pay.postMessage({price: price +'', memo:payMemo})
+                }
+                if (typeof(webViewNative) != "undefined") {
+                    webViewNative.pay(price, payMemo);
+                }
+            },oprationsPlayInfos:function (playinfoString) {
+                if ((playinfoString || '').length == 0 ) {
+                    return ['',''];
+                }
+                var zongJinQiuString = ''
+                var banQuanChangStirng = ''
+
+                var zongJinQiu = (playinfoString.split('$') || [''])[0]
+                var banQuanChang = playinfoString.split('$')[1] || ''
+
+                var zongJinQiuArray = zongJinQiu.split(',')
+                var banQuanChangArray =  banQuanChang.split(',')
+
+                zongJinQiuArray.forEach( function ( item,index ) {
+
+                    var jinQiu = item.split(':')[0]
+                    var peiLv = item.split(':')[1]
+                    zongJinQiuString += ' ' + jinQiu + '（'  + peiLv + '）'
+
+                } );
+
+
+                banQuanChangArray.forEach( function ( item ,index) {
+                    var bqc = item.split(':')[0]
+                    var peiLv = item.split(':')[1]
+                    banQuanChangStirng += ' ' + bqc + '（'  + peiLv + '）'
+
+                } );
+
+
+                return [zongJinQiuString,banQuanChangStirng]
+            },buttonMessge:function (str) {
+                if (!str) {
+                    return '已完场'
+                }
+
+                var zongJinQiuStr = ''
+                var zongJinQiu = (str.split(',') || [''])[0] || ''
+                if (zongJinQiu.length > 0){
+                    var jinQiu = zongJinQiu.split(':')[0]
+                    var peiLv = zongJinQiu.split(':')[1]
+                    zongJinQiuStr += ' ' + jinQiu + '（'  + peiLv + '）'
+                }
+
+
+                var banQuanChangStr = ''
+                var banQuanChang = str.split(',')[1] || ''
+                if (banQuanChang.length > 0) {
+                    var jinQiu = banQuanChang.split(':')[0]
+                    var peiLv = banQuanChang.split(':')[1]
+                    banQuanChangStr += ' ' + jinQiu + '（'  + peiLv + '）'
+                }
+
+                if (zongJinQiuStr.length > 0 && banQuanChangStr.length > 0)  {
+                    return zongJinQiuStr + "，" +  banQuanChangStr
+                }else {
+                    if (zongJinQiuStr.length > 0) {
+                        return zongJinQiuStr
+                    }else{
+                        return banQuanChangStr
+                    }
+                }
+
+            }
+        },
+        computed: {}
+    })
+
+</script>
+
+</body>
+</html>

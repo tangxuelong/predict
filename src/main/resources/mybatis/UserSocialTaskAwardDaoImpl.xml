@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserSocialTaskAward">
+    <resultMap id="userSocialTaskAwardMap" type="userSocialTaskAward">
+        <result column="TASK_ID" property="taskId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="TASK_TYPE" property="taskType" jdbcType="INTEGER"/>
+        <result column="TASK_TIMES" property="taskTimes" jdbcType="INTEGER"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="IS_AWARD" property="isAward" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        TASK_ID, USER_ID, GAME_ID, PERIOD_ID, TASK_TYPE, TASK_TIMES, IS_AWARD
+    </sql>
+
+    <select id="getUserSocialTaskAwardByUnitKey" resultMap="userSocialTaskAwardMap" parameterType="map">
+        SELECT * FROM tb_user_social_task_award
+        WHERE
+        <if test="gameId!=null">
+            GAME_ID = #{gameId,jdbcType=BIGINT}
+        </if>
+        <if test="gameId==null">
+            GAME_ID is null
+        </if>
+        AND USER_ID = #{userId,jdbcType=BIGINT} AND PERIOD_ID =
+        #{periodId, jdbcType=VARCHAR} AND TASK_TYPE = #{taskType,jdbcType=INTEGER}
+    </select>
+
+    <select id="getUserSocialTaskAwardById" resultMap="userSocialTaskAwardMap" parameterType="map">
+        SELECT * FROM tb_user_social_task_award WHERE TASK_ID = #{taskId, jdbcType=VARCHAR}
+        <if test="isLock==true">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <select id="getEarlistNumUserSocialTask" parameterType="map" resultMap="userSocialTaskAwardMap">
+        SELECT * FROM tb_user_social_task_award WHERE IS_AWARD = #{isAward, jdbcType=INTEGER}
+        ORDER BY UPDATE_TIME LIMIT #{limitNum,jdbcType=INTEGER}
+    </select>
+
+    <update id="updateTaskTimesById" parameterType="map">
+        UPDATE tb_user_social_task_award SET TASK_TIMES = #{taskTimes,jdbcType=INTEGER}
+        <if test="isAward!=null">
+            , IS_AWARD = #{isAward,jdbcType=INTEGER}
+        </if>
+        WHERE TASK_ID = #{taskId, jdbcType=VARCHAR}
+        <if test="oldTaskTimes!=null">
+            AND TASK_TIMES = #{oldTaskTimes,jdbcType=INTEGER}
+        </if>
+    </update>
+
+    <update id="updateTaskIsAward" parameterType="map">
+        UPDATE tb_user_social_task_award SET IS_AWARD = #{isAward,jdbcType=INTEGER}
+        WHERE TASK_ID = #{taskId, jdbcType=VARCHAR} AND IS_AWARD = #{lastIsAward,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="activityUserLog">
+        INSERT INTO tb_user_social_task_award(<include refid="Base_Column_List"/>)
+        VALUES (
+        #{taskId,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT},#{gameId,jdbcType=BIGINT},
+        #{periodId,jdbcType=VARCHAR}, #{taskType, jdbcType=INTEGER},#{taskTimes,jdbcType=INTEGER},
+        #{isAward,jdbcType=INTEGER}
+        )
+    </insert>
+</mapper>

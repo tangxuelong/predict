@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MatchInfo">
+    <resultMap id="matchInfoMap" type="matchInfo">
+        <result column="MATCH_ID" property="matchId" jdbcType="INTEGER"/>
+        <result column="MATCH_TAG_ID" property="matchTagId" jdbcType="VARCHAR"/>
+        <result column="MATCH_TIME" property="matchTime" jdbcType="TIMESTAMP"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getMatchInfoByMatchId" resultMap="matchInfoMap" parameterType="map">
+        select * from tb_match_info WHERE MATCH_ID = #{matchId,jdbcType=INTEGER}
+        <if test="isLock==true">
+            for update
+        </if>
+    </select>
+
+    <select id="getMatchInfoByTagId" resultMap="matchInfoMap" parameterType="map">
+        select * from tb_match_info WHERE MATCH_TIME &gt;= now() and MATCH_TAG_ID like
+        CONCAT('%', CONCAT(#{tagId, jdbcType=VARCHAR}, '%')) order by MATCH_TIME
+    </select>
+
+    <select id="getAllNoStartMatchInfo" resultMap="matchInfoMap">
+        select * from tb_match_info where MATCH_TIME &gt;= now()
+        <if test="tagId!=null">
+            and MATCH_TAG_ID like CONCAT('%', CONCAT(#{tagId, jdbcType=VARCHAR}, '%'))
+        </if>
+        order by MATCH_TIME
+    </select>
+
+    <select id="getAllTagMatchInfo" resultMap="matchInfoMap">
+        select * from tb_match_info where MATCH_TAG_ID is not null
+    </select>
+
+    <select id="getAllTagMatchId" resultType="java.lang.Integer">
+        select MATCH_ID from tb_match_info
+    </select>
+
+    <update id="update" parameterType="matchInfo">
+        UPDATE tb_match_info
+        SET MATCH_TAG_ID = #{matchTagId,jdbcType=VARCHAR}, MATCH_TIME = #{matchTime,jdbcType=TIMESTAMP}
+        WHERE MATCH_ID = #{matchId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateMatchTagId" parameterType="map">
+        UPDATE tb_match_info
+        SET MATCH_TAG_ID = #{newTags,jdbcType=VARCHAR}
+        WHERE MATCH_ID = #{matchId,jdbcType=INTEGER}
+        <if test="oldTags!=null">
+            and MATCH_TAG_ID = #{oldTags,jdbcType=VARCHAR}
+        </if>
+        <if test="oldTags==null">
+            and MATCH_TAG_ID is null
+        </if>
+    </update>
+
+    <update id="saveMatchRemark" parameterType="map">
+        UPDATE tb_match_info
+        SET REMARK = #{newRemark,jdbcType=VARCHAR}
+        WHERE MATCH_ID = #{matchId,jdbcType=INTEGER}
+        <if test="oldRemark!=null">
+            and REMARK = #{oldRemark,jdbcType=VARCHAR}
+        </if>
+        <if test="oldRemark==null">
+            and REMARK is null
+        </if>
+    </update>
+
+    <insert id="insert" parameterType="matchInfo">
+        INSERT INTO tb_match_info (MATCH_ID, MATCH_TAG_ID, MATCH_TIME)
+        VALUES (#{matchId,jdbcType=INTEGER}, #{matchTagId,jdbcType=VARCHAR}, #{matchTime,jdbcType=TIMESTAMP})
+    </insert>
+</mapper>

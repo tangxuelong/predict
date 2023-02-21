@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserFeedback">
+    <resultMap id="userFeedbackMap" type="userFeedback">
+        <result column="FEEDBACK_ID" property="feedbackId" jdbcType="INTEGER"/>
+        <result column="CONTENT" property="content" jdbcType="LONGVARCHAR"/>
+        <result column="USER_TOKEN" property="userToken" jdbcType="VARCHAR"/>
+        <result column="CONTACT" property="contact" jdbcType="VARCHAR"/>
+        <result column="IS_SEND" property="isSend" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        FEEDBACK_ID, CONTENT, USER_TOKEN, CONTACT, IS_SEND, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <sql id="Insert_Column_List">
+        CONTENT, USER_TOKEN, CONTACT, IS_SEND, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUnSendContent" resultMap="userFeedbackMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_FEEDBACK
+        where IS_SEND = 0
+    </select>
+
+    <insert id="insert" parameterType="userFeedback">
+        INSERT INTO TB_USER_FEEDBACK
+        (<include refid="Insert_Column_List"/>)
+        VALUES (#{content,jdbcType=VARCHAR},
+        #{userToken,jdbcType=LONGVARCHAR}, #{contact,jdbcType=VARCHAR}, 0, now(), now())
+    </insert>
+
+    <update id="update" parameterType="userFeedback">
+        UPDATE TB_USER_FEEDBACK SET IS_SEND = 1,
+        UPDATE_TIME = now()
+        WHERE FEEDBACK_ID = #{feedbackId,jdbcType=INTEGER}
+    </update>
+</mapper>

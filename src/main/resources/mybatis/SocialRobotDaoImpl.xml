@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SocialRobot">
+    <resultMap id="BaseResultMap" type="socialRobot">
+        <id column="ROBOT_ID" property="robotId" jdbcType="INTEGER"/>
+        <result column="ROBOT_USER_ID" property="robotUserId" jdbcType="BIGINT"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="IS_ENABLE" property="isEnable" jdbcType="INTEGER"/>
+        <result column="ROBOT_TYPE" property="robotType" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ROBOT_ID, ROBOT_USER_ID, ROBOT_TYPE, CREATE_TIME
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_social_robot
+        where ROBOT_ID = #{robotId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getAllSocialRobot" resultMap="BaseResultMap" parameterType="map">
+        SELECT * FROM tb_social_robot WHERE IS_ENABLE = #{isEnable, jdbcType=INTEGER} AND ROBOT_TYPE
+        =#{robotType, jdbcType=INTEGER} ORDER BY ROBOT_ID
+    </select>
+
+    <select id="getAllRobotUserIds" resultType="java.lang.Long">
+        select ROBOT_USER_ID from tb_social_robot
+    </select>
+
+    <insert id="insert" parameterType="com.mojieai.predict.entity.po.SocialRobot">
+        insert into tb_social_robot (ROBOT_ID, ROBOT_USER_ID, ROBOT_TYPE, CREATE_TIME)
+        values (#{robotId,jdbcType=INTEGER}, #{robotUserId,jdbcType=BIGINT}, #{robotType, jdbcType=INTEGER}, now())
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.mojieai.predict.entity.po.SocialRobot">
+        update tb_social_robot
+        <set>
+            <if test="robotUserId != null">
+                ROBOT_USER_ID = #{robotUserId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where ROBOT_ID = #{robotId,jdbcType=INTEGER}
+    </update>
+</mapper>

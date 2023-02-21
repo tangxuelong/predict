@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        // 调用分享按钮
+        function share() {
+            var url = "http://sportsimg.mojieai.com/zhcpyc_4.1_test.apk"
+            if (typeof(window.webkit) != "undefined") {
+                var iosUrl = 'itms-services://?action=download-manifest&url=https://raw.githubusercontent.com/chd123456/getEE/master/Lottery.plist'
+                window.webkit.messageHandlers.gotoAppStore.postMessage({body: iosUrl})
+                // window.webkit.messageHandlers.pay.postMessage({price: '0.01', memo: 'memo'})
+            } else {
+                if (typeof(webViewNative) != "undefined") {
+                    //alert("android share");
+//                    webViewNative.innerShareOpen('0.01','memo')
+                    webViewNative.downloadApk(url);
+//                     webViewNative.pay('0.01', 'memo');
+                }
+            }
+
+            // if (typeof(window.jsCallNativeObjc) != "undefined") {
+            //     window.jsCallNativeObjc.downloadApk(url)
+            // } else {
+            //     if (typeof(shareAndroid) != "undefined") {
+            //         shareAndroid.downloadApk(url)
+            //     } else {
+            //         window.location.href = url;
+            //     }
+            // }
+
+        }
+
+        function openNativePage(params) {
+            if (typeof(window.webkit) != "undefined") {
+                window.webkit.messageHandlers.goNative.postMessage({body: params})
+            } else {
+                if (typeof(webViewNative) != "undefined") {
+                    webViewNative.goNative(params)
+                } else {
+                    window.location.href = params
+                }
+            }
+        }
+
+        function nativePaySuccess() {
+            alert("客服端通知支付成功")
+        }
+    </script>
+</head>
+<body>
+Hello word!
+<button onclick="share()">vip</button>
+
+<button onclick="openNativePage('mjlottery://mjnative?page=footballMatchDetail&matchId=705820')">SportsVip</button>
+</body>
+</html>

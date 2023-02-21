@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PeriodSchedule">
+    <resultMap id="periodScheduleMap" type="periodSchedule">
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="IF_AWARD" property="ifAward" jdbcType="INTEGER"/>
+        <result column="AWARD_TIME" property="awardTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_AWARD_INFO" property="ifAwardInfo" jdbcType="INTEGER"/>
+        <result column="AWARD_INFO_TIME" property="awardInfoTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_TREND_CACHE" property="ifTrendCache" jdbcType="INTEGER"/>
+        <result column="CACHE_TIME" property="cacheTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_TREND_DB" property="ifTrendDB" jdbcType="INTEGER"/>
+        <result column="DB_TIME" property="dbTime" jdbcType="TIMESTAMP"/>
+        <result column="IF_AWARD_AREA" property="ifAwardArea" jdbcType="INTEGER"/>
+        <result column="AWARD_AREA_TIME" property="awardAreaTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="periodSchedule">
+        INSERT INTO TB_PERIOD_SCHEDULE(GAME_ID, PERIOD_ID, IF_AWARD, IF_AWARD_INFO,
+        IF_TREND_CACHE, IF_TREND_DB, IF_AWARD_AREA, CREATE_TIME)
+        VALUES (#{gameId,jdbcType=BIGINT}, #{periodId,jdbcType=VARCHAR}, #{ifAward,jdbcType=INTEGER},
+        #{ifAwardInfo,jdbcType=INTEGER}, #{ifTrendCache,jdbcType=INTEGER}, #{ifTrendDB,jdbcType=INTEGER},
+        #{ifAwardArea,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="getUnFinishedSchedules" resultMap="periodScheduleMap" parameterType="map">
+		select * from TB_PERIOD_SCHEDULE
+        where game_id = #{gameId,jdbcType=BIGINT} and <![CDATA[period_id <= #{periodId, jdbcType=VARCHAR}
+        ]]>
+        and (IF_AWARD = 0 or IF_TREND_CACHE = 0 or IF_TREND_DB = 0 or IF_AWARD_INFO = 0 or IF_AWARD_AREA = 0)
+	</select>
+
+    <select id="getPeriodSchedule" resultMap="periodScheduleMap" parameterType="map">
+        select * from TB_PERIOD_SCHEDULE where game_id = #{gameId,jdbcType=BIGINT}
+        AND period_id = #{periodId,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updatePeriodSchedule" parameterType="map">
+        UPDATE TB_PERIOD_SCHEDULE
+        set ${flagColumn} = 1 , ${timeColumn} = now()
+        where game_id = #{gameId,jdbcType=BIGINT} AND period_id = #{periodId,jdbcType=VARCHAR} and ${flagColumn} = 0
+    </update>
+
+    <!--below sql only used for test scenario-->
+    <update id="initPeriodSchedule" parameterType="map">
+        UPDATE TB_PERIOD_SCHEDULE
+        set ${flagColumn} = 0 , ${timeColumn} = NULL
+        where game_id = #{gameId,jdbcType=BIGINT} AND period_id = #{periodId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getSlavePeriodSchedulesByDate" resultMap="periodScheduleMap" parameterType="java.util.Map">
+        SELECT * FROM TB_PERIOD_SCHEDULE
+        WHERE <![CDATA[CREATE_TIME <= #{date,jdbcType=TIMESTAMP}
+        ]]>
+    </select>
+
+    <insert id="insert2Bak" parameterType="periodSchedule">
+        INSERT INTO TB_PERIOD_SCHEDULE_BAK(GAME_ID, PERIOD_ID, IF_AWARD, IF_AWARD_INFO, IF_TREND_CACHE,
+        IF_TREND_DB, IF_AWARD_AREA, CREATE_TIME, UPDATE_TIME)
+        VALUES (#{gameId,jdbcType=BIGINT}, #{periodId,jdbcType=VARCHAR}, #{ifAward,jdbcType=INTEGER},
+        #{ifAwardInfo,jdbcType=INTEGER}, #{ifTrendCache,jdbcType=INTEGER}, #{ifTrendDB,jdbcType=INTEGER},
+        #{ifAwardArea,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <delete id="deleteCompleteSchedule" parameterType="java.util.Map">
+        DELETE
+        FROM TB_PERIOD_SCHEDULE
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="getSlaveBakPeriodSchedule" parameterType="java.util.Map" resultMap="periodScheduleMap">
+        SELECT * FROM TB_PERIOD_SCHEDULE_BAK
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getSlavePeriodSchedule" parameterType="java.util.Map" resultMap="periodScheduleMap">
+        SELECT * FROM TB_PERIOD_SCHEDULE
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+    </select>
+</mapper>

@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>答题赢千元现金</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <link rel="stylesheet" href="style/pure-min.css"/>
+    <link rel="stylesheet" href="style/layout.css"/>
+    <meta name="format-detection" content="telephone=no">
+    <script src="script/config.js"></script>
+    <link rel="stylesheet" href="script/swiper-3.4.2.min.css">
+    <script src="script/swiper-3.4.2.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: url("https://ohduoklem.qnssl.com/festival-bg.png") no-repeat;
+            background-size: 100% auto;
+            padding-bottom: 2rem;
+        }
+
+        .banner {
+            position: relative;
+        }
+
+        /* bnaner*/
+        .banner img {
+            display: block;
+            width: 100%;
+        }
+
+        .award-pool {
+            position: relative;
+        }
+
+        .award-pool .award-pool-bg {
+            display: block;
+            width: 100%;
+        }
+
+        .award-pool-text {
+            text-align: center;
+            position: absolute;
+            top: 0.75rem;
+            margin-left: -1.5rem;
+            left: 50%;
+            width: 3rem;
+            height: 0.59rem;
+            font-size: 0.64rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(192, 130, 53, 1);
+            line-height: 0.65rem;
+        }
+
+        .award-pool-text-2 {
+            text-align: center;
+            position: absolute;
+            top: 1.38rem;
+            margin-left: -1.5rem;
+            left: 50%;
+            width: 3rem;
+            height: 0.59rem;
+            font-size: 0.3rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(192, 130, 53, 1);
+            line-height: 0.65rem;
+        }
+
+        .award-pool-text-span {
+            font-size: 0.3rem;
+        }
+
+        .festival-index-answer-button {
+            position: absolute;
+            top: 2.34rem;
+            left: 50%;
+            width: 3.58rem;
+            height: 0.83rem;
+            line-height: 0.83rem;
+            margin-left: -1.79rem;
+            background: url("https://ohduoklem.qnssl.com/festival-index-button.png") no-repeat;
+            background-size: 100% 100%;
+            text-decoration: none;
+            color: #fff;
+            font-size: 0.27rem;
+            text-align: center;
+        }
+
+        .left-time-text {
+            position: absolute;
+            bottom: 0.34rem;
+            text-align: center;
+            width: 100%;
+            height: 0.22rem;
+            font-size: 0.24rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 255, 255, 1);
+            line-height: 0.65rem;
+        }
+
+        .short-intro {
+            width: 5.35rem;
+            height: 0.5rem;
+            font-size: 0.22rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 255, 255, 1);
+            line-height: 0.27rem;
+            opacity: 0.8;
+            padding: 0.2rem;
+        }
+
+        .my-award-list .my-award-tt {
+            width: 100%;
+        }
+
+        .my-award-total-top img, .my-award-total-bottom img {
+            display: block;
+            width: 100%;
+        }
+
+        .my-award-total-middle p {
+            display: block;
+            background: url("https://ohduoklem.qnssl.com/festival-my-award-total-middle.png") repeat-y;
+            background-size: 100% auto;
+            height: 0.3rem;
+            padding: 0.2rem 0.7rem 0.5rem 0.7rem;
+            font-size: 0.27rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(192, 130, 53, 1);
+            line-height: 0.65rem;
+            position: relative;
+        }
+
+        .festival-withdraw-button {
+            position: absolute;
+            right: 0.5rem;
+            bottom: 0.1rem;
+            height: 0.58rem;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+        .total-nums {
+            font-size: 0.45rem;
+        }
+
+        .records div {
+            display: block;
+            background: url('img/records-bg-1.png') repeat-y;
+            background-size: 100% auto;
+        }
+
+        .records-bottom {
+            display: block;
+            width: 100%;
+        }
+
+        .record-title p {
+            text-align: center;
+            font-size: 0.27rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 214, 163, 1);
+            line-height: 0.65rem;
+        }
+
+        .record-title span {
+            display: block;
+            width: 5.4rem;
+            height: 0.02rem;
+            background: rgba(224, 143, 138, 1);
+            margin: 0 auto;
+        }
+
+        .record {
+            position: relative;
+            width: 5.4rem;
+            margin: 0 auto;
+            height: 0.55rem;
+        }
+
+        .record .yuan {
+            position: absolute;
+            left: 0;
+            width: 2rem;
+            font-size: 0.27rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 214, 163, 1);
+            line-height: 0.65rem;
+        }
+
+        .record .yuan .money {
+            font-size: 0.36rem;
+        }
+
+        .record .date {
+            text-align: right;
+            position: absolute;
+            right: 0;
+            font-size: 0.27rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 214, 163, 1);
+            line-height: 0.65rem;
+        }
+
+        .toast-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 100%;
+            top: 100%;
+            z-index: 2999;
+        }
+
+        .toast {
+            position: absolute;
+            top: -56%;
+            left: -50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            padding: 13px 16px;
+            font-size: 14px;
+            border-radius: 2px;
+            width: auto;
+            /*颜色*/
+            color: #ccc;
+            background: rgba(37, 38, 45, 0.9);
+            /*可以输入的字数的宽度*/
+            max-width: 16em;
+        }
+
+        .award-popup {
+            background: #000;
+            opacity: 0.7;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .award-popup-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .award-right {
+            position: absolute;
+            top: 40%;
+            margin-top: -3rem;
+            width: 90%;
+            margin-left: 5%;
+            height: 6.36rem;
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .showWithDraw {
+            height: 3.36rem;
+        }
+
+        .showRuleWindow {
+            height: 4.86rem;
+        }
+
+        .showOverWindow {
+            height: 5.45rem;
+        }
+
+        .award-relative {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .award-rule {
+            font-size: 0.26rem;
+            color: #772d00;
+            background: #fff;
+            width: 90%;
+            margin-left: -45%;
+            height: 8rem;
+            border-radius: 0.1rem;
+        }
+
+        .award-rule .overflow {
+            overflow: scroll;
+        }
+
+        .award-rule p {
+            margin: 0 5%;
+        }
+
+        .award-rule p span {
+            font-weight: 900;
+            margin: 0.1rem 0 0 0;
+            display: block;
+        }
+
+        .award-rule img {
+            width: 44%;
+            margin-left: 28%;
+            margin-top: 0.3rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .award-rule img.close {
+            width: 0.5rem;
+            top: -0.2rem;
+            right: -0.2rem;
+            margin-top: 0;
+        }
+
+        .margin-top-none {
+            margin-top: 0;
+        }
+
+        .padding-top {
+            padding-top: 0.15rem;
+        }
+
+        .color-red {
+            color: #ff4e6f;
+        }
+
+        .hese {
+            color: #da7600;
+        }
+
+        .popup-bg {
+            width: 100%;
+        }
+
+        .popup-bg-top {
+            position: absolute;
+            width: 100%;
+            display: block;
+            top: 0;
+        }
+
+        .popup-bg-bottom {
+            position: absolute;
+            width: 100%;
+            display: block;
+            bottom: 0;
+        }
+
+        .close-button {
+            position: absolute;
+            width: 0.4rem;
+            top: -0.5rem;
+            right: 0rem;
+        }
+
+        .content {
+            position: absolute;
+            top: 0.2rem;
+            width: 90%;
+            margin-left: 5%;
+            z-index: 1000;
+        }
+
+        .award-right .content p {
+            color: #333;
+            font-size: 0.24rem;
+            text-align: left;
+            margin: 0.2rem 0;
+        }
+
+        .award-pop {
+            top: 50%;
+        }
+
+        .answer {
+            border: 1px solid #333;
+            height: 0.82rem;
+            line-height: 0.82rem;
+            text-indent: 0.2rem;
+        }
+
+        .choose-right {
+            border: 1px solid #59d761;
+            background: url("img/festival-choose-right.png") no-repeat;
+            background-position: 97% 50%;
+            background-size: auto 40%;
+        }
+
+        .choose-which {
+            border: 1px solid #EAA045;
+            background: url("img/festival-choose.png") no-repeat;
+            background-position: 97% 50%;
+            background-size: auto 40%;
+        }
+
+        .choose-wrong {
+            border: 1px solid #EAA045;
+            background: url("https://ohduoklem.qnssl.com/festival-choose-wrong.png") no-repeat;
+            background-position: 97% 50%;
+            background-size: auto 40%;
+        }
+
+        .award-right .content p.choose-right {
+            color: #59d761;
+        }
+
+        .award-right .content p.choose-which {
+            color: #EAA045;
+        }
+
+        .award-right .content p.choose-wrong {
+            color: #EAA045;
+        }
+
+        .question-left-time {
+            position: absolute;
+            width: 1.18rem;
+            height: 1.18rem;
+            background: rgba(255, 255, 255, 1);
+            color: #FF733C;
+            text-align: center;
+            line-height: 1.18rem;
+            font-size: 0.28rem;
+            border-radius: 0.59rem;
+            top: -0.39rem;
+            left: 50%;
+            margin-left: -0.59rem;
+        }
+
+        .question-left-time-seconds {
+            font-size: 0.55rem;
+        }
+
+        .award-right .content p.question-intro {
+            font-size: 0.2rem;
+            font-family: PingFangSC-Regular;
+            color: #999;
+            line-height: 0.3rem;
+            margin: 0;
+        }
+
+        .answer-button {
+            background-image: -webkit-linear-gradient(to bottom, #DB9A4A, #FFC174);
+            background-image: linear-gradient(to bottom, #DB9A4A, #FFC174);
+            background-size: 100% 100%;
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            color: #fff;
+            font-size: 0.27rem;
+            line-height: 0.7rem;
+            text-align: center;
+            margin-top: 0.2rem;
+        }
+
+        .answer-next {
+
+        }
+
+        .question-index {
+            color: #333;
+            width: 100%;
+            font-size: 0.27rem;
+            text-align: center;
+            position: absolute;
+            bottom: 0.2rem;
+        }
+
+        .award-right .content p.over-title {
+            font-size: 0.36rem;
+            font-family: PingFangSC-Regular;
+            line-height: 0.35rem;
+            color: #333333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            margin-top: 0.2rem;
+        }
+
+        .award-right .content p.over-title-intro {
+            font-size: 0.27rem;
+            font-family: PingFangSC-Regular;
+            line-height: 0.65rem;
+            color: #333333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .award-right .content p.showWithDraw-over-title-intro {
+            font-size: 0.27rem;
+            font-family: PingFangSC-Regular;
+            line-height: 0.45rem;
+            color: #333333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            margin-top: 1rem;
+        }
+
+        .award-right .content p.gold-color {
+            color: #D2812A;
+            margin-top: 0;
+            line-height: 0.55rem;
+        }
+
+        .award-right .content p.over-img {
+            text-align: center;
+        }
+
+        .award-right .content p.over-img img {
+            height: 1.62rem;
+        }
+
+        .award-right .content p.over-img-title-1 {
+            font-size: 0.31rem;
+            font-family: PingFangSC-Regular;
+            line-height: 0.65rem;
+            color: #4E82B6;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .banner img.banner-img-rule {
+            position: absolute;
+            top: 0;
+            right: 0.2rem;
+            width: 0.6rem;
+        }
+
+        .content .rule-title-img {
+            width: 60%;
+            margin-left: 20%;
+            display: block;
+        }
+
+        .content p.rule-title {
+            font-size: 0.26rem;
+            font-weight: 400;
+            margin: 0.1rem 0;
+        }
+
+        .content p.rule-content {
+            font-size: 0.26rem;
+            margin: 0.1rem 0;
+        }
+
+        .rule-remark {
+            font-size: 0.22rem;
+            color: #ff5050;
+            width: 4.4rem;
+            text-align: center;
+            margin: 0 auto;
+            position: absolute;
+            bottom: 0.1rem;
+            left: 50%;
+            margin-left: -2.2rem;
+        }
+
+        .award-right .content p.rank-pool {
+            position: relative;
+            margin: 0 0 0.5rem 0;
+        }
+
+        p.rank-pool span.left {
+            position: absolute;
+            left: 0;
+        }
+
+        p.rank-pool span.right {
+            position: absolute;
+            right: 0;
+        }
+
+        p.rank-pool span.left .big-font {
+            font-size: 0.32rem;
+            color: #333;
+        }
+
+        p.rank-pool span.right .big-font {
+            font-size: 0.32rem;
+            color: #333;
+        }
+
+        .rank-user .left img {
+            display: inline-block;
+            width: 0.55rem;
+            height: 0.55rem;
+            border-radius: 0.275rem;
+            vertical-align: middle;
+            border: 1px solid #d8d8d8;
+        }
+
+        p.rank-user {
+            line-height: 1rem;
+        }
+
+        p.rank-user span {
+            line-height: 1rem;
+        }
+
+        p.rank-user span.left {
+            position: absolute;
+            left: 0;
+        }
+
+        p.rank-user span.center {
+            position: absolute;
+            width: 3rem;
+            left: 50%;
+            margin-left: -1.5rem;
+            text-align: center;
+        }
+
+        p.rank-user span.right {
+            position: absolute;
+            right: 0;
+        }
+
+        .award-right .content p.question {
+            margin: 0.38rem 0 0 0;
+        }
+
+        .rankList {
+            position: relative;
+            height: 0.6rem;
+        }
+
+        .rankoverflow {
+            overflow: scroll;
+            height: 3.6rem;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+
+    <div class="banner">
+        <img src="https://ohduoklem.qnssl.com/festival-banner.png" alt="">
+        <img class="banner-img-rule" v-on:click="showRule" src="https://ohduoklem.qnssl.com/festival-banner-rule.png"
+             alt="">
+    </div>
+    <div class="award-pool">
+        <img class="award-pool-bg" src="https://ohduoklem.qnssl.com/festival-awardpool-bg.png" alt="">
+
+        <!--<p class="award-pool-text"><span v-text="awardPool"></span><span class="award-pool-text-span">元</span></p>-->
+        <p class="award-pool-text"><span class="award-pool-text-span">活动已结束</span></p>
+
+        <p class="award-pool-text-2">今日奖池</p>
+
+        <a href="javascript:void(0)" v-show="!isOver" v-on:click="question"
+           class="festival-index-answer-button">答题分奖金</a>
+
+        <a href="javascript:void(0)" v-show="isOver" v-on:click="showRankPoolWindow"
+           class="festival-index-answer-button">查看奖池</a>
+
+        <!--<p class="left-time-text" v-text="leftTime"></p>-->
+        <p class="left-time-text">活动已结束</p>
+    </div>
+    <div class="short-intro">
+        <p>
+            *奖池初始1000元，每有一个人答题，奖池金额+1元 </br>
+            今晚8点公布成绩瓜分奖池
+        </p>
+    </div>
+    <div class="my-award-list">
+        <img class="my-award-tt" src="https://ohduoklem.qnssl.com/festival-my-award-tt.png" alt="">
+        <div class="my-award-total">
+            <div class="my-award-total-top">
+                <img src="https://ohduoklem.qnssl.com/festival-my-award-total-top.png" alt="">
+            </div>
+            <div class="my-award-total-middle">
+                <p>共计<span class="total-nums" v-text="total"></span>元 <img v-on:click="withdraw"
+                                                                           class="festival-withdraw-button"
+                                                                           src="https://ohduoklem.qnssl.com/festival-withdraw-button.png"
+                                                                           alt=""></p>
+            </div>
+            <div class="my-award-total-bottom">
+                <img src="https://ohduoklem.qnssl.com/festival-my-award-total-bottom.png" alt="">
+            </div>
+        </div>
+        <div class="records" v-show="total!=0">
+            <div class="record-title">
+                <p>记录明细</p>
+                <span></span>
+            </div>
+
+            <div v-for="myAward in myAwardList">
+                <p class="record">
+                    <span class="yuan"><span class="money" v-text="myAward.award">1.3</span>元</span>
+                    <span class="date" v-text="myAward.dateId">2018-02-10</span>
+                </p>
+            </div>
+            <img class="records-bottom" src="img/records-bg-2.png" alt="">
+        </div>
+    </div>
+    <div class="award-popup" v-show="showQuestion||showOver||showWithDraw||showRuleWindow||showRankPool">
+    </div>
+    <div class="award-popup-fixed" v-show="showQuestion||showOver||showWithDraw||showRuleWindow||showRankPool">
+        <!-- 答题弹窗-->
+        <div class="award-right award-pop" v-show="showQuestion">
+            <img class="popup-bg-top" src="https://ohduoklem.qnssl.com/festival-popup-top.png" alt="">
+            <img class="popup-bg-bottom" src="https://ohduoklem.qnssl.com/festival-popup-bottom.png" alt="">
+            <div class="content">
+                <p class="question" v-text="(todayQuestionNum+1)+'.'+Question"></p>
+                <p v-on:click="chooseAS" class="answer" id="answerA" v-text="answerA"></p>
+                <p v-on:click="chooseBS" class="answer" id="answerB" v-text="answerB"></p>
+                <p v-on:click="chooseCS" class="answer" id="answerC" v-text="answerC"></p>
+                <p class="question-intro">
+                    点击选项，完成答题
+                </p>
+                <a v-on:click="submitAnswer" class="answer-button answer-next" v-show="showSubmit"
+                   href="javascript:void(0)">
+                    提交答案
+                </a>
+                <a v-on:click="question" class="answer-button answer-next" v-show="showNext" href="javascript:void(0)">
+                    下一题
+                </a>
+                <a v-on:click="lookMyName" class="answer-button answer-next" v-show="showLookMyName"
+                   href="javascript:void(0)">
+                    答题结束
+                </a>
+            </div>
+            <p class="question-index"><span v-text="(todayQuestionNum+1)+'/10'"></span></p>
+            <div class="question-left-time">
+                <span><span class="question-left-time-seconds" v-text="questionLeftTime">10</span>s</span>
+            </div>
+        </div>
+
+        <!-- 答题结束弹窗-->
+        <div class="award-right award-pop showOverWindow" v-show="showOver">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg-top" src="https://ohduoklem.qnssl.com/festival-popup-top.png" alt="">
+            <img class="popup-bg-bottom" src="https://ohduoklem.qnssl.com/festival-popup-bottom.png" alt="">
+            <div class="content">
+                <p class="over-title" v-show="todayQuestionNum==10">恭喜！全部答对</p>
+                <p class="over-title-intro" v-show="todayQuestionNum==10">今晚8点公布成绩瓜分奖池</p>
+
+                <p class="over-title" v-show="todayQuestionNum!=10" v-text="'答对'+todayQuestionNum+'题'"></p>
+                <p class="over-title-intro" v-show="todayQuestionNum!=10"
+                   v-text="'还差'+parseInt(10-parseInt(todayQuestionNum))+'题就可以瓜分奖金'"></p>
+
+                <p class="over-img"><img v-bind:src="todayQuestionNumImg" alt=""></p>
+                <p class="over-img-title-1" v-text="todayQuestionNumImgTitle"></p>
+                <a v-on:click="close" class="answer-button answer-next"
+                   href="javascript:void(0)">
+                    明日再战
+                </a>
+            </div>
+        </div>
+
+        <!-- 提现-->
+        <div class="award-right award-pop showWithDraw" v-show="showWithDraw">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg-top" src="https://ohduoklem.qnssl.com/festival-popup-top.png" alt="">
+            <img class="popup-bg-bottom" src="https://ohduoklem.qnssl.com/festival-popup-bottom.png" alt="">
+            <div class="content">
+                <p class="showWithDraw-over-title-intro">添加客服微信：zhihuicp，领取现金红包</p>
+
+            </div>
+        </div>
+
+        <!--活动规则-->
+        <div class="award-right award-pop showRuleWindow" v-show="showRuleWindow">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg-top" src="https://ohduoklem.qnssl.com/festival-popup-top.png" alt="">
+            <img class="popup-bg-bottom" src="https://ohduoklem.qnssl.com/festival-popup-bottom.png" alt="">
+            <div class="content">
+                <img class="rule-title-img" src="https://ohduoklem.qnssl.com/festival-rule-title.png" alt="">
+                <p class="rule-title">答题规则:</p>
+                <p class="rule-content">一、2月15日-2月21日每天均可答题</p>
+                <p class="rule-content">二、每天奖池初始金额1000元，每有一人参与答题奖池金额增加一元</p>
+                <p class="rule-content">三、答对全部10道题的人可以平分当日奖池金额</p>
+            </div>
+            <p class="rule-remark">
+                备注：苹果用户领取金币后会保存，待新版本上线后可兑换会员或VIP预测
+            </p>
+        </div>
+
+        <!--高手榜单-->
+        <div class="award-right award-pop showRankPool" v-show="showRankPool">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg-top" src="https://ohduoklem.qnssl.com/festival-popup-top.png" alt="">
+            <img class="popup-bg-bottom" src="https://ohduoklem.qnssl.com/festival-popup-bottom.png" alt="">
+            <div class="content">
+                <img class="rule-title-img" src="https://ohduoklem.qnssl.com/rank-button.png" alt="">
+                <p class="showWithDraw-over-title-intro gold-color"
+                   v-show="selfAward!=0&&typeof(selfAward) != 'undefined'">恭喜您获得
+                    <span v-text="selfAward"></span>元
+                </p>
+                <p class="rank-pool">
+                    <span class="left">今日奖池：<span class="big-font" v-text="awardPool">1000</span>元</span> <span
+                        class="right">
+                    获奖人数：<span class="big-font" v-text="takeNum"></span>人</span>
+                </p>
+                <div class="rankoverflow">
+                    <div class="rankList" v-for="rankUser in rankList">
+                        <p class="rank-user">
+                    <span class="left">
+                        <img v-bind:src="rankUser.headImgUrl" alt="">
+                        <span v-text="rankUser.nickName"></span>
+                    </span>
+                            <span class="center" v-text="rankUser.award+'元'">
+
+                    </span>
+                            <span class="right" v-text="rankUser.dateId">
+
+                    </span>
+                        </p>
+                    </div>
+                </div>
+
+                <p style="text-align: center">以上为部分获奖名单</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+    function formatSeconds(value) {
+        var theTime = parseInt(value);// 秒
+        var theTime1 = 0;// 分
+        var theTime2 = 0;// 小时
+        // alert(theTime);
+        if (theTime > 60) {
+            theTime1 = parseInt(theTime / 60);
+            theTime = parseInt(theTime % 60);
+            // alert(theTime1+"-"+theTime);
+            if (theTime1 > 60) {
+                theTime2 = parseInt(theTime1 / 60);
+                theTime1 = parseInt(theTime1 % 60);
+            }
+        }
+        var result = "" + parseInt(theTime) + "秒";
+        if (theTime1 > 0) {
+            result = "" + parseInt(theTime1) + "分" + result;
+        }
+        if (theTime2 > 0) {
+            result = "" + parseInt(theTime2) + "小时" + result;
+        }
+        return result;
+    }
+    function toast(msg) {
+        var str = "<div class='toast-container' style='display:none'> <div class='toast'>" + msg + "</div></div>";
+        $('body').append(str);
+        $('.toast-container').stop().fadeIn(100).delay(1500).fadeOut(400); //fade out after 3 seconds
+        setTimeout(function () {
+            $('.toast-container').remove();
+        }, 3000);
+    }
+    //    setCookie('token', '06204b8d-f6b5-4028-886d-25ec90b5d68415', 1);
+    token = getCookie('token');
+    var app = new Vue({
+        el: '#app',
+        data: {
+            awardPool: 1000,
+            userId: '',// 页面加载使用token兑换
+            leftTime: "本轮截止：0小时00分00秒",
+            showQuestion: false,
+            showSubmit: false,
+            showNext: false,
+            showLookMyName: false,
+            showOver: false,
+            showWithDraw: false,
+            showRuleWindow: false,
+            showRankPool: false,
+            Question: "",
+            answerA: "",
+            answerB: "",
+            answerC: "",
+            answerARight: 0,
+            answerBRight: 0,
+            answerCRight: 0,
+            chooseWhich: -1,
+            questionLeftTime: 10,
+            chooseEnabled: false,
+            myAwardList: [],
+            total: 0,
+            showHaveDoQuestion: false,
+            todayQuestionNum: 0,
+            todayQuestionNumImg: "",
+            todayQuestionNumImgTitle: "",
+            questionId: "",
+            isOver: false,
+            takeNum: "0",
+            rankList: [],
+            selfAward: "0",
+        },
+        mounted: function () {
+            var index = this;
+            var token = getCookie('token');
+            // 如果未登录 登录
+            $.ajax({
+                type: 'POST',
+                url: '/activity/festivalIndexWithOutSign',
+                data: {
+                    'activityId': config.activityId,
+                    'token': token
+                },
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    index.$data.userId = data.data.userId;
+                    index.$data.awardPool = data.data.awardPool;
+                    index.$data.leftTime = "";
+                    index.$data.myAwardList = data.data.myAwardList;
+                    index.$data.total = data.data.total;
+                    index.$data.todayQuestionNum = data.data.todayQuestionNum;
+                    console.log('bbbbbbbbbbbbbbb');
+                    console.log(data.data.todayQuestionNum);
+                    if (data.data.todayQuestionNum > 0) {
+                        index.$data.showHaveDoQuestion = true;
+                        console.log('aaaaaaaaaaaa');
+                    }
+                    if (data.data.todayQuestionNum == -1) {
+                        index.$data.todayQuestionNum = 0;
+                        index.$data.showHaveDoQuestion = true;
+                    }
+                    leftTime = data.data.leftTime;
+                    if (data.data.leftTime > 0) {
+                        var timer = setInterval(function () {
+                            leftTime = leftTime - 1;
+                            index.$data.leftTime = "本轮截止：" + formatSeconds(leftTime);
+                        }, 1000);
+                    } else {
+                        index.$data.isOver = true;
+                        console.log('a');
+                        leftTime = data.data.tomorrowLeftTime;
+                        var timer = setInterval(function () {
+                            leftTime = leftTime - 1;
+                            index.$data.leftTime = "下一轮开始：" + formatSeconds(leftTime);
+                        }, 1000);
+                    }
+
+                }
+            })
+
+            $.ajax({
+                type: 'POST',
+                url: '/activity/rankWithOutSign',
+                data: {
+                    'activityId': config.activityId,
+                    'token': token
+                },
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    index.$data.takeNum = data.data.takeNum;
+                    index.$data.rankList = data.data.rankList;
+                    index.$data.selfAward = data.data.selfAward;
+                }
+            })
+        },
+        methods: {
+            showRankPoolWindow: function () {
+                var index = this;
+                index.$data.showRankPool = true;
+            },
+            showRule: function () {
+                var index = this;
+                index.$data.showRuleWindow = true;
+            },
+            withdraw: function () {
+                var index = this;
+                index.$data.showWithDraw = true;
+            },
+            close: function () {
+                var index = this;
+                index.$data.showOver = false;
+                index.$data.showQuestion = false;
+                index.$data.showSubmit = false;
+                index.$data.showNext = false;
+                index.$data.showLookMyName = false;
+                index.$data.showOver = false;
+                index.$data.showWithDraw = false;
+                index.$data.showRuleWindow = false;
+                index.$data.showRankPool = false;
+            },
+            chooseAS: function () {
+                var index = this;
+                if (index.$data.chooseEnabled) {
+                    $('#answerB').removeClass('choose-which');
+                    $('#answerC').removeClass('choose-which');
+                    $('#answerA').addClass('choose-which');
+                    index.$data.chooseWhich = 0;
+                }
+            },
+            chooseBS: function () {
+                var index = this;
+                if (index.$data.chooseEnabled) {
+                    $('#answerA').removeClass('choose-which');
+                    $('#answerC').removeClass('choose-which');
+                    $('#answerB').addClass('choose-which');
+                    index.$data.chooseWhich = 1;
+                }
+            },
+            chooseCS: function () {
+                var index = this;
+                if (index.$data.chooseEnabled) {
+                    $('#answerB').removeClass('choose-which');
+                    $('#answerA').removeClass('choose-which');
+                    $('#answerC').addClass('choose-which');
+                    index.$data.chooseWhich = 2;
+                }
+            },
+            chooseA: function () {
+                var index = this;
+                if (index.$data.answerARight == 1) {
+                    $('#answerA').removeClass('choose-which');
+                    $('#answerA').addClass('choose-right');
+                    $.ajax({
+                        type: 'POST',
+                        url: '/activity/questionRightWithOutSign',
+                        data: {
+                            'activityId': config.activityId,
+                            'token': token,
+                            'questionId': index.$data.questionId
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+
+                        }
+                    });
+                    if (index.$data.todayQuestionNum == 9) {
+                        index.$data.todayQuestionNum = 10;
+                        // 如果是第十题答题答对就不要显示下一题了，直接结束答题
+                        index.lookMyName();
+                    } else {
+
+                        index.$data.showNext = true;
+                    }
+                } else {
+                    if (index.$data.todayQuestionNum == 0) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/activity/questionWrongWithOutSign',
+                            data: {
+                                'activityId': config.activityId,
+                                'token': token,
+                                'questionId': index.$data.questionId
+                            },
+                            dataType: 'json',
+                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                            success: function (data) {
+//                                index.$data.todayQuestionNum = data.data.todayQuestionNum;
+//                                if (data.data.todayQuestionNum == -1) {
+//                                    index.$data.todayQuestionNum = 0;
+//                                }
+                            }
+                        });
+                    }
+                    $('#answerA').addClass('choose-wrong');
+                    console.log("answerA");
+                    index.$data.showLookMyName = true;
+                    index.$data.showHaveDoQuestion = true;
+                    if (index.$data.answerBRight == 1) {
+                        $('#answerB').addClass('choose-right');
+                    } else {
+                        $('#answerC').addClass('choose-right');
+                    }
+                }
+
+            },
+            chooseB: function () {
+                var index = this;
+                if (index.$data.answerBRight == 1) {
+                    $('#answerB').removeClass('choose-which');
+                    $('#answerB').addClass('choose-right');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/activity/questionRightWithOutSign',
+                        data: {
+                            'activityId': config.activityId,
+                            'token': token,
+                            'questionId': index.$data.questionId
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+                            //alert(a);
+//                            index.$data.todayQuestionNum = data.data.todayQuestionNum;
+//                            if (data.data.todayQuestionNum == -1) {
+//                                index.$data.todayQuestionNum = 0;
+//                            }
+                        }
+                    });
+
+                    if (index.$data.todayQuestionNum == 9) {
+                        // 如果是第十题答题答对就不要显示下一题了，直接结束答题
+                        index.$data.todayQuestionNum = 10;
+                        index.lookMyName();
+                    } else {
+
+                        index.$data.showNext = true;
+                    }
+                } else {
+                    if (index.$data.todayQuestionNum == 0) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/activity/questionWrongWithOutSign',
+                            data: {
+                                'activityId': config.activityId,
+                                'token': token,
+                                'questionId': index.$data.questionId
+                            },
+                            dataType: 'json',
+                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                            success: function (data) {
+                                index.$data.todayQuestionNum = data.data.todayQuestionNum;
+                                if (data.data.todayQuestionNum == -1) {
+                                    index.$data.todayQuestionNum = 0;
+                                }
+                            }
+                        });
+                    }
+                    $('#answerB').addClass('choose-wrong');
+                    console.log("answerA");
+                    index.$data.showLookMyName = true;
+                    index.$data.showHaveDoQuestion = true;
+                    if (index.$data.answerARight == 1) {
+                        $('#answerA').addClass('choose-right');
+                    } else {
+                        $('#answerC').addClass('choose-right');
+                    }
+                }
+            },
+            chooseC: function () {
+                var index = this;
+                if (index.$data.answerCRight == 1) {
+                    $('#answerC').removeClass('choose-which');
+                    $('#answerC').addClass('choose-right');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/activity/questionRightWithOutSign',
+                        data: {
+                            'activityId': config.activityId,
+                            'token': token,
+                            'questionId': index.$data.questionId
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+                            index.$data.todayQuestionNum = data.data.todayQuestionNum;
+                            if (data.data.todayQuestionNum == -1) {
+                                index.$data.todayQuestionNum = 0;
+                            }
+                        }
+                    });
+
+                    if (index.$data.todayQuestionNum == 9) {
+                        // 如果是第十题答题答对就不要显示下一题了，直接结束答题
+                        index.$data.todayQuestionNum = 10;
+                        index.lookMyName();
+                    } else {
+
+                        index.$data.showNext = true;
+                    }
+                } else {
+                    if (index.$data.todayQuestionNum == 0) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/activity/questionWrongWithOutSign',
+                            data: {
+                                'activityId': config.activityId,
+                                'token': token,
+                                'questionId': index.$data.questionId
+                            },
+                            dataType: 'json',
+                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                            success: function (data) {
+                                index.$data.todayQuestionNum = data.data.todayQuestionNum;
+                                if (data.data.todayQuestionNum == -1) {
+                                    index.$data.todayQuestionNum = 0;
+                                }
+                            }
+                        });
+                    }
+
+                    $('#answerC').addClass('choose-wrong');
+                    console.log("answerA");
+                    index.$data.showLookMyName = true;
+                    index.$data.showHaveDoQuestion = true;
+                    if (index.$data.answerBRight == 1) {
+                        $('#answerB').addClass('choose-right');
+                    } else {
+                        $('#answerA').addClass('choose-right');
+                    }
+                }
+            },
+            submitAnswer: function () {
+                var index = this;
+                // 校验是否选择答案
+                if (index.$data.chooseWhich == -1) {
+                    toast("还未选择答案哦！")
+                    return;
+                }
+                clearInterval(timerA);
+                index.$data.chooseEnabled = false;
+                index.$data.showSubmit = false;
+                questionLeftTime = 0;
+                if (index.$data.chooseWhich == 0) {
+                    index.chooseA();
+                    return;
+                }
+                if (index.$data.chooseWhich == 1) {
+                    index.chooseB();
+                    return;
+                }
+                if (index.$data.chooseWhich == 2) {
+                    index.chooseC();
+                    return;
+                }
+
+            },
+            lookMyName: function () {
+                toast("活动已结束！");
+                return;
+                var index = this;
+                // 查看自己的称号
+                index.$data.showQuestion = false;
+
+                if (index.$data.todayQuestionNum == 10) {
+                    // 全部答对
+                    index.$data.todayQuestionNumImg = "https://ohduoklem.qnssl.com/festival-over-4.png";
+                    index.$data.todayQuestionNumImgTitle = "双色球主任";
+
+                }
+                if (index.$data.todayQuestionNum <= 9) {
+                    // 大神
+                    index.$data.todayQuestionNumImg = "https://ohduoklem.qnssl.com/festival-over-3.png";
+                    index.$data.todayQuestionNumImgTitle = "双色球大神";
+
+                }
+                if (index.$data.todayQuestionNum <= 6) {
+                    // 达人
+                    index.$data.todayQuestionNumImg = "https://ohduoklem.qnssl.com/festival-over-2.png";
+                    index.$data.todayQuestionNumImgTitle = "双色球达人";
+
+                }
+                if (index.$data.todayQuestionNum <= 3) {
+                    // 新手
+                    index.$data.todayQuestionNumImg = "https://ohduoklem.qnssl.com/festival-over-1.png";
+                    index.$data.todayQuestionNumImgTitle = "双色球新手";
+
+                }
+                index.$data.showOver = true;
+                $('#answerB').removeClass('choose-which');
+                $('#answerA').removeClass('choose-which');
+                $('#answerC').removeClass('choose-which');
+                $('#answerB').removeClass('choose-right');
+                $('#answerA').removeClass('choose-right');
+                $('#answerC').removeClass('choose-right');
+                $('#answerB').removeClass('choose-wrong');
+                $('#answerA').removeClass('choose-wrong');
+                $('#answerC').removeClass('choose-wrong');
+                index.$data.chooseWhich = -1;
+
+            },
+            question: function () {
+                toast("活动已结束！");
+                return;
+                var index = this;
+                var token = getCookie('token');
+                // 如果未登录 登录
+                if (token == "") {
+                    openNativePage("mjlottery://mjnative?page=login");
+                } else {
+
+                    if (index.$data.showHaveDoQuestion) {
+                        index.lookMyName();
+                        return;
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/activity/questionWithOutSign',
+                        data: {
+                            'activityId': config.activityId,
+                            'token': token
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+                            index.$data.questionLeftTime = 10;
+                            index.$data.Question = data.data.Question;
+                            index.$data.answerA = data.data.answers[0].answerId + '.' + data.data.answers[0].answerText;
+                            index.$data.answerB = data.data.answers[1].answerId + '.' + data.data.answers[1].answerText;
+                            index.$data.answerC = data.data.answers[2].answerId + '.' + data.data.answers[2].answerText;
+                            index.$data.answerARight = data.data.answers[0].isRight;
+                            index.$data.answerBRight = data.data.answers[1].isRight;
+                            index.$data.answerCRight = data.data.answers[2].isRight;
+                            index.$data.questionId = data.data.questionId;
+                            index.$data.showNext = false;// 下一题
+                            index.$data.showQuestion = true;
+                            index.$data.showSubmit = true;
+                            index.$data.chooseEnabled = true;
+                            index.$data.todayQuestionNum = data.data.todayQuestionNum;
+                            //alert(index.$data.todayQuestionNum);
+                            if (data.data.todayQuestionNum == -1) {
+                                index.$data.todayQuestionNum = 0;
+                            }
+                            $('#answerB').removeClass('choose-which');
+                            $('#answerA').removeClass('choose-which');
+                            $('#answerC').removeClass('choose-which');
+                            $('#answerB').removeClass('choose-right');
+                            $('#answerA').removeClass('choose-right');
+                            $('#answerC').removeClass('choose-right');
+                            index.$data.chooseWhich = -1;
+
+                            // 倒计时
+                            questionLeftTime = 10;
+                            timerA = setInterval(function () {
+                                if (questionLeftTime <= 0) {
+                                    clearInterval(timerA);
+                                    if (index.$data.showSubmit) {
+                                        toast("时间截止，答题结束！");
+                                        // 如果选择了答案 那么 正常答题结束
+                                        if (index.$data.chooseWhich != -1) {
+                                            index.submitAnswer();
+                                        } else {
+                                            // 时间到了显示正确答案，结束答题
+                                            index.$data.showSubmit = false;
+                                            index.$data.showLookMyName = true;
+                                            // 如果没有选择答案
+                                            if (index.$data.answerARight == 1) {
+                                                $('#answerA').addClass('choose-right');
+                                            } else if (index.$data.answerBRight == 1) {
+                                                $('#answerB').addClass('choose-right');
+                                            } else {
+                                                $('#answerC').addClass('choose-right');
+                                            }
+                                            index.$data.chooseEnabled = false;
+                                            // 如果是首次答题
+                                            if (index.$data.todayQuestionNum == 0) {
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: '/activity/questionWrongWithOutSign',
+                                                    data: {
+                                                        'activityId': config.activityId,
+                                                        'token': token,
+                                                        'questionId': index.$data.questionId
+                                                    },
+                                                    dataType: 'json',
+                                                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                                                    success: function (data) {
+                                                        index.$data.todayQuestionNum = data.data.todayQuestionNum;
+                                                        if (data.data.todayQuestionNum == -1) {
+                                                            index.$data.todayQuestionNum = 0;
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+
+                                } else {
+                                    questionLeftTime = questionLeftTime - 1;
+                                    index.$data.questionLeftTime = questionLeftTime;
+                                }
+                            }, 1000);
+                        }
+                    })
+
+                }
+            }
+        }
+    })
+
+
+    // 如果未登录 登录
+    var timerLoop = setInterval(function () {
+        loop()
+    }, 1);
+    function loop() {
+        token = getCookie('token');
+        if (token != "") {
+            clearInterval(timerLoop);
+            var index = app;
+            $.ajax({
+                type: 'POST',
+                url: '/activity/festivalIndexWithOutSign',
+                data: {
+                    'activityId': config.activityId,
+                    'token': token
+                },
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    index.$data.awardPool = data.data.awardPool;
+                    index.$data.myAwardList = data.data.myAwardList;
+                    index.$data.total = data.data.total;
+                    index.$data.todayQuestionNum = data.data.todayQuestionNum;
+                    if (data.data.todayQuestionNum > 0) {
+                        index.$data.showHaveDoQuestion = true;
+                    }
+                    if (data.data.todayQuestionNum == -1) {
+                        index.$data.todayQuestionNum = 0;
+                        index.$data.showHaveDoQuestion = true;
+                    }
+                    //alert(index.$data.todayQuestionNum);
+                }
+            })
+            $.ajax({
+                type: 'POST',
+                url: '/activity/rankWithOutSign',
+                data: {
+                    'activityId': config.activityId,
+                    'token': token
+                },
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    index.$data.takeNum = data.data.takeNum;
+                    index.$data.rankList = data.data.rankList;
+                }
+            })
+        }
+    }
+
+
+
+
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+</script>
+</html>

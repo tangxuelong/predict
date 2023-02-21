@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OrderStatisticReport">
+    <resultMap id="orderStatisticReportMap" type="orderStatisticReport">
+        <result column="STATISTIC_DATE" property="statisticDate" jdbcType="INTEGER"/>
+        <result column="TOTAL_ORDER_NUM" property="totalOrderNum" jdbcType="INTEGER"/>
+        <result column="TOTAL_USER_NUM" property="totalUserNum" jdbcType="INTEGER"/>
+        <result column="OLD_USER_NUM" property="oldUserNum" jdbcType="INTEGER"/>
+        <result column="NEW_USER_NUM" property="newUserNum" jdbcType="INTEGER"/>
+        <result column="TOTAL_AMOUNT" property="totalAmount" jdbcType="BIGINT"/>
+        <result column="OLD_USER_AMOUNT" property="oldUserAmount" jdbcType="BIGINT"/>
+        <result column="NEW_USER_AMOUNT" property="newUserAmount" jdbcType="BIGINT"/>
+        <result column="REAL_PAY_NUM" property="realPayNum" jdbcType="INTEGER"/>
+        <result column="REAL_PAY_AMOUNT" property="realPayAmount" jdbcType="BIGINT"/>
+        <result column="STATISTIC_FLAG" property="statisticFlag" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        STATISTIC_DATE, TOTAL_ORDER_NUM, TOTAL_USER_NUM, OLD_USER_NUM, NEW_USER_NUM, TOTAL_AMOUNT,
+        OLD_USER_AMOUNT, NEW_USER_AMOUNT,REAL_PAY_NUM, REAL_PAY_AMOUNT, STATISTIC_FLAG, CREATE_TIME
+    </sql>
+
+    <select id="getOrderStatisticReportByDate" resultMap="orderStatisticReportMap" parameterType="java.lang.Integer">
+      select * from tb_order_statistic_report where STATISTIC_DATE = #{statisticDate, jdbcType=INTEGER}
+    </select>
+
+    <select id="getOrderStatisticReport" resultMap="orderStatisticReportMap" parameterType="map">
+        SELECT * FROM tb_order_statistic_report order by STATISTIC_DATE desc limit #{count, jdbcType=INTEGER}
+    </select>
+
+    <update id="updateOrderReport" parameterType="map">
+        UPDATE tb_order_statistic_report SET TOTAL_ORDER_NUM = #{totalOrderNum,jdbcType=INTEGER},
+        TOTAL_USER_NUM = #{totalUserNum,jdbcType=INTEGER}, OLD_USER_NUM = #{oldUserNum, jdbcType=INTEGER},
+        NEW_USER_NUM = #{newUserNum,jdbcType=INTEGER}, TOTAL_AMOUNT = #{totalAmount, jdbcType=BIGINT},
+        OLD_USER_AMOUNT = #{oldUserAmount,jdbcType=BIGINT}, NEW_USER_AMOUNT = #{newUserAmount, jdbcType=BIGINT},
+        REAL_PAY_NUM = #{realPayNum,jdbcType=INTEGER}, REAL_PAY_AMOUNT = #{realPayAmount, jdbcType=BIGINT},
+        STATISTIC_FLAG = #{statisticFlag,jdbcType=INTEGER}
+        WHERE STATISTIC_DATE = #{statisticDate,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="vipPrice">
+        INSERT INTO tb_order_statistic_report (<include refid="Base_Column_List"/>)
+        VALUES (#{statisticDate, jdbcType=INTEGER}, #{totalOrderNum,jdbcType=INTEGER}, #{totalUserNum,jdbcType=INTEGER},
+        #{oldUserNum,jdbcType=INTEGER}, #{newUserNum,jdbcType=VARCHAR}, #{totalAmount,jdbcType=BIGINT},
+        #{oldUserAmount,jdbcType=BIGINT}, #{newUserAmount, jdbcType=BIGINT}, #{realPayNum,jdbcType=INTEGER},
+        #{realPayAmount,jdbcType=BIGINT} , #{statisticFlag,jdbcType=INTEGER}, now())
+    </insert>
+
+</mapper>

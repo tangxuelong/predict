@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AwardInfo">
+    <resultMap id="awardInfoMap" type="awardInfo">
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="AWARD_LEVEL" property="awardLevel" jdbcType="VARCHAR"/>
+        <result column="LEVEL_NAME" property="levelName" jdbcType="VARCHAR"/>
+        <result column="BONUS" property="bonus" jdbcType="DECIMAL"/>
+        <result column="AWARD_COUNT" property="awardCount" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        GAME_ID, PERIOD_ID, AWARD_LEVEL, LEVEL_NAME, BONUS, AWARD_COUNT
+    </sql>
+
+    <select id="getAwardInfos" resultMap="awardInfoMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_AWARD_INFO
+        where game_id = #{gameId,jdbcType=BIGINT} and period_id = #{periodId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getGameAwardInfos" resultMap="awardInfoMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_AWARD_INFO
+        where game_id = #{gameId,jdbcType=BIGINT}
+        order by period_id desc, award_level asc
+        limit #{periodLoaded,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="awardInfo">
+        INSERT INTO TB_AWARD_INFO
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{gameId,jdbcType=BIGINT},
+        #{periodId,jdbcType=VARCHAR}, #{awardLevel,jdbcType=VARCHAR}, #{levelName,jdbcType=VARCHAR},
+        #{bonus,jdbcType=DECIMAL}, #{awardCount,jdbcType=INTEGER})
+    </insert>
+
+    <select id="getAwardInfo" parameterType="java.util.Map" resultMap="awardInfoMap">
+        SELECT * FROM tb_award_info
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+        AND AWARD_LEVEL = #{awardLevel,jdbcType=VARCHAR}
+    </select>
+
+    <update id="update" parameterType="awardInfo">
+        UPDATE TB_AWARD_INFO SET LEVEL_NAME = #{levelName,jdbcType=VARCHAR},
+        AWARD_COUNT = #{awardCount,jdbcType=INTEGER}, BONUS = #{bonus,jdbcType=DECIMAL}
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+        AND AWARD_LEVEL = #{awardLevel,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="addAwardInfoBatch" useGeneratedKeys="true" parameterType="java.util.HashMap">
+        insert into TB_AWARD_INFO (GAME_ID, PERIOD_ID, AWARD_LEVEL, LEVEL_NAME, BONUS, AWARD_COUNT)
+        values
+        <foreach collection="awardInfos" item="item" index="index" separator="," >
+            (#{item.gameId},#{item.periodId},#{item.awardLevel},#{item.levelName},#{item.bonus},#{item.awardCount})
+        </foreach>
+    </insert>
+</mapper>

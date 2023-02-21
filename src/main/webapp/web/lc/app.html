@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>双色球杀3码</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <link rel="stylesheet" href="style/pure-min.css"/>
+    <link rel="stylesheet" href="style/layout.css"/>
+    <meta name="format-detection" content="telephone=no">
+    <script src="script/config.js"></script>
+    <link rel="stylesheet" href="script/swiper-3.4.2.min.css">
+    <script src="script/swiper-3.4.2.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        .banner img {
+            display: block;
+            width: 100%;
+        }
+
+        .text p {
+            color: #333333;
+            font-size: 0.24rem;
+            line-height: 0.5rem;
+            text-align: center;
+        }
+
+        .predictnumber {
+            position: relative;
+            margin: 0 0.2rem;
+        }
+
+        .predictnumber img {
+            display: block;
+            width: 100%;
+        }
+
+        .p1 {
+            display: block;
+            width: 100%;
+            position: absolute;
+            font-size: 0.26rem;
+            line-height: 0.7rem;
+            text-align: center;
+            top: 0;
+            font-family: PingFangSC-Medium;
+            font-size: 15px;
+
+        }
+
+        .red {
+            color: #FF5050;
+        }
+
+        .blue {
+            color: #508BFF;
+        }
+
+        p.ball-p {
+            position: absolute;
+            width: 100%;
+            top: 0.6rem;
+        }
+
+        p.left {
+            text-align: left;
+        }
+
+        p.center {
+            text-align: center;
+        }
+
+        p.right {
+            text-align: right;
+        }
+
+        p.ball-p2 {
+            position: absolute;
+            width: 100%;
+            top: 1.0rem;
+        }
+
+        p.ball-p3 {
+            position: absolute;
+            width: 100%;
+            top: 1.0rem;
+        }
+
+        .ball {
+            display: inline-block;
+            text-align: center;
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            font-size: 0.32rem;
+
+            line-height: 0.6rem;
+            margin: 0 0.15rem;
+        }
+
+        .red-ball {
+            background: #FF5050;
+            color: #fff;
+        }
+
+        .red2-ball {
+            background: #FFF2F2;
+            color: #FF5050;
+        }
+
+        .blue-ball {
+            background: #5B8BF0;
+            color: #fff;
+        }
+
+        .blue2-ball {
+            background: #E4EDFF;
+            color: #5B8BF0;
+        }
+
+        .gary-ball {
+            background: #efefef;
+            color: #999;
+        }
+
+
+
+        .zhanji {
+            display: inline-block;
+            text-align: left;
+            height: 0.6rem;
+            font-size: 0.2rem;
+            line-height: 0.6rem;
+            margin: 0.3rem 0 0 0.15rem;
+            vertical-align: middle;
+        }
+
+        .period {
+            display: inline-block;
+            text-align: left;
+            height: 0.6rem;
+            font-size: 0.2rem;
+            line-height: 0.6rem;
+            margin: 0 0.15rem;
+        }
+
+        .history {
+            position: absolute;
+            bottom: 0.3rem;
+            font-family: PingFangSC-Regular;
+            font-size: 0.22rem;
+            color: #333333;
+            line-height: 0.3rem;
+            width: 100%;
+            text-align: center;
+        }
+
+        img.row {
+            margin-top: -0.04rem;
+            display: inline-block;
+            vertical-align: middle;
+            height: 0.22rem;
+            width: auto;
+        }
+
+        .margin-top {
+            margin-top: 0.2rem;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+        }
+
+        .footer img {
+            display: block;
+            width: 100%;
+        }
+
+        [v-cloak] {
+            display: none
+        }
+
+        img.right-num {
+            display: inline-block;
+            text-align: center;
+            height: 0.6rem;
+            font-size: 0.32rem;
+            line-height: 0.6rem;
+            margin: 0.25rem 0.15rem 0 0;
+            vertical-align: middle;
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="banner">
+        <img src="http://sportsimg.mojieai.com/lcbanner@2x.png" alt="">
+    </div>
+    <div class="text">
+        <p>杀3码：大数据预测认为最不可能开出的号码</p>
+    </div>
+    <div class="predictnumber">
+        <img src="http://sportsimg.mojieai.com/red@3x.png" alt="">
+        <p class="p1 red">红球杀3码</p>
+        <p class="ball-p center">
+            <span class="ball red2-ball" v-show="redBallsStar[0].indexOf('*')>=0" v-text="preRedBalls[0]">00</span>
+            <span class="ball gary-ball" v-show="redBallsStar[0].indexOf('*')<0" v-text="preRedBalls[0]">00</span>
+            <span class="ball red2-ball" v-show="redBallsStar[1].indexOf('*')>=0" v-text="preRedBalls[1]">00</span>
+            <span class="ball gary-ball" v-show="redBallsStar[1].indexOf('*')<0" v-text="preRedBalls[1]">00</span>
+            <span class="ball red2-ball" v-show="redBallsStar[2].indexOf('*')>=0" v-text="preRedBalls[2]">00</span>
+            <span class="ball gary-ball" v-show="redBallsStar[2].indexOf('*')<0" v-text="preRedBalls[2]">00</span>
+        </p>
+        <p class="ball-p left">
+            <span class="zhanji">
+            上期战绩
+            </span></p>
+        <p class="ball-p right">
+            <img class="right-num" v-show="redCount==0" src="http://sportsimg.mojieai.com/0@2x.png" alt="">
+            <img class="right-num" v-show="redCount==1" src="http://sportsimg.mojieai.com/1@2x.png" alt="">
+            <img class="right-num" v-show="redCount==2" src="http://sportsimg.mojieai.com/2-@2x.png" alt="">
+            <img class="right-num" v-show="redCount==3" src="http://sportsimg.mojieai.com/3@2x.png" alt=""></p>
+        <p class="ball-p2 center">
+            <span class="ball red-ball" v-text="redBalls[0]">00</span>
+            <span class="ball red-ball" v-text="redBalls[1]">00</span>
+            <span class="ball red-ball" v-text="redBalls[2]">00</span></p>
+        <p class="ball-p2 left">
+            <span class="period" v-text="currentPeriodId+'期'">
+                2017012期
+            </span></p>
+        <p class="history" v-on:click="download">查看历史战绩 <img class="row"
+                                                             src="http://sportsimg.mojieai.com/Rectangle4@3x.png"
+                                                             alt=""></p>
+
+    </div>
+    <div class="predictnumber margin-top">
+        <img src="http://sportsimg.mojieai.com/blue@3x.png" alt="">
+        <p class="p1 blue">蓝球杀3码</p>
+        <p class="ball-p center">
+            <span class="ball blue2-ball" v-show="blueBallsStar[0].indexOf('*')<0" v-text="preBlueBalls[0]">00</span>
+
+            <span class="ball gary-ball" v-show="blueBallsStar[0].indexOf('*')>=0" v-text="preBlueBalls[0]">00</span>
+            <span class="ball blue2-ball" v-show="blueBallsStar[1].indexOf('*')<0" v-text="preBlueBalls[1]">00</span>
+
+            <span class="ball gary-ball" v-show="blueBallsStar[1].indexOf('*')>=0" v-text="preBlueBalls[1]">00</span>
+            <span class="ball blue2-ball" v-show="blueBallsStar[2].indexOf('*')<0" v-text="preBlueBalls[2]">00</span>
+
+            <span class="ball gary-ball" v-show="blueBallsStar[2].indexOf('*')>=0" v-text="preBlueBalls[2]">00</span>
+        </p>
+        <p class="ball-p left">
+            <span class="zhanji">
+            上期战绩
+            </span></p>
+        <p class="ball-p right">
+            <img class="right-num" v-show="blueCount==0" src="http://sportsimg.mojieai.com/0@2x.png" alt="">
+            <img class="right-num" v-show="blueCount==1" src="http://sportsimg.mojieai.com/1@2x.png" alt="">
+            <img class="right-num" v-show="blueCount==2" src="http://sportsimg.mojieai.com/2-@2x.png" alt="">
+            <img class="right-num" v-show="blueCount==3" src="http://sportsimg.mojieai.com/3@2x.png" alt=""></p>
+        <p class="ball-p2 center">
+            <span class="ball blue-ball" v-text="blueBalls[0]">00</span>
+            <span class="ball blue-ball" v-text="blueBalls[1]">00</span>
+            <span class="ball blue-ball" v-text="blueBalls[2]">00</span></p>
+        <p class="ball-p2 left">
+            <span class="period" v-text="currentPeriodId+'期'">
+                2017012期
+            </span></p>
+        <p class="history" v-on:click="download">查看历史战绩 <img class="row"
+                                                             src="http://sportsimg.mojieai.com/Rectangle4@3x.png"
+                                                             alt=""></p>
+
+    </div>
+
+    <div class="footer">
+        <img v-on:click="download" src="http://sportsimg.mojieai.com/footer@2x.png" alt="">
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            blueBalls: ["--", "--", "--"],
+            preBlueBalls: ["--", "--", "--"],
+            redBalls: ["--", "--", "--"],
+            preRedBalls: ["--", "--", "--"],
+            blueBallsStar: ["--", "--", "--"],
+            redBallsStar: ["--", "--", "--"],
+            currentPeriodId: "",
+            blueCount: 0,
+            redCount: 0
+        },
+        mounted: function () {
+            var index = this;
+            $.ajax({
+                type: 'POST',
+                url: '/analysis/killThreeBlue',
+                data: {
+                    'gameEn': 'ssq'
+                },
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    index.$data.blueBalls = data.data.killThreeBlue[0].split(':')[1].split(" ");
+                    index.$data.preBlueBalls = data.data.killThreeBlue[1].split(':')[1].split(" ");
+                    index.$data.blueBallsStar = index.$data.preBlueBalls;
+                    console.log(index.$data.blueBallsStar);
+                    var count = 0;
+                    for (var i = 0; i < 3; i++) {
+                        if (index.$data.preBlueBalls[i].indexOf("*") >= 0) {
+                            count++;
+                        }
+                    }
+                    index.$data.blueCount = 3 - count;
+                    var preNum = [index.$data.preBlueBalls[0].replace("*", ""),
+                        index.$data.preBlueBalls[1].replace("*", ""),
+                        index.$data.preBlueBalls[2].replace("*", "")];
+                    index.$data.preBlueBalls = preNum;
+                    console.log(index.$data.preBlueBalls);
+                }
+            })
+            $.ajax({
+                type: 'POST',
+                url: '/analysis/killThreeCode',
+                data: {
+                    'gameEn': 'ssq'
+                },
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    index.$data.redBalls = data.data.periodList[0].killCode.split(" ");
+                    index.$data.preRedBalls = data.data.periodList[1].killCode.split(" ");
+                    index.$data.redBallsStar = index.$data.preRedBalls;
+
+                    console.log(index.$data.redBallsStar)
+                    index.$data.currentPeriodId = data.data.currentPeriodId;
+                    var count = 0;
+                    for (var i = 0; i < 3; i++) {
+                        if (index.$data.preRedBalls[i].indexOf("*") >= 0) {
+                            count++;
+                        }
+                    }
+                    index.$data.redCount = count;
+                    var preNum = [index.$data.preRedBalls[0].replace("*", ""),
+                        index.$data.preRedBalls[1].replace("*", ""),
+                        index.$data.preRedBalls[2].replace("*", "")];
+                    index.$data.preRedBalls = preNum;
+                    console.log(index.$data.preRedBalls);
+                }
+            })
+        },
+        methods: {
+            download: function () {
+                var url = {
+                    down: "https://ohduoklem.qnssl.com/zhcpyc_3.2.apk",
+                    IOS: "https://itunes.apple.com/cn/app/%E6%99%BA%E6%85%A7%E5%BD%A9%E7%A5%A8%E9%A2%84%E6%B5%8B%E4%B8%93%E4%B8%9A%E7%89%88-%E5%8F%8C%E8%89%B2%E7%90%83%E9%80%89%E5%8F%B7/id1291221326?mt=8"
+                };
+
+                var ua = navigator.userAgent.toLowerCase();
+
+                if (/iphone|ipod|ipad/.test(ua)) {
+                    jumpNativeIntent(url.IOS);
+                } else {
+                    jumpNativeIntent(url.down);
+                }
+            }
+        }
+    })
+
+    //彩球跳浏览器下载
+    function jumpNativeIntent(params) {
+        var url = 'caiqrgames://caiqrNative?page=browser&url=' + params
+        if (typeof(window.jsCallNativeObjc) != "undefined") {
+            window.jsCallNativeObjc.jumpNativeIntent(url)
+        } else {
+            if (typeof(shareAndroid) != "undefined") {
+                shareAndroid.jumpNativeIntent(url)
+            } else {
+                window.location.href = url;
+            }
+        }
+    }
+
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+</script>
+</html>

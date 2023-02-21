@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserAccessInfo">
+    <resultMap id="userAccessInfoMap" type="userAccessInfo">
+        <result column="ACCESS_ID" property="accessId" jdbcType="INTEGER"/>
+        <result column="ACCESS_API" property="accessApi" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ACCESS_ID, ACCESS_API
+    </sql>
+
+    <select id="getUserAccessInfo" resultMap="userAccessInfoMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_ACCESS_INFO
+        where ACCESS_ID = #{accessId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="userAccessInfo">
+        INSERT INTO TB_USER_ACCESS_INFO
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{accessId,jdbcType=INTEGER},
+        #{accessApi,jdbcType=VARCHAR})
+    </insert>
+</mapper>

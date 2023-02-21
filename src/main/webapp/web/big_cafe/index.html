@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>大咖来袭</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <meta name="format-detection" content="telephone=no">
+</head>
+<style>
+    body {
+        background: url("https://sportsimg.mojieai.com/big_bg.png") repeat-y;
+        background-size: 100% auto;
+    }
+    body, p {
+        margin: 0;
+        padding: 0;
+        font-family: PingFangSC-Regular;
+    }
+    #app {
+        background: url("https://sportsimg.mojieai.com/upBg.png") no-repeat;
+        background-size: contain;
+    }
+    [v-cloak] {
+        display: none;
+    }
+    .banner {
+        background: url("img/banner2.png") no-repeat;
+        background-size: 100% auto;
+        height: 53vw;
+    }
+    .first-text {
+        font-size: 4.53vw;
+        color: #FFF;
+        text-align: center;
+        margin-bottom: 3vw;
+        width: 100%;
+    }
+    .list-row {
+        display: table;
+        text-align: center;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 2vw 2vw;
+        font-size: 4vw;
+        color: #FFFFFF;
+    }
+    .list-row .card {
+        position: relative;
+        display: table-cell;
+        vertical-align: middle;
+        padding-top: 6vw;
+        padding-bottom: 1vw;
+        border-radius: 8px;
+        width: 33.3%;
+    }
+    .list-row .card .del {
+        text-decoration: line-through;
+        opacity: 0.5;
+    }
+    .list-row .card .but {
+        display: inline-block;
+        padding: 1vw 2vw 1vw 2vw;
+        font-size: 3vw;
+        border-radius: 100px;
+        text-align: center;
+        color: RGBA(59, 36, 0, 1);
+    }
+    .list-row .card .silver {
+        background-color: RGBA(207, 209, 213, 1);
+    }
+    .list-row .card .gold {
+        background-color: RGBA(232, 193, 99, 1);
+    }
+    .list-row .card .diamond {
+        background-color: RGBA(121, 184, 246, 1);
+    }
+    .list-row .card .mark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        text-align: left;
+    }
+    .list-row .card .silver-img {
+        background: url("https://sportsimg.mojieai.com/make1.png") no-repeat;
+        background-size: 35% 100%;
+    }
+    .list-row .card .gold-img {
+        background: url("https://sportsimg.mojieai.com/make2.png") no-repeat;
+        background-size: 35% 100%;
+    }
+    .list-row .card .diamond-img {
+        background: url("https://sportsimg.mojieai.com/make3.png") no-repeat;
+        background-size: 49% 100%;
+    }
+    .list-row .card .mark .num {
+        margin-left: 1.5vw;
+        color: RGBA(59, 36, 0, 1);
+        font-size: 3.5vw;
+    }
+    .list-row .silver-card {
+        background: -webkit-linear-gradient(#B3B8C2, #727475); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(#B3B8C2, #727475); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(#B3B8C2, #727475); /* Firefox 3.6 - 15 */
+        background: linear-gradient(#B3B8C2, #727475); /* 标准的语法 */
+    }
+    .list-row .gold-card {
+        background: -webkit-linear-gradient(#ECC465, #7B612F); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(#ECC465, #7B612F); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(#ECC465, #7B612F); /* Firefox 3.6 - 15 */
+        background: linear-gradient(#ECC465, #7B612F); /* 标准的语法 */
+    }
+    .list-row .diamond-card {
+        background: -webkit-linear-gradient(#6EA5DD, #2B5988); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(#6EA5DD, #2B5988); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(#6EA5DD, #2B5988); /* Firefox 3.6 - 15 */
+        background: linear-gradient(#6EA5DD, #2B5988); /* 标准的语法 */
+    }
+    .product-box {
+        position: relative;
+        margin-bottom: 31vw;
+    }
+    .product-box .box-img {
+        /*position: absolute;*/
+        width: 100%;
+        /*background-position: center;*/
+        /*background-size: 100%;*/
+    }
+    .product-box .userInfo {
+        display: flex;
+        position: absolute;
+        align-items: center;
+        top: 9vw;
+        left: 6vw;
+    }
+    .product-box .person-name {
+        /* position: absolute; */
+        /* top: 9vw; */
+        /* left: 6vw; */
+        font-size: 5.33vw;
+        color: RGBA(255, 222, 139, 1);
+    }
+    .product-box .person-but {
+        /* position: absolute; */
+        /* display: inline-block; */
+        /* top: 10vw; */
+        /* left: 17vw; */
+        /* padding: .6vw; */
+        /* width: 10vw; */
+        height: 5vw;
+        line-height: 5vw;
+        font-size: 3vw;
+        border-radius: .8vw;
+        text-align: center;
+        color: #FFFFFF;
+        background-color: RGBA(187, 34, 34, 1);
+        margin-left: 1vw;
+        padding: .5vw;
+    }
+    .product-box .person-text {
+        position: absolute;
+        top: 17vw;
+        left: 6vw;
+        font-size: 3.2vw;
+        width: 62%;
+        color: RGBA(255, 222, 139, 1);
+        word-wrap: break-word;
+        word-break: break-all;
+        overflow: hidden;
+    }
+    .product-box .match {
+        position: absolute;
+        top: 27.8vw;
+        /*left: 2vw;*/
+        width: 96%;
+        height: 32vw;
+        margin-left: 2%;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 1vw;
+    }
+    .product-box .match .match-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 7.61vw;
+        text-align: left;
+        background: url("https://sportsimg.mojieai.com/make4.png") no-repeat;
+        background-size: contain;
+    }
+    .text{
+        font-size: 3.5vw;
+        margin-left: 2vw;
+        margin-top: 1vw;
+        color: #ff5050;
+    }
+    .match-box {
+        position: absolute;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-align-items: center;
+        align-items: center;
+        justify-content: space-around;
+        margin-top: 4vw;
+        font-size: 3.47vw;
+        width: 100%;
+    }
+    .match-box .match-countries-left {
+        display: flex;
+        justify-content: flex-start;
+    }
+    .match-box .match-countries-left img {
+        width: 7.47vw;
+        height: 7.47vw;
+    }
+    .match-box .match-countries-left p {
+        padding-left: 1vw;
+        padding-top: 1vw;
+    }
+    .match-box .match-countries-right {
+        display: flex;
+    }
+    .match-box .match-countries-right img {
+        width: 7.47vw;
+        height: 7.47vw;
+    }
+    .match-box .match-countries-right span {
+        padding-right: 1vw;
+        padding-top: 1vw;
+    }
+    .match-box .match-time {
+        text-align: center;
+    }
+    .match-but {
+        position: absolute;
+        top: 43vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+    .product-box .but {
+        padding: 2vw 8vw;
+        font-size: 4vw;
+        border-radius: 1vw;
+        text-align: center;
+        color: RGBA(59, 36, 0, 1);
+        background: -webkit-linear-gradient(RGBA(255, 218, 104, 1), RGBA(220, 164, 55, 1)); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(RGBA(255, 218, 104, 1), RGBA(220, 164, 55, 1)); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(RGBA(255, 218, 104, 1), RGBA(220, 164, 55, 1)); /* Firefox 3.6 - 15 */
+        background: linear-gradient(RGBA(255, 218, 104, 1), RGBA(220, 164, 55, 1)); /* 标准的语法 */
+    }
+    .product-box .link {
+        position: absolute;
+        top: 54vw;
+        left: 40vw;
+    }
+    .product-box .link a:link {
+        /*position: absolute;*/
+        /*top: 54vw;*/
+        /*left: 40vw;*/
+        font-size: 3vw;
+        color: RGBA(255, 96, 33, 1);
+        text-decoration: none;
+    }
+    .product-box .link a:visited {
+        color: RGBA(255, 96, 33, 1);
+        text-decoration: none;
+    }
+    /*弹框*/
+    .award-popup {
+        background: #000;
+        opacity: 0.7;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 999;
+    }
+    .award-popup-fixed {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1000;
+    }
+    .award-right {
+        position: absolute;
+        top: 42%;
+        left: 50%;
+        height: 4vw;
+        margin-top: -3vw;
+        width: 100%;
+        margin-left: -50%;
+    }
+    .award-relative {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        z-index: 1000;
+    }
+    .close {
+        position: absolute;
+        top: 0.4vw;
+        right: 0.4vw;
+        width: 0.4vw;
+    }
+    .award-rule {
+        /*color: #772d00;*/
+        background: #fff;
+        width: 82%;
+        margin-left: -41%;
+        height: 42vw;
+        border-radius: 1.5vw;
+    }
+    .award-rule .overflow {
+        overflow: hidden;
+        text-align: center;
+    }
+    .award-rule p {
+        color: RGBA(0, 0, 0, 1);
+        font-size: 5vw;
+        margin-top: 10vw;
+    }
+    .award-but {
+        display: flex;
+        justify-content: space-around;
+        letter-spacing: .5vw;
+        font-size: 4vw;
+        margin-top: 8vw;
+    }
+    .award-but .award-cancel {
+        color: RGBA(255, 68, 68, 1);
+        border: 1px solid RGBA(255, 68, 68, 1);
+        border-radius: 1vw;
+        padding: 3vw 11vw;
+    }
+    .award-but .award-confirm {
+        color: #FFFFFF;
+        background-color: RGBA(255, 68, 68, 1);
+        border: 1px solid RGBA(255, 68, 68, 1);
+        border-radius: 1vw;
+        padding: 3vw 11vw;
+    }
+    .buzhongbaopei{
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 15vw;
+    }
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="banner">
+        <!--<img src="img/banner.png" alt="">-->
+    </div>
+    <div class="first-text">
+        <p>剩余特权自选<span v-text="availableTimes">0</span>场</p>
+    </div>
+    <div class="list-row" v-if="privilegedCardVos.length != 0">
+        <!--{{privilegedCardVos}}-->
+        <div class="card silver-card">
+            <div class="mark silver-img"><span class="num">银卡</span></div><!--v-text="privilegedCardVos[0].tips"-->
+            <p class="value" >任选<span v-text="privilegedCardVos[0].tips"></span>预测</p><!--v-text="privilegedCardVos[0].cardName"-->
+            <div>
+                <span class="del" v-text="privilegedCardVos[0].originalPrice">￥440</span>
+                <span class="price" v-text="privilegedCardVos[0].currentPrice">￥360</span>
+            </div>
+            <p class="but silver" @click="pay(privilegedCardVos[0].payAmount,privilegedCardVos[0].payMemo)"
+               v-text="privilegedCardVos[0].buttonMsg">查看详情</p>
+        </div>
+        <div class="card gold-card">
+            <div class="mark gold-img"><span class="num">金卡</span></div><!--v-text="privilegedCardVos[1].tips"-->
+            <p class="value">任选<span v-text="privilegedCardVos[1].tips"></span>预测</p><!--v-text="privilegedCardVos[1].cardName"-->
+            <div>
+                <span class="del" v-text="privilegedCardVos[1].originalPrice">￥440</span>
+                <span class="price" v-text="privilegedCardVos[1].currentPrice">￥360</span>
+            </div>
+            <p class="but gold" @click="pay(privilegedCardVos[1].payAmount,privilegedCardVos[1].payMemo)"
+               v-text="privilegedCardVos[1].buttonMsg">查看详情</p>
+        </div>
+        <div class="card diamond-card">
+            <div class="mark diamond-img"><span class="num">钻石卡</span></div>
+            <p class="value" >任选<span v-text="privilegedCardVos[2].tips"></span>预测</p>
+            <div>
+                <span class="del" v-text="privilegedCardVos[2].originalPrice">￥440</span>
+                <span class="price" v-text="privilegedCardVos[2].currentPrice">￥360</span>
+            </div>
+            <p class="but diamond" @click="pay(privilegedCardVos[2].payAmount,privilegedCardVos[2].payMemo)"
+               v-text="privilegedCardVos[2].buttonMsg">查看详情</p>
+        </div>
+    </div>
+    <p class="text">
+        *支付成功后，若看不到预测，退出页面重新进入即可
+    </p>
+    <!--列表-->
+    <div class="product-box" v-for="match in recommendations" v-if="recommendations.length != 0">
+        <div>
+            <img :src="match.userInfo.backImg" alt="" class="box-img">
+            <div style="display: flex" class="userInfo">
+                <p class="person-name" v-text="match.userInfo.userName" style="z-index: 12"> 大左</p>
+                <div class="person-but" style="z-index: 12" v-text="match.userInfo.tips" v-if="match.userInfo.tips">10连红</div>
+            </div>
+            <p class="person-text" v-text="match.userInfo.userIntroduce"> 10年足彩经验，搜狐论坛大v，前cctv解说，体彩中心首批足彩培训师说.</p>
+
+            <div class="match">
+                <div class="match-img" v-if="match.matchInfo.single == 1"></div>
+                <div class="match-box">
+                    <div class="match-countries-left">
+                        <img :src="match.matchInfo.hostImg" alt="">
+                        <p v-text="match.matchInfo.hostName">澳大利亚</p>
+                    </div>
+                    <div class="match-time">
+                        <p class="name" v-text="match.matchInfo.matchName">吉尼斯杯</p>
+                        <p class="time" v-text="match.matchInfo.matchTime">08-01 08:23</p>
+                    </div>
+                    <div class="match-countries-right">
+                        <span v-text="match.matchInfo.awayName">法国</span>
+                        <img :src="match.matchInfo.awayImg" alt="">
+                    </div>
+                </div>
+                <img v-show="match.programType" class="buzhongbaopei" src="img/buzhongbaopei.png" alt="">
+            </div>
+
+            <div class="match-but">
+                <div class="but" v-text="match.btnMsg"
+                     @click="submitMatch(match.recommendId,match.buyStatus,match.recommendInfo.price,match.payMemo,match.recommendUserId)">
+                    88智慧币查看
+                </div>
+                <!--<div class="but" v-if="isShow">88智慧币查看</div>-->
+            </div>
+            <div class="link" @click="modelJump(match.recommendUserId)"><a href="javascript:void(0);">查看历史战绩>></a></div>
+        </div>
+
+    </div>
+    <div style="height: 8vw"></div>
+    <!--弹框-->
+    <div class="award-popup" v-show="showRuleFlag" v-if="showRuleFlag"></div>
+    <div class="award-popup-fixed" v-show="showRuleFlag" v-if="showRuleFlag">
+        <!--活动规则-->
+        <div class="award-right award-rule">
+            <div class="award-relative not-right">
+                <div class="overflow">
+                    <p>确定使用特权查看本场预测？</p>
+                </div>
+                <div class="award-but">
+                    <div class="award-cancel" @click="closeRule">取消</div>
+                    <div class="award-confirm" @click="confirm">确认</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="./script/jquery.min.js"></script>
+<script type="text/javascript" src="./script/vue.min.js"></script>
+<script src="script/config.js"></script>
+<script type="text/javascript">
+    token = getCookie('token');
+    if(null == localStorage.pagecount){
+        localStorage.pagecount = '0';
+    }
+    if (token!=''){
+        localStorage.setItem('token',token);
+    }
+    var interval = setInterval(function() {
+        if(localStorage.pagecount != '0') {
+            app.initPage();
+            localStorage.pagecount = '0';
+            clearInterval(interval); //关闭定时任务。
+        }
+    }, 100);
+    //token = 'e8b1f3ca-2931-4136-8fe5-ec1cf940b26372';
+    app = new Vue({
+        el: '#app',
+        data: {
+            latestMatches: [],
+            futureMatches: [],
+            showRuleFlag: false, // 规则弹窗
+            isShow: true,
+            privilegedCardVos: [],
+            recommendations: {},
+            availableTimes: "",
+            payMemo: '',
+            recommendId: '',
+            timer: null,
+            programType: 0,
+        },
+        beforeMount: function () {
+            this.initPage()
+        },
+        methods: {
+            //初始化
+            initPage: function () {
+                var that = this;
+                $.ajax({
+                    type: 'GET',
+                    url: '/activity/internetCelebrities',
+                    data: {
+                        token: token,
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            console.log(data.data)
+                            that.availableTimes = data.data.availableTimes || '0';
+                            that.recommendations = data.data.recommendations;
+                            that.privilegedCardVos = data.data.privilegedCardVos;
+                        }
+                    }
+                })
+            },
+            // 显示活动规则
+            showRule: function () {
+                var index = this;
+                index.$data.showRuleFlag = true;
+            },
+            confirm: function () {
+                var that = this;
+                $.ajax({
+                    type: 'GET',
+                    url: '/activity/internetCelebrities/unlock',
+                    data: {
+                        recommendId: that.recommendId,
+                        token: token,
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            that.$data.showRuleFlag = false;
+                            that.initPage()
+                        }
+                    }
+                })
+            },
+            // 关闭
+            closeRule: function () {
+                var index = this;
+                index.$data.showRuleFlag = false;
+            },
+            submitMatch: function(recommendId, status, price, payMemo,recommendUserId) {
+                var that = this;
+                that.recommendId = recommendId;
+                if (token == "") {
+                    that.loginFuc();
+                    return;
+                } else {
+                    if (status == 1) {
+                        that.modelJump(recommendUserId);
+                    } else if (status == 0 && that.availableTimes > 0) {
+                        that.showRule();
+                    } else {
+                        that.pay(price, payMemo);
+                    }
+                }
+            },
+            modelJump: function(bigUid) {
+                var that = this;
+                if (token == "") {
+                    that.loginFuc();
+                    return;
+                }
+                // var url = 'https://predictdebug.mojieai.com/'//debug
+                var url = 'https://predictapi.mojieai.com/'//正式
+                bigUid=bigUid.slice(0,bigUid.length-1);
+                var model = window.navigator.userAgent.toLowerCase();
+                if (typeof(window.webkit) != "undefined") {
+                    if (bigUid == 1804241000095383) {
+                        window.location.href = url+"web/worldcup_1/index.html "
+                    }else if (bigUid == 1804241000095370) {
+                        window.location.href = url+"web/worldcup_2/index.html"
+                    }else if (bigUid == 1804241000095381) {
+                        window.location.href = url+"web/worldcup_3/index.html"
+                    }else if (bigUid == 1804241000095374) {
+                        window.location.href = url+"web/worldcup_4/index.html "
+                    }else if (bigUid == 1809281500118522) {
+                        window.location.href = url+"web/worldcup_5/index.html "
+                    }else if (bigUid == 1812201800122394) {
+                        window.location.href = url+"web/worldcup_6/index.html "
+                    }else{
+                        window.location.href = url+"web/worldcup_third/?u=" + bigUid;
+                    }
+                }
+                if (typeof(webViewNative) != "undefined") {
+                    window.location.href = url+"web/worldcup_third/?u=" + bigUid;
+                }
+            },
+            loginFuc: function () {
+                var index = this;
+                index.timer = setInterval(function () {
+                    // 获取token
+                    if (token == "") {
+                        token = getCookie('token');
+                        if (token!=''){
+                            localStorage.setItem('token',token);
+                        }
+                    } else {
+                        clearInterval(index.timer);
+                    }
+                }, 100);
+                openNativePage("mjlottery://mjNative?page=login");
+            },
+            //跳转充值页面
+            pay: function (price, payMemo) {
+                var index = this;
+                if (token == "") {
+                    index.loginFuc();
+                    return;
+                }
+                if (typeof(window.webkit) != "undefined") {
+                    window.webkit.messageHandlers.pay.postMessage({price: price +'', memo:payMemo})
+                }
+                if (typeof(webViewNative) != "undefined") {
+                    webViewNative.pay(price, payMemo);
+                }
+            },
+        }
+    });
+    function nativePaySuccess() {
+        app.initPage();
+    }
+    // 统计
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+</script>
+</html>

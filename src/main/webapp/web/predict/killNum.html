@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>本期杀号</title>
+    <link rel="stylesheet" href="style/pure-min.css"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <link rel="stylesheet" href="style/layout.css"/>
+    <meta name="format-detection" content="telephone=no">
+    <style>
+        body {
+            background: #F5F5F5;
+        }
+
+    </style>
+</head>
+<body>
+<div id="kill">
+    <div class="period-title">
+        <p v-text="currentPeriodId+'期'"></p>
+    </div>
+    <div class="kill-red">
+        <p class="kill-title">红球杀三码</p>
+        <p class="ball-p">
+            <span class="ball red-ball" v-text="redBalls[0]">00</span>
+            <span class="ball red-ball" v-text="redBalls[1]">00</span>
+            <span class="ball red-ball" v-text="redBalls[2]">00</span></p>
+        <div class="line">
+        </div>
+    </div>
+
+    <div class="kill-blue">
+        <p class="kill-title">蓝球杀三码</p>
+        <p class="ball-p">
+            <span class="ball blue-ball" v-text="blueBalls[0]">00</span>
+            <span class="ball blue-ball" v-text="blueBalls[1]">00</span>
+            <span class="ball blue-ball" v-text="blueBalls[2]">00</span>
+
+        </p>
+        <div class="getPredict gethistory">
+            <a href="history.html">查看预测历史</a>
+        </div>
+    </div>
+    <div>
+        <p class="kill-instr">*杀3码，即预测3个不会开出的号码</p>
+    </div>
+    <div class="footer">
+        <p>本页由“智慧彩票预测”App提供技术服务</p>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#kill',
+        data: {
+            redBalls: ['00', '00', '00'],
+            blueBalls: ['00', '00', '00'],
+            currentPeriodId: ''
+        },
+        mounted: function () {
+            var index = this;
+            $.ajax({
+                type: 'POST',
+                url: '/analysis/killThreeBlue',
+                data: {
+                    'gameEn': 'ssq'
+                },
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    index.$data.blueBalls = data.data.killThreeBlue[0].split(':')[1].split(" ");
+
+                }
+            })
+            $.ajax({
+                type: 'POST',
+                url: '/analysis/killThreeCode',
+                data: {
+                    'gameEn': 'ssq'
+                },
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    index.$data.redBalls = data.data.periodList[0].killCode.split(" ");
+                    index.$data.currentPeriodId = data.data.currentPeriodId;
+                }
+            })
+        }
+    })
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+</script>
+</html>

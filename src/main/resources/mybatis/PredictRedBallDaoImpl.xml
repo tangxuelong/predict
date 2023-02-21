@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PredictRedBall">
+    <resultMap id="predictRedBallMap" type="predictRedBall">
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="STR_TYPE" property="strType" jdbcType="INTEGER"/>
+        <result column="NUM_STR" property="numStr" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="predictRedBall">
+        INSERT INTO TB_PREDICT_RED_BALL(GAME_ID, PERIOD_ID, STR_TYPE, NUM_STR, CREATE_TIME)
+        VALUES(#{gameId, jdbcType=BIGINT}, #{periodId, jdbcType=VARCHAR}, #{strType, jdbcType=INTEGER},
+        #{numStr, jdbcType=VARCHAR}, now())
+    </insert>
+
+    <update id="updateNumStrByGameIdPeriodId" parameterType="map">
+        UPDATE TB_PREDICT_RED_BALL
+        SET NUM_STR=#{numStr, jdbcType=VARCHAR}
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+        AND STR_TYPE = #{strType, jdbcType=INTEGER}
+    </update>
+
+    <select id="getPredictRedBall" resultMap="predictRedBallMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_RED_BALL
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+        AND STR_TYPE = #{strType, jdbcType=INTEGER}
+    </select>
+
+    <select id="getLatestPredictRedBall" resultMap="predictRedBallMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_RED_BALL
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND STR_TYPE = #{strType, jdbcType=INTEGER}
+        ORDER BY PERIOD_ID DESC limit 1
+    </select>
+
+    <select id="getPredictRedBalls" resultMap="predictRedBallMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_RED_BALL
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND STR_TYPE = #{strType, jdbcType=INTEGER}
+        ORDER BY PERIOD_ID DESC
+        LIMIT #{count, jdbcType=INTEGER}
+    </select>
+
+    <select id="getAllPredictRedBall" resultMap="predictRedBallMap">
+        SELECT * FROM TB_PREDICT_RED_BALL
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND STR_TYPE = #{strType, jdbcType=INTEGER}
+        ORDER BY PERIOD_ID DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SubscribeProgram">
+    <resultMap id="subscribeProgramMap" type="subscribeProgram">
+        <result column="PROGRAM_ID" property="programId" jdbcType="INTEGER"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PROGRAM_NAME" property="programName" jdbcType="VARCHAR"/>
+        <result column="PROGRAM_TYPE" property="programType" jdbcType="INTEGER"/>
+        <result column="PREDICT_TYPE" property="predictType" jdbcType="INTEGER"/>
+        <result column="SUBSCRIBE_NUM" property="subscribeNum" jdbcType="INTEGER"/>
+        <result column="AMOUNT" property="amount" jdbcType="BIGINT"/>
+        <result column="VIP_AMOUNT" property="vipAmount" jdbcType="BIGINT"/>
+        <result column="VIP_DISCOUNT" property="vipDiscount" jdbcType="INTEGER"/>
+        <result column="PAY_TYPE" property="payType" jdbcType="INTEGER"/>
+        <result column="BUY_TYPE" property="buyType" jdbcType="INTEGER"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        PROGRAM_ID, GAME_ID, PROGRAM_NAME, PREDICT_TYPE, SUBSCRIBE_NUM, AMOUNT, VIP_AMOUNT, VIP_DISCOUNT,PAY_TYPE,
+        BUY_TYPE
+    </sql>
+
+    <select id="getSubscribeProgramByProgramType" resultMap="subscribeProgramMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_SUBSCRIBE_PROGRAM WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PROGRAM_TYPE =
+        #{programType, jdbcType=INTEGER}
+    </select>
+
+    <select id="getSubscribePredictByUnique" resultMap="subscribeProgramMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_SUBSCRIBE_PROGRAM WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PROGRAM_TYPE =
+        #{programType, jdbcType=INTEGER} AND PREDICT_TYPE = #{predictType, jdbcType=INTEGER}
+    </select>
+
+    <select id="getSubscribePredictByProgramId" resultMap="subscribeProgramMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_SUBSCRIBE_PROGRAM WHERE PROGRAM_ID = #{programId, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="map">
+        INSERT INTO TB_PREDICT_SUBSCRIBE_PROGRAM (<include refid="Base_Column"/>) VALUES (
+        #{programId, jdbcType=INTEGER}, #{gameId, jdbcType=BIGINT}, #{programName, jdbcType=VARCHAR},
+        #{programType, jdbcType=INTEGER}, #{predictType, jdbcType=INTEGER}, #{subscribeNum, jdbcType=INTEGER},
+        #{amount, jdbcType=BIGINT}, #{vipAmount, jdbcType=BIGINT}, #{vipDiscount, jdbcType=BIGINT},
+        #{payType, jdbcType=INTEGER}, #{buyType, jdbcType=INTEGER})
+    </insert>
+
+</mapper>

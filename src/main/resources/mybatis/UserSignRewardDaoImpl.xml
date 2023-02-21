@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserSignReward">
+    <resultMap id="userSignRewardMap" type="userSignReward">
+        <result column="SIGN_TYPE" property="signType" jdbcType="INTEGER"/>
+        <result column="SIGN_REWARD" property="signReward" jdbcType="INTEGER"/>
+        <result column="REWARD_TYPE" property="rewardType" jdbcType="INTEGER"/>
+        <result column="SIGN_COUNT" property="signCount" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        SIGN_TYPE, REWARD_TYPE, SIGN_REWARD, SIGN_COUNT, CREATE_TIME
+    </sql>
+
+    <select id="getAllSignReward" resultMap="userSignRewardMap">
+        SELECT * FROM TB_USER_SIGN_REWARD
+    </select>
+
+    <insert id="insert" parameterType="userSignReward">
+        INSERT INTO TB_USER_SIGN_REWARD (<include refid="Base_Column_List"/>)
+        VALUES (#{signType,jdbcType=INTEGER}, #{rewardType,jdbcType=INTEGER}, #{signReward,jdbcType=INTEGER},
+        #{signCount,jdbcType=INTEGER}, now())
+    </insert>
+
+</mapper>

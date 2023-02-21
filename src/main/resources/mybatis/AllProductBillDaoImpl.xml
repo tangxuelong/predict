@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AllProductBill">
+    <resultMap id="allProductBillMap" type="allProductBill">
+        <result column="DATE_NUM" property="dateNum" jdbcType="INTEGER"/>
+        <result column="ORDER_TYPE" property="orderType" jdbcType="INTEGER"/>
+        <result column="PAY_PERSON_NUM" property="payPersonNum" jdbcType="INTEGER"/>
+        <result column="AMOUNT" property="amount" jdbcType="BIGINT"/>
+        <result column="CUMULATE_PAY_PERSON_NUM" property="cumulatePayPersonNum" jdbcType="INTEGER"/>
+        <result column="CUMULATE_AMOUNT" property="cumulateAmount" jdbcType="BIGINT"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        DATE_NUM, ORDER_TYPE, PAY_PERSON_NUM, AMOUNT, CUMULATE_PAY_PERSON_NUM, CUMULATE_AMOUNT, CREATE_TIME
+    </sql>
+
+    <select id="getProductBillByPk" resultMap="allProductBillMap" parameterType="map">
+        SELECT * FROM TB_ALL_PRODUCT_BILL WHERE DATE_NUM = #{dateNum, jdbcType=INTEGER} AND ORDER_TYPE =
+        #{orderType, jdbcType=INTEGER}
+        <if test="isLock==true">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <select id="getAllProductBills" resultMap="allProductBillMap">
+        SELECT * FROM TB_ALL_PRODUCT_BILL
+    </select>
+
+    <update id="update" parameterType="map">
+        UPDATE TB_ALL_PRODUCT_BILL SET PAY_PERSON_NUM = #{payPersonNum, jdbcType=INTEGER}, AMOUNT =
+        #{amount, jdbcType=BIGINT}, CUMULATE_PAY_PERSON_NUM = #{cumulatePayPersonNum, jdbcType=INTEGER},
+        CUMULATE_AMOUNT = #{cumulateAmount, jdbcType=BIGINT}
+        WHERE DATE_NUM = #{dateNum, jdbcType=INTEGER} AND ORDER_TYPE = #{orderType, jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="map">
+        INSERT INTO TB_ALL_PRODUCT_BILL (<include refid="Base_Column_List"/>) VALUES
+        ( #{dateNum, jdbcType=INTEGER}, #{orderType, jdbcType=INTEGER}, #{payPersonNum, jdbcType=INTEGER},
+        #{amount, jdbcType=BIGINT}, #{cumulatePayPersonNum, jdbcType=INTEGER}, #{cumulateAmount, jdbcType=BIGINT}, now()
+        )
+    </insert>
+
+</mapper>

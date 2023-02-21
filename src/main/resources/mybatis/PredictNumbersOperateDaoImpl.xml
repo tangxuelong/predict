@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PredictNumbersOperate">
+    <resultMap id="predictNumbersOperateMap" type="predictNumbersOperate">
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="RULE_STR" property="ruleStr" jdbcType="VARCHAR"/>
+        <result column="OPERATE_NUMS" property="operateNums" jdbcType="BLOB"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="predictNumbersOperate">
+        INSERT INTO TB_PREDICT_NUMBERS_OPERATE(GAME_ID, PERIOD_ID, RULE_STR, OPERATE_NUMS)
+        VALUES(#{gameId, jdbcType=BIGINT}, #{periodId, jdbcType=VARCHAR}, #{ruleStr, jdbcType=VARCHAR},
+        #{operateNums, jdbcType=BLOB})
+    </insert>
+
+    <select id="getPredictNumsByGameId" resultMap="predictNumbersOperateMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_NUMBERS_OPERATE
+        WHERE GAME_ID=#{gameId, jdbcType=BIGINT}
+    </select>
+
+    <select id="getPredictNumsByGameIdAndPeriodId" resultType="java.util.HashMap" parameterType="map">
+        SELECT GAME_ID, PERIOD_ID, RULE_STR, STATUS FROM TB_PREDICT_NUMBERS_OPERATE
+        WHERE GAME_ID=#{gameId, jdbcType=BIGINT} AND PERIOD_ID=#{periodId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="getPredictNumPoByGameIdAndPeriodId" resultMap="predictNumbersOperateMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_NUMBERS_OPERATE
+        WHERE GAME_ID=#{gameId, jdbcType=BIGINT} AND PERIOD_ID=#{periodId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="getPredictNumsByCondition" resultMap="predictNumbersOperateMap" parameterType="map">
+        SELECT * FROM TB_PREDICT_NUMBERS_OPERATE
+        WHERE 1=1
+        <if test="gameId != null">
+            AND GAME_ID = #{gameId,jdbcType=BIGINT}
+        </if>
+        <if test="minPeriodId != null">
+            AND PERIOD_ID &gt;= #{minPeriodId, jdbcType=VARCHAR}
+        </if>
+        <if test="maxPeriodId != null">
+            AND PERIOD_ID &lt;= #{maxPeriodId, jdbcType=VARCHAR}
+        </if>
+        <if test="manualFlag != null and manualFlag == 1">
+            AND OPERATE_NUMS IS NOT NULL
+        </if>
+        LIMIT 100
+    </select>
+
+    <update id="updatePredictNums" parameterType="predictNumbersOperate">
+        UPDATE TB_PREDICT_NUMBERS_OPERATE
+        SET OPERATE_NUMS=#{operateNums, jdbcType=BLOB}, RULE_STR=#{ruleStr, jdbcType=VARCHAR},
+        STATUS =#{status, jdbcType=INTEGER}
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+    </update>
+
+    <update id="saveOperatePredictNums" parameterType="map">
+        UPDATE TB_PREDICT_NUMBERS_OPERATE
+        SET OPERATE_NUMS=#{operateNums, jdbcType=BLOB}
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateStatus" parameterType="map">
+        UPDATE TB_PREDICT_NUMBERS_OPERATE
+        SET STATUS=#{status, jdbcType=INTEGER}
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+    </update>
+
+    <update id="saveRuleStr" parameterType="map">
+        UPDATE TB_PREDICT_NUMBERS_OPERATE
+        SET RULE_STR=#{ruleStr, jdbcType=VARCHAR}
+        WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID = #{periodId, jdbcType=VARCHAR}
+    </update>
+</mapper>

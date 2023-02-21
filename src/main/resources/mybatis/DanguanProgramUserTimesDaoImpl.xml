@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DanguanProgramUserTimes">
+    <resultMap id="danguanProgramUserTimesMap" type="danguanProgramUserTimes">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="LEFT_TIMES" property="leftTimes" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, LEFT_TIMES, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getDanguanProgramUserTimes" resultMap="danguanProgramUserTimesMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_DANGUAN_PROGRAM_USER_TIMES
+        WHERE USER_ID = #{userId,jdbcType=BIGINT}
+        <if test="isLock==true">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="danguanProgramUserTimes">
+        INSERT INTO TB_DANGUAN_PROGRAM_USER_TIMES(<include refid="Base_Column_List"/>)
+        VALUES (#{userId,jdbcType=BIGINT},
+        #{leftTimes,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="danguanProgramUserTimes">
+        UPDATE TB_DANGUAN_PROGRAM_USER_TIMES
+        SET LEFT_TIMES = #{leftTimes,jdbcType=INTEGER}, UPDATE_TIME = now()
+        WHERE USER_ID = #{userId,jdbcType=BIGINT}
+    </update>
+</mapper>

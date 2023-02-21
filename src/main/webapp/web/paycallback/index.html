@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <title>支付回调页面</title>
+</head>
+<style>
+    .payment-button {
+        display: block;
+        margin: 0 auto;
+        text-align: center;
+        text-decoration: none;
+        line-height: 6vh;
+        color: #FFF;
+        width: 92vw;
+        height: 6vh;
+        background: rgba(255, 80, 80, 1);
+        border-radius: 5px;
+    }
+
+    .payment-desc {
+        text-align: center;
+        margin: 5vw 0 21vw 0;
+    }
+
+    .payment-icon {
+        text-align: center;
+        margin-top: 60px;
+        margin-bottom: 40px;
+    }
+
+    .payment-icon img {
+        width: 62px;
+    }
+</style>
+<body>
+<div id="app">
+    <p class="payment-icon"><img src="https://sportsimg.mojieai.com/%E6%94%AF%E4%BB%98%E6%88%90%E5%8A%9F@3x.png" alt=""></p>
+    <!--<p class="payment-desc">支付成功</p>-->
+    <a class="payment-button" v-on:click="backNative" href="javascript:void(0)">完成</a>
+</div>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    function openNativePage(params) {
+        if (typeof(window.webkit) != "undefined") {
+            window.webkit.messageHandlers.payComplete.postMessage({body: ""});
+        } else {
+            if (typeof(webViewNative) != "undefined") {
+                webViewNative.payComplete()
+            } else {
+                window.location.href = params
+            }
+        }
+    }
+
+    var app = new Vue({
+        el: '#app',
+        data: {},
+        mounted: function () {
+        },
+        methods: {
+            backNative: function () {
+                openNativePage("popBack")
+            }
+        }
+    })
+</script>
+</html>

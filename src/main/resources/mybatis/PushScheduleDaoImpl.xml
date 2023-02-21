@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PushSchedule">
+    <resultMap id="pushScheduleMap" type="pushSchedule">
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="IF_WINNING_NUMBER_PUSH" property="ifWinningNumberPush" jdbcType="INTEGER"/>
+        <result column="IF_WINNING_NUMBER_PUSH_TIME" property="ifWinningNumberPushTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="pushSchedule">
+        INSERT INTO TB_PUSH_SCHEDULE(GAME_ID, PERIOD_ID, IF_WINNING_NUMBER_PUSH, CREATE_TIME)
+        VALUES (#{gameId,jdbcType=BIGINT}, #{periodId,jdbcType=VARCHAR},
+        #{ifWinningNumberPush,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <!--<select id="getUnFinishedSchedules" resultMap="pushScheduleMap" parameterType="map">
+        select * from TB_PREDICT_SCHEDULE
+        where game_id = #{gameId,jdbcType=BIGINT} and <![CDATA[period_id <= #{periodId, jdbcType=VARCHAR}
+        ]]>
+        and (IF_AWARD = 0 or IF_PREDICT = 0 or IF_HISTORY_WINNING = 0)
+    </select>-->
+
+    <update id="updatePushSchedule" parameterType="map">
+        UPDATE TB_PUSH_SCHEDULE
+        set ${flagColumn} = 1 , ${timeColumn} = now()
+        where game_id = #{gameId,jdbcType=BIGINT} AND period_id = #{periodId,jdbcType=VARCHAR} and ${flagColumn} = 0
+    </update>
+
+    <select id="getPushSchedule" resultMap="pushScheduleMap" parameterType="map">
+        select * from TB_PUSH_SCHEDULE where game_id = #{gameId,jdbcType=BIGINT}
+        AND period_id = #{periodId,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

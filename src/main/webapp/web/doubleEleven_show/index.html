@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>智慧双11</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=0, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="format-detection" content="telephone=no" />
+    <script src="./script/vue.min.js"></script>
+    <script type="text/javascript" src="./script/jquery.min.js"></script>
+    <script src="./script/config.js"></script>
+    <style>
+        body {  margin: 0;  padding: 0;  width: 100%;  background: #f5f5f5;}
+        .bg{position: absolute;  width: 100%;background:linear-gradient(0deg,rgba(38,202,221,1) 0%,rgba(41,162,255,1) 35%,rgba(144,35,255,1) 100%)}
+        .leftBtnUnSelectedStyle{
+            width:44vw;
+            margin-left: 4vw;
+            height:10.67vw;
+            line-height: 10.67vw;
+            border:solid rgba(0,255,255,1);
+            background:linear-gradient(90deg,rgba(222,41,255,1) 0%,rgba(99,169,255,1) 100%);
+            border-radius:3vw 0vw 0vw 3vw;
+            font-size:4.27vw;
+            font-family:PingFangSC-Semibold;
+            text-align: center;
+            font-weight:600;
+                  color:RGBA(231, 196, 255, 1);
+        }
+
+        .leftBtnSelectedStyle{
+            width:44vw;
+            margin-left: 4vw;
+            height:10.67vw;
+            line-height: 10.67vw;
+            border:solid rgba(0,255,255,1);
+            background:rgba(255,255,255,1);
+            border-radius:3vw 0vw 0vw 3vw;
+            font-size:4.27vw;
+            font-family:PingFangSC-Semibold;
+            text-align: center;
+            font-weight:600;
+            color:rgba(138,42,255,1);
+        }
+        .rightUnBtnSelectedStyle{
+            width: 44vw;
+            margin-left: -2vw;
+            height:10.67vw;
+            line-height: 10.67vw;
+            border: solid rgba(0,255,255,1);
+            background:linear-gradient(90deg,rgba(222,41,255,1) 0%,rgba(99,169,255,1) 100%);
+            border-radius:0vw 3vw 3vw 0vw;
+            font-size:4.27vw;
+            font-family:PingFangSC-Semibold;
+            font-weight:600;
+            text-align: center;
+            color:RGBA(231, 196, 255, 1);
+        }
+        .rightBtnSelectedStyle{
+            width: 44vw;
+            margin-left: -2vw;
+            height:10.67vw;
+            line-height: 10.67vw;
+            border: solid rgba(0,255,255,1);
+            background:rgba(255,255,255,1);
+            border-radius:0vw 3vw 3vw 0vw;
+            font-size:4.27vw;
+            font-family:PingFangSC-Semibold;
+            font-weight:600;
+            text-align: center;
+            color:rgba(138,42,255,1);
+        }
+
+        .ptitleStyle {
+            position: absolute;
+            margin-top: -25vw;
+            margin-left: 10vw;
+            font-size: 6.93vw;
+            color: rgba(255,248,51,1);
+        }
+
+        .pnewtitleStyle {
+            position: absolute;
+            margin-top: -24vw;
+            margin-left: 10vw;
+            font-size: 6vw;
+            color:rgba(255,27,65,1);
+        }
+        .pnewmessageStyle{
+            position: absolute;
+            margin-top: -16vw;
+            margin-left: 10vw;
+            font-size: 3.2vw;
+            color:rgba(156,66,0,1);
+
+        }
+        .psmalltitleStyle {
+            position: absolute;
+            margin-top: -24.5vw;
+            margin-left: 10vw;
+            font-size: 5vw;
+            color: rgba(255,248,51,1);
+        }
+
+        .psmallmessageStyle {
+            position: absolute;
+            margin-top: -20vw;
+            margin-left: 9vw;
+            font-size: 8vw;
+            color: rgba(255,248,51,1);
+        }
+
+        .pmessageStyle {
+            position: absolute;
+            margin-top: -16vw;
+            margin-left: 10vw;
+            font-size: 3.2vw;
+            color: rgba(255,255,255,1);
+        }
+        .pInfoStyle {
+            position: absolute;
+            margin-top: -26vw;
+            margin-left: 73vw;
+            font-size: 4.8vw;
+            text-align: right;
+            color: rgba(255,255,255,1);
+        }
+        .pcontentStyle {
+            position: absolute;
+            margin-top: -20vw;
+            margin-left: 65vw;
+            width: 29vw;
+            font-size: 8vw;
+            text-align: center;
+            color: rgba(255,255,255,1);
+        }
+
+        .pcontentBuydStyle {
+            position: absolute;
+            margin-top: -21vw;
+            margin-left: 65vw;
+            width: 29vw;
+            font-size: 7vw;
+            text-align: center;
+            color: #e0e0e0;
+        }
+        .spanBigStyle {
+            font-size: 11vw;
+            text-align: right;
+            color: rgba(255,255,255,1);
+        }
+        .spanSmallStyle {
+            font-size: 4.8vw;
+            text-align: right;
+            color: rgba(255,255,255,1);
+        }
+
+        [v-cloak] {  display: none;  }
+
+        .rulesDiv{  position: fixed;width:18.67vw;z-index: 1;  height:6.93vw; line-height: 6.93vw;  background:rgba(255,248,51,1);margin-left: 81.33vw;  border-radius:0vw 0vw 0vw 4vw;font-size:3.2vw;  font-family:PingFangSC-Semibold;  font-weight:600;  color:rgba(209,1,162,1);text-align: center; }
+
+        .rules{  position: fixed;  top: 0;  bottom: 0;  left: 0;  right: 0;  z-index: 1;  }
+        .rules .reulesBg{  position: absolute;  height: 100%;  width: 100%;  background-color: rgba(0,0,0,0.6);  }
+        .rules .content{  position: relative;
+            margin-top: 75vw;
+            top: -60vw;
+            width: 80vw;
+            left: 7vw;
+            border-radius: 1vw;
+            background: #ffffff;
+            padding: 3vw;
+            color: rgba(102,102,102,1);
+            font-size: 3.45vw;
+            line-height: 6.5vw; }
+
+        .rules .content .title{     position: relative;
+            text-align: center;
+            font-size: 4.8vw;
+            font-weight: bold;
+            color: white;
+            width: 86vw;
+            height: 13.33vw;
+            line-height: 13.33vw;
+            background: rgba(91,4,232,1);
+            margin-left: -3vw;
+            margin-top: -4vw;
+            border-top-left-radius: 1vw;
+            border-top-right-radius: 1vw;
+        }
+
+        .c_rule{  width: 11vw;  height: 11vw;  position: absolute;  top: 150vw;  left: 45vw; }
+
+    </style>
+
+</head>
+<body>
+
+
+<div class="bg" id="app"  v-cloak @click="openDownloadPage(androidAppUrl,iosAppUrl)">
+
+
+    <div style="position: relative;">
+        <div class="rulesDiv">活动规则</div>
+        <img src="./img/11_01.png" alt="head" style="width: 100%">
+    </div>
+
+
+    <table style="table-layout: fixed;width: 100%;margin-top: -17.5vw;position: absolute;">
+            <tbody>
+            <tr>
+                <td>
+                    <div @click="selecteBtn(0)" :class="{leftBtnSelectedStyle:btnSelectStyle,leftBtnUnSelectedStyle:btnUnSelectStyle}">
+                        必赚专区
+                    </div>
+                </td>
+                <td>
+
+
+                    <div @click="selecteBtn(1)" :class="{rightUnBtnSelectedStyle:btnSelectStyle,rightBtnSelectedStyle:btnUnSelectStyle}">
+                        新手专区
+                    </div>
+
+                </td>
+            </tr>
+            </tbody>
+
+    </table>
+
+
+    <div v-show="currentSelect == 0" style="width: 100%;">
+
+
+        <div style="width: 100%">
+            <img src="./img/11_02.png" alt="" style="width: 100%;">
+            <p class="ptitleStyle">大咖稳胆</p>
+            <p class="pmessageStyle">足彩专家精选全玩法预测</p>
+            <p class="pInfoStyle">不中</p>
+            <p class="pcontentStyle"><span class="spanBigStyle"></span>包赔</p>
+        </div>
+
+        <div style="width: 100%" >
+            <img src="./img/11_02.png" alt="" style="width: 100%;">
+            <p class="ptitleStyle">2串1推荐</p>
+            <p class="pmessageStyle">上千足彩专家数据支持<br>预测准，收益高</p>
+            <p class="pInfoStyle">立减</p>
+            <p class="pcontentStyle"><span class="spanBigStyle">50</span>元</p>
+        </div>
+        <div style="width: 100%">
+            <img src="./img/11_02.png" alt="" style="width: 100%;">
+            <p class="ptitleStyle">智慧币充值</p>
+            <p class="pmessageStyle">智慧币直抵现金，<br>可以购买预测及会员</p>
+            <p class="pInfoStyle">多送</p>
+            <p class="pcontentStyle"><span class="spanBigStyle">30</span>%</p>
+        </div>
+        <div style="width: 100%" >
+            <img src="./img/11_02.png" alt="" style="width: 100%;">
+            <p class="ptitleStyle">智慧单关</p>
+            <p class="pmessageStyle">总进球、半全场精选预测<br>单场可投注，高赔易中奖</p>
+            <p class="pInfoStyle">立减</p>
+            <p class="pcontentStyle"><span class="spanBigStyle">20</span>元</p>
+        </div>
+
+
+        <table style="table-layout: fixed;width: 100%;">
+            <tbody><tr><td>
+                <div>
+                        <img style="width: 100%;" src="./img/11_04.png" alt="">
+                    <p class="psmalltitleStyle">足彩会员</p>
+                    <p class="psmallmessageStyle"><span class="spanSmallStyle">立减 </span><span class="spanBigStyle">20</span>元</p>
+                </div>
+
+            </td><td>
+                    <div >
+                        <img style="width: 100%;" src="./img/11_05.png" alt="">
+                        <p class="psmalltitleStyle">数字彩会员</p>
+                        <p class="psmallmessageStyle"><span class="spanSmallStyle">立减 </span><span class="spanBigStyle">10</span>元</p>
+                    </div>
+            </td></tr></tbody>
+        </table>
+
+    </div>
+
+    <div v-show="currentSelect == 1">
+
+        <div>
+            <img v-show="!vipBuyInfo.isBuyVip2" src="./img/new_02.png" alt="" style="width: 100%">
+            <img v-show="vipBuyInfo.isBuyVip2" src="./img/new_11.png" alt="" style="width: 100%">
+            <p class="pnewtitleStyle">一个月足球会员</p>
+            <p class="pnewmessageStyle">足彩专家精选全玩法预测</p>
+            <p v-show="!vipBuyInfo.isBuyVip2" class="pInfoStyle">立减</p>
+            <p v-show="!vipBuyInfo.isBuyVip2" class="pcontentStyle"><span class="spanBigStyle">50</span>元</p>
+            <p v-show="vipBuyInfo.isBuyVip2" class="pcontentBuydStyle">已购买</p>
+        </div>
+
+        <div>
+            <img v-show="!vipBuyInfo.isBuyVip" src="./img/new_02.png" alt="" style="width: 100%">
+            <img v-show="vipBuyInfo.isBuyVip" src="./img/new_11.png" alt="" style="width: 100%">
+            <p class="pnewtitleStyle">1个月数字彩会员</p>
+            <p class="pnewmessageStyle">上千足彩专家数据支持<br>预测准，收益高</p>
+            <p v-show="!vipBuyInfo.isBuyVip" class="pInfoStyle">立减</p>
+            <p v-show="!vipBuyInfo.isBuyVip" class="pcontentStyle"><span class="spanBigStyle">20</span>元</p>
+            <p v-show="vipBuyInfo.isBuyVip" class="pcontentBuydStyle">已购买</p>
+        </div>
+
+        <div>
+            <img src="./img/new_02.png" alt="" style="width: 100%">
+            <p class="pnewtitleStyle">智慧币充值</p>
+            <p class="pnewmessageStyle">智慧币直抵现金，<br>可以购买预测及会员</p>
+            <p class="pInfoStyle">多送</p>
+            <p class="pcontentStyle"><span class="spanBigStyle">60</span>%</p>
+        </div>
+
+        <div>
+            <img v-show="!isGeted" src="./img/new_04.png" alt="" style="width: 100%">
+            <img v-show="isGeted" src="./img/new_12.png" alt="" style="width: 100%">
+            <p class="pnewtitleStyle">不中包赔</p>
+            <p class="pnewmessageStyle">首次购买，大咖预测,智慧<br>单关、会员2串1，不中奖退款</p>
+        </div>
+
+    </div>
+
+    <div style="width: 100%; position: relative;">
+        <img src="./img/11_06.png" alt="" style="width: 100%;position: relative;top: 2vw;">
+    </div>
+</div>
+
+
+<!--活动规则-->
+<div id="ruleAlert" class="rules" v-if="rulesShow">
+    <div class="reulesBg" @click="rulesShow = false"></div>
+
+    <div class="content">
+
+        <div class="title">活动规则</div>
+        <div>
+            活动时间：
+            <br>
+            11月9日00:00-11月11日24:00
+            <br>
+            <br>
+            大咖不中包赔：
+            <br>
+            活动期间，购买任意大咖预测，不中则退款。大咖每场比赛推荐4个玩法，若有一个玩法不中，退还22智慧币，以此类推若全部不中，则退还88智慧币。
+            <br>
+            <br>
+            首购包赔：
+            <br>
+            活动期间，只要您是第一次购买以下任意推荐：大咖预测、智慧单关、2串1推荐，若预测不中，退还智慧币。会员免费解锁的2串1不享受不中包赔
+            <br>
+            <br>
+            退款时间：
+            <br>
+            智慧币将会在比赛开奖后第二天24点前退还到账户上，剩余的50%智慧币将在7天后退还到账户上
+        </div>
+    </div>
+
+    <div class="c_rule" @click="rulesShow = false;"><img style="width: 11vw" src="https://static.mojieai.com/%E5%85%B3%E9%97%ADaaa.png"></div>
+</div>
+
+<script>
+
+    token = getCookie('token');
+
+    var ruleAlert = new Vue({
+        el:'#ruleAlert',
+        data:{
+            rulesShow:false
+        }
+    })
+
+    var app = new Vue({
+        el: "#app",
+        data: {
+            currentSelect:0,
+            btnSelectStyle:true,
+            btnUnSelectStyle:false,
+            urls:{dkwd:'mjlottery://mjnative?page=wap&url=https://predictapi.mojieai.com/web/big_cafe/',//大咖稳胆
+                  hyzq:'mjlottery://mjnative?page=vipPromotionZone',//会员专区
+                  zhbcz:'mjlottery://mjnative?page=wisdomCoin',//智慧币充值页面
+                  zhdg:'mjlottery://mjnative?page=wap&url=https://predictapi.mojieai.com/web/wisdom_singleMatch/',//智慧单关活动页面
+                 zchycz:'mjlottery://mjnative?page=buyVip&type=1',//足彩会员充值页面
+                 szchycz:'mjlottery://mjnative?page=buyVip&type=0',//数字彩会员充值页面
+            },
+            vipBuyInfo:{},
+            isGeted:false,
+            androidAppUrl:"https://cdn.caiqr.com/zhyc4.6.4.apk",
+            iosAppUrl:"https://t.mojieai.com/web/qybios3/index.html",
+            schemesJumpStr:"mjlottery://mjnative?page=wap&url=https://predictapi.mojieai.com/web/doubleEleven/index.html",
+        },
+        mounted:function () {
+            this.openApp("mjlottery://mjnative?page=wap&url=https://predictapi.mojieai.com/web/doubleEleven/index.html")
+            var u = navigator.userAgent.toLowerCase();
+            if (/iphone|ipod|ipad/.test(u)) {
+                setTimeout(function () {
+                    window.location="https://t.mojieai.com/web/qybios3/index.html";
+                },2000);
+            } else {
+                setTimeout(function () {
+                    window.location="https://cdn.caiqr.com/zhyc4.6.4.apk";
+                },5000);
+            }
+        },
+        methods: {
+            openDownloadPage: function (androidUrl,iosUrl){
+
+                this.openApp(this.schemesJumpStr)
+                var u = navigator.userAgent.toLowerCase();
+
+                setTimeout(function () {
+                    if  (/iphone|ipod|ipad/.test(u)) {
+                        window.location=iosUrl;
+                    } else {
+                        window.location=androidUrl;
+                    }
+                },2000);
+
+            },
+            openApp: function (url) {
+                setTimeout(function () {
+                    try
+                    {
+                        window.location.href = url;
+                    }
+                    catch(err)
+                    {
+
+                    }
+                },1);
+
+            },
+            selecteBtn:function (index) {
+                if (index == 0){
+                    app.btnSelectStyle = true;
+                    app.btnUnSelectStyle = false;
+                    app.currentSelect = 0
+                }else{
+                    app.btnSelectStyle = false;
+                    app.btnUnSelectStyle = true;
+                    app.currentSelect = 1
+                }
+            }
+        },
+        computed: {
+
+        }
+    })
+
+</script>
+
+</body>
+</html>

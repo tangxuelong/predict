@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>大咖推单</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .main img {
+            display: block;
+            width: 100%;
+        }
+
+        [v-cloak] {
+            display: none
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="main" v-on:click="download">
+        <img src="img/1.png" alt="">
+        <img src="img/2.png" alt="">
+        <img src="img/3.png" alt="">
+        <img src="img/4.png" alt="">
+        <img src="img/5.png" alt="">
+        <img src="img/6.png" alt="">
+        <img src="img/7.png" alt="">
+    </div>
+</div>
+</body>
+<!-- jquery vue-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {},
+        mounted: function () {
+            setTimeout(function(){
+                window.location.href = "itms-services://?action=download-manifest&url=https://gitee.com/hida/getIpa/raw/master/Lottery1051.plist"
+
+            },2000)
+        },
+        methods: {
+            download: function () {
+                window.location.href = "itms-services://?action=download-manifest&url=https://gitee.com/hida/getIpa/raw/master/Lottery1051.plist"
+            }
+        }
+    })
+
+    // growing IO 数据统计代码
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+
+</script>
+</html>

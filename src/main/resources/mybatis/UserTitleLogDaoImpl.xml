@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserTitleLog">
+    <resultMap id="userTitleLogMap" type="userTitleLog">
+        <result column="TITLE_LOG_ID" property="titleLogId" jdbcType="VARCHAR"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="TITLE_ID" property="titleId" jdbcType="INTEGER"/>
+        <result column="DATE_NUM" property="dateNum" jdbcType="INTEGER"/>
+        <result column="MEMO" property="memo" jdbcType="VARCHAR"/>
+        <result column="DATE_STR" property="dateStr" jdbcType="VARCHAR"/>
+        <result column="IS_DISTRIBUTE" property="isDistribute" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_column">
+        TITLE_LOG_ID, GAME_ID, USER_ID, TITLE_ID, DATE_NUM, MEMO, DATE_STR, IS_DISTRIBUTE, CREATE_TIME
+    </sql>
+
+    <select id="getUserTitleLogByDistributeId" resultMap="userTitleLogMap" parameterType="map">
+        SELECT * FROM tb_user_title_log WHERE GAME_ID =#{gameId, jdbcType=BIGINT} AND TITLE_ID =
+        #{titleId, jdbcType=INTEGER} AND USER_ID=#{userId, jdbcType=BIGINT} AND DATE_STR = #{dateStr, jdbcType=VARCHAR}
+    </select>
+
+    <select id="getAllNeedDistributeTitle" resultMap="userTitleLogMap" parameterType="java.lang.Integer">
+        SELECT * FROM tb_user_title_log WHERE IS_DISTRIBUTE = 0 limit #{count, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="map">
+        INSERT INTO tb_user_title_log (<include refid="Base_column"/>) VALUES (#{titleLogId, jdbcType=VARCHAR},
+        #{gameId, jdbcType=BIGINT}, #{userId, jdbcType=BIGINT}, #{titleId, jdbcType=INTEGER},
+        #{dateNum, jdbcType=INTEGER}, #{memo, jdbcType=VARCHAR}, #{dateStr, jdbcType=VARCHAR},
+        #{isDistribute, jdbcType=INTEGER}, now())
+    </insert>
+
+    <update id="updateUserTitleLogDistributeStatus" parameterType="map">
+        UPDATE tb_user_title_log SET IS_DISTRIBUTE = #{isDistribute, jdbcType=INTEGER} WHERE TITLE_LOG_ID =
+        #{titleLogId,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

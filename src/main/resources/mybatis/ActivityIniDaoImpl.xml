@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ActivityIni">
+    <resultMap id="activityIniMap" type="activityIni">
+        <result column="INI_NAME" property="iniName" jdbcType="VARCHAR"/>
+        <result column="INI_DESC" property="iniDesc" jdbcType="VARCHAR"/>
+        <result column="INI_VALUE" property="iniValue" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getAllIni" resultMap="activityIniMap">
+		select * from TB_ACTIVITY_INI
+	</select>
+
+    <select id="getIni" resultMap="activityIniMap" parameterType="java.lang.String">
+        select * from TB_ACTIVITY_INI WHERE INI_NAME = #{iniName,jdbcType=VARCHAR}
+    </select>
+
+    <update id="update" parameterType="activityIni">
+        UPDATE TB_ACTIVITY_INI
+        SET INI_VALUE = #{iniValue,jdbcType=VARCHAR}, INI_DESC = #{iniDesc,jdbcType=VARCHAR}
+        WHERE INI_NAME = #{iniName,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insert" parameterType="activityIni">
+        INSERT INTO TB_ACTIVITY_INI (INI_NAME, INI_DESC, INI_VALUE)
+        VALUES (#{iniName,jdbcType=VARCHAR}, #{iniDesc,jdbcType=VARCHAR}, #{iniValue,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="monitorDB" resultType="java.lang.Integer">
+        SELECT 1
+    </select>
+</mapper>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>邀请有礼</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <link rel="stylesheet" href="style/pure-min.css"/>
+    <link rel="stylesheet" href="style/layout.css"/>
+    <meta name="format-detection" content="telephone=no">
+    <script src="script/config.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            background: url('img/bg.png') no-repeat;
+            height: 100%;
+            background-size: 100% 100%;
+            text-align: center;
+        }
+
+        .txt {
+            position: relative;
+            height: 3.9rem;
+        }
+
+        .txt img {
+            position: absolute;
+            width: 100%;
+            left: 0;
+        }
+
+        .txt p {
+            position: absolute;
+            font-size: 0.24rem;
+            bottom: 0;
+            color: #752400;
+            left: 10%;
+        }
+
+        .invite-button img {
+            width: 94%;
+            margin: 0.8rem 0 0.4rem 0;
+        }
+
+        .my-score {
+            position: relative;
+            font-size: 0.24rem;
+            color: #752400;
+        }
+
+        .my-score img.my-title {
+            width: 100%;
+            margin: 0 auto;
+            margin-bottom: 0.2rem;
+        }
+
+        .my-score .score-bg {
+            width: 86%;
+            margin: 0 auto;
+        }
+
+        .my-score .left {
+            position: absolute;
+            top: 1.0rem;
+            left: 10%;
+            width: 40%;
+        }
+
+        .my-score .left p:first-child, .my-score .right p:first-child {
+            margin-bottom: 0.1rem;
+        }
+        .my-score .right {
+            position: absolute;
+            top: 1.0rem;
+            right: 10%;
+            width: 40%;
+        }
+
+        .activity-rule a {
+            font-size: 0.24rem;
+            color: #ffef39;
+            text-decoration: none;
+        }
+
+        .jiantou {
+            display: inline-block;
+            width: 0.12rem;
+            height: 0.12rem;
+            border-top: 1.4px solid #ffef39;
+            border-right: 1.4px solid #ffef39;
+            transform: rotate(45deg);
+            -ms-transform: rotate(45deg); /* IE 9 */
+            -moz-transform: rotate(45deg); /* Firefox */
+            -webkit-transform: rotate(45deg); /* Safari 和 Chrome */
+            -o-transform: rotate(45deg); /* Opera */
+            margin-left: -2px;
+            margin-bottom: 1px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="txt">
+        <img src="https://ohduoklem.qnssl.com/f-text.png" alt="">
+    </div>
+    <div class="invite-button">
+        <img src="img/invite-button.png" v-on:click="share()" alt="">
+    </div>
+    <div class="my-score">
+        <img class="my-title" src="img/my-title3.png" alt="">
+        <img class="score-bg" src="img/score-bg.png" alt="">
+        <div class="left">
+            <p v-text="nums+'人'">0</p>
+            <p>已邀请好友</p>
+        </div>
+        <div class="right">
+            <p v-text="nums+'次'">0</p>
+            <p>获智慧奖励</p>
+        </div>
+    </div>
+
+    <div class="activity-rule">
+        <a href="rule.html">活动规则<span class="jiantou"></span><span class="jiantou"></span></a>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+    function openNativePage(params) {
+        if (typeof(window.webkit) != "undefined") {
+            window.webkit.messageHandlers.goNative.postMessage({body: params})
+        } else {
+            if (typeof(webViewNative) != "undefined") {
+                webViewNative.goNative(params)
+            } else {
+                window.location.href = params
+            }
+        }
+    }
+    function shareRight(params) {
+        if (typeof(window.webkit) != "undefined") {
+            window.webkit.messageHandlers.outerShareSetData.postMessage({body: params})
+        } else {
+            if (typeof(webViewNative) != "undefined") {
+                webViewNative.outerShareSetData(params)
+            }
+        }
+    }
+    function share(params) {
+        if (typeof(window.webkit) != "undefined") {
+            window.webkit.messageHandlers.innerShareOpen.postMessage({body: params})
+        } else {
+            if (typeof(webViewNative) != "undefined") {
+                //alert("android share");
+                webViewNative.innerShareOpen(params)
+            }
+        }
+    }
+    ;
+    function getCookie(c_name) {
+        if (document.cookie.length > 0) {
+            c_start = document.cookie.indexOf(c_name + "=")
+            if (c_start != -1) {
+                c_start = c_start + c_name.length + 1
+                c_end = document.cookie.indexOf(";", c_start)
+                if (c_end == -1) c_end = document.cookie.length
+                return unescape(document.cookie.substring(c_start, c_end))
+            }
+        }
+        return ""
+    }
+    function setCookie(c_name, value, expiredays) {
+        var exdate = new Date()
+        exdate.setDate(exdate.getDate() + expiredays)
+        document.cookie = c_name + "=" + escape(value) +
+            ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString())
+    }
+
+    var token = getCookie('token');
+    if (token == "") {
+
+    } else {
+        var redirectUrl = window.location.protocol + "//" + window.location.host + "/web/share/index.html";
+        var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9fea09e960df08c0&redirect_uri=" +
+            redirectUrl + "&response_type=code&scope=snsapi_userinfo&state=" + token + "#wechat_redirect";
+
+        //window.location.href = url;
+        var params = {
+            "title": config.shareTitle,
+            "content": config.shareDesc,
+            "icon": config.shareIcon,
+            "wxUrl": url,
+            "qqUrl": redirectUrl + "?token=" + token
+        };
+        shareRight(JSON.stringify(params));
+    }
+    var app = new Vue({
+        el: '#app',
+        data: {
+            nums: 0,
+        },
+        mounted: function () {
+            var index = this;
+            //setCookie("token", "2fde913e-43b6-4432-bed4-210dbb02f66140", 1);
+            var token = getCookie('token');
+            if (token != "") {
+                // 获取预测号码
+                $.ajax({
+                    type: 'POST',
+                    url: '/wx/shareResult',
+                    data: {
+                        'gameEn': 'ssq',
+                        'token': token
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        index.$data.nums = data.data.shareResult;
+                    }
+                })
+            }
+        },
+        methods: {
+            share: function () {
+                var index = this;
+                var token = getCookie('token');
+                if (token == "") {
+                    openNativePage("mjLottery://mjNative?page=login")
+                } else {
+                    var redirectUrl = window.location.protocol + "//" + window.location.host + "/web/share/index.html";
+                    var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9fea09e960df08c0&redirect_uri=" +
+                        redirectUrl + "&response_type=code&scope=snsapi_userinfo&state=" + token + "#wechat_redirect";
+
+                    //window.location.href = url;
+                    var params = {
+                        "title": config.shareTitle,
+                        "content": config.shareDesc,
+                        "icon": config.shareIcon,
+                        "wxUrl": url,
+                        "qqUrl": redirectUrl + "?token=" + token
+                    };
+                    share(JSON.stringify(params));
+                }
+
+
+            }
+        }
+    })
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+</script>
+</html>

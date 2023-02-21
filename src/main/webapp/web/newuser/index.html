@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>新手免费送25元</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <link rel="stylesheet" href="style/pure-min.css"/>
+    <link rel="stylesheet" href="style/layout.css"/>
+    <meta name="format-detection" content="telephone=no">
+    <script src="script/config.js"></script>
+    <link rel="stylesheet" href="script/swiper-3.4.2.min.css">
+    <script src="script/swiper-3.4.2.min.js"></script>
+    <link rel="stylesheet" href="style/pure-min.css"
+          integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <style>
+        .toast-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 100%;
+            top: 100%;
+            z-index: 2999;
+        }
+
+        .toast {
+            position: absolute;
+            top: -56%;
+            left: -50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            padding: 13px 16px;
+            font-size: 14px;
+            border-radius: 2px;
+            width: auto;
+            /*颜色*/
+            color: #ccc;
+            background: rgba(37, 38, 45, 0.9);
+            /*可以输入的字数的宽度*/
+            max-width: 16em;
+        }
+
+        .banner img {
+            display: block;
+            width: 100%;
+        }
+
+        .tequan {
+            position: relative;
+        }
+
+        .t1 {
+            display: block;
+            width: 100%;
+        }
+
+        #app {
+            background: url('http://sportsimg.mojieai.com/newusera/bg.png') no-repeat;
+            background-size: 100% auto;
+            padding: 0 0 1rem 0;
+        }
+
+        .tqr {
+            height: 0.53rem;
+            width: 100%;
+            font-size: 0.42rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 87, 94, 1);
+            line-height: 0.6rem;
+            text-align: center;
+            position: absolute;
+            top: 1rem;
+        }
+
+        .tqb {
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            top: 1.6rem;
+            height: 0.23rem;
+            font-size: 0.25rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(51, 51, 51, 1);
+            line-height: 0.6rem;
+        }
+
+        .tqb-line {
+            text-decoration: line-through;
+        }
+
+        .tqb-bottom {
+            bottom: 0.55rem;
+            top: auto;
+        }
+
+        .tqbutton {
+            width: 1.6rem;
+            height: 0.28rem;
+            font-size: 0.24rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 255, 255, 1);
+            position: absolute;
+            left: 50%;
+            margin-left: -1.4rem;
+            text-decoration: none;
+            text-align: center;
+            background: url("http://sportsimg.mojieai.com/newusera/button.png") no-repeat;
+            padding: 0.34rem 0.6rem;
+            background-size: 100% auto;
+        }
+
+        .tqbutton-register {
+            bottom: 0.4rem;
+        }
+
+        .tqbutton-buy-vip {
+            bottom: 0.7rem;
+        }
+
+        .tqt {
+            display: block;
+            width: 50%;
+            margin: 0.3rem auto;
+        }
+
+        .vip {
+            padding: 0 0.2rem;
+        }
+
+        .viptq {
+            position: relative;
+        }
+
+        .viptq img {
+            display: block;
+            width: 100%;
+        }
+
+        .viptqt {
+            height: 0.23rem;
+            font-size: 0.25rem;
+            font-family: PingFangSC-Medium;
+            color: rgba(51, 51, 51, 1);
+            line-height: 0.6rem;
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            margin-left: -0.7rem;
+            width: 1.4rem;
+            text-align: center;
+        }
+
+        .viptqdesc {
+            width: 90%;
+            height: 0.21rem;
+            font-size: 0.22rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(153, 153, 153, 1);
+            line-height: 0.25rem;
+            position: absolute;
+            bottom: 0.5rem;
+            padding: 0 0.3rem 0 0.12rem;
+        }
+
+        .award-popup {
+            background: #000;
+            opacity: 0.7;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .award-popup-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .award-right {
+            position: absolute;
+            top: 50%;
+            width: 4.83rem;
+            left: 50%;
+            margin-left: -2.415rem;
+            height: 5rem;
+            margin-top: -2.5rem;
+        }
+
+        .award-popup-bg {
+            display: block;
+            width: 100%;
+        }
+
+        .form {
+            position: absolute;
+            top: 50%;
+            margin-top: -0.9rem;
+            width: 4.83rem;
+            left: 50%;
+            margin-left: -2.415rem;
+        }
+
+        .form input {
+            -webkit-appearance: none;
+            background: #fff;
+            height: 0.7rem;
+            font-size: 0.24rem;
+            display: block;
+            border-radius: 0.35rem;
+            border: none;
+            color: #F18383;
+        }
+
+        input::-webkit-input-placeholder {
+            color: #F18383;
+        }
+
+        input::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color: #F18383;
+        }
+
+        input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color: #F18383;
+        }
+
+        input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: #F18383;
+        }
+
+        .share-button a {
+            display: block;
+            width: 90%;
+            margin-left: 5%;
+            text-decoration: none;
+            font-size: 0.3rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(119, 56, 0, 1);
+            text-align: center;
+            background: url("http://sportsimg.mojieai.com/newusera/button2.png") no-repeat;
+            background-size: 100% auto;
+            margin-top: 0.2rem;
+            padding: 0.25rem 0;
+        }
+
+        .form input:focus {
+            outline: none;
+            line-height: normal;
+        }
+
+        input.mobile {
+            margin-left: 7.5%;
+            width: 85%;
+            text-align: center;
+            margin-bottom: 0.24rem;
+        }
+
+        input.verify-code {
+            margin-left: 7.5%;
+            width: 48%;
+            text-align: center;
+            float: left;
+            margin-bottom: 0.1rem;
+        }
+
+        input.verify-code-button {
+            background: #ffd428;
+            margin-right: 7.5%;
+            width: 32%;
+            text-align: center;
+            float: right;
+            margin-bottom: 0.1rem;
+            font-size: 0.24rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(119, 56, 0, 1);
+        }
+
+        input.password {
+            margin: 0.24rem auto;
+            margin-left: 7.5%;
+            width: 85%;
+            text-align: center;
+
+        }
+
+        .rule-text {
+            color: #fff;
+            text-align: center;
+            font-size: 0.24rem;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        input[type="number"] {
+            padding: 0;
+        }
+
+        input[type="password"] {
+            padding: 0;
+        }
+
+        input.add-class {
+            background: #ffdc88;
+        }
+
+        [v-cloak] {
+            display: none
+        }
+
+        .success-p {
+            font-size: 0.3rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 255, 255, 1);
+            text-align: center;
+        }
+
+        .form-success {
+            margin-top: 0;
+        }
+
+        .big-number {
+            font-size: 0.6rem;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 87, 94, 1);
+        }
+
+        .color-red {
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 87, 94, 1);
+        }
+
+        .not-active {
+            background: url("http://sportsimg.mojieai.com/newusera/gary-button.png") no-repeat;
+            background-size: 100% auto;
+        }
+
+        .close {
+            width: 0.4rem;
+            position: absolute;
+            top: -0.5rem;
+            right: 0rem;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="banner">
+        <img src="http://sportsimg.mojieai.com/newusera/banner.png" alt="">
+    </div>
+    <div class="tequan">
+        <img class="t1" src="http://sportsimg.mojieai.com/newusera/t1.png" alt="">
+        <p class="tqr">注册免费送<span class="big-number">5</span>智慧币</p>
+        <p class="tqb">购智慧推单、VIP会员直抵5元</p>
+        <a class="tqbutton tqbutton-register" v-bind:class="{ 'not-active': (button1text=='已领取') }"
+           href="javascript:void(0)"
+           v-on:click="registerPop"
+           v-text="button1text">立即注册</a>
+    </div>
+    <div class="tequan">
+        <img class="t1" src="http://sportsimg.mojieai.com/newusera/t2.png" alt="">
+        <p class="tqr">购首月VIP会员仅<span class="big-number">10</span>元</p>
+        <p class="tqb tqb-line">原价30元</p>
+        <a class="tqbutton tqbutton-buy-vip"
+           v-bind:class="{ 'not-active': (button2text=='未注册'||button2text=='已购买'||button2text=='已失效') }"
+           href="javascript:void(0)"
+           v-text="button2text" v-on:click="buyVip">未注册</a>
+        <p class="tqb tqb-bottom">倒计时：仅剩<span class="color-red" v-text="buyVipDate">5</span>天</p>
+    </div>
+    <div class="vip">
+        <img class="tqt" src="http://sportsimg.mojieai.com/newusera/tqt.png" alt="">
+        <div class="pure-g">
+            <div class="pure-u-1-3">
+                <div class="viptq">
+                    <img src="http://sportsimg.mojieai.com/newusera/1.png" alt="">
+                    <p class="viptqt">绝杀码</p>
+                    <p class="viptqdesc">红球蓝球精准杀号</p>
+                </div>
+            </div>
+            <div class="pure-u-1-3" v-on:click="openSocial">
+                <div class="viptq"><img src="http://sportsimg.mojieai.com/newusera/2.png" alt="">
+                    <p class="viptqt">社区大数据</p>
+                    <p class="viptqdesc">社区各时段最热围号、杀号</p></div>
+            </div>
+            <div class="pure-u-1-3" v-on:click="openWisdom">
+                <div class="viptq"><img src="http://sportsimg.mojieai.com/newusera/3.png" alt="">
+                    <p class="viptqt">智慧推单</p>
+                    <p class="viptqdesc">会员购买推单享优惠价</p></div>
+            </div>
+        </div>
+    </div>
+    <div class="award-popup" v-show="showRegisterPop||showRegisterSuccessPop">
+    </div>
+    <div class="award-popup-fixed" v-show="showRegisterPop||showRegisterSuccessPop">
+        <!-- 注册弹窗-->
+        <div class="award-right award-pop" v-show="showRegisterPop">
+            <img class="award-popup-bg" src="http://sportsimg.mojieai.com/newusera/popup1.png" alt="">
+            <div class="form-relative">
+                <img class="close" src="http://sportsimg.mojieai.com/newusera/close.png" v-on:click="close"
+                     alt="">
+                <div class="form">
+                    <input class="mobile" type="number" oninput="if(value.length>11)value=value.slice(0,11)"
+                           placeholder="请输入手机号"
+                           v-model="mobile">
+                    <input class="verify-code" type="number" oninput="if(value.length>4)value=value.slice(0,4)"
+                           placeholder="请输入验证码" v-model="verifyCode">
+                    <input class="verify-code-button" type="button" v-model="buttonVerifyCode"
+                           v-on:click="getVerifyCode">
+                    <div class="clear"></div>
+                    <div class="share-button">
+                        <a href="javascript:void(0)" v-on:click="register">立即注册</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新手注册成功弹窗-->
+        <div class="award-right award-pop" v-show="showRegisterSuccessPop">
+            <img class="award-popup-bg" src="http://sportsimg.mojieai.com/newusera/pupup2.png" alt="">
+            <div class="form-relative">
+                <div class="form form-success">
+                    <p class="success-p">恭喜您</p>
+                    <p class="success-p">5枚智慧币已到账</p>
+                    <p class="success-p">可在“我的-智慧币”查收~</p>
+                    <div class="clear"></div>
+                    <div class="share-button">
+                        <a href="javascript:void(0)" v-on:click="close">朕知道了</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+    function toast(msg) {
+        var str = "<div class='toast-container' style='display:none'> <div class='toast'>" + msg + "</div></div>";
+        $('body').append(str);
+        $('.toast-container').stop().fadeIn(100).delay(1500).fadeOut(400); //fade out after 3 seconds
+        setTimeout(function () {
+            $('.toast-container').remove();
+        }, 3000);
+    }
+    var ua = navigator.userAgent.toLowerCase();
+    token = getCookie('token');
+    var app = new Vue({
+        el: '#app',
+        data: {
+            mobile: "",
+            verifyCode: "",
+            buttonVerifyCode: "获取验证码",
+            showRegisterPop: false,
+            showRegisterSuccessPop: false,
+            button2text: "未注册",
+            button1text: "立即注册",
+            buyVipDate: 5,
+        },
+        mounted: function () {
+            var index = this;
+            if (token == "") {
+                index.$data.button2text = "未注册";
+            } else {
+                // 校验用户是否领取5智慧币
+                $.ajax({
+                    type: 'POST',
+                    url: '/activity/checkIsGivenWisdomCoinWithOutSign',
+                    data: {
+                        'activityId': config.activityId,
+                        'token': token,
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            if (data.data.IsGivenWisdomCoin) {
+                                index.$data.button1text = "已领取";
+                            } else {
+                                index.$data.button1text = "立即领取";
+                            }
+                            if (data.data.isBuyVip) {
+                                index.$data.button2text = "已购买";
+                            } else {
+                                index.$data.button2text = "限时抢购";
+                            }
+                            index.$data.buyVipDate = 5 - data.data.buyVipDate;
+                            if (data.data.buyVipDate > 5) {
+                                index.$data.button2text = "已失效";
+                                index.$data.buyVipDate = 0;
+                            }
+                        }
+                        if (data.code == -1) {
+                            toast("sssss");
+                        }
+                    }
+                })
+            }
+        },
+        methods: {
+            buyVip: function () {
+                var index = this;
+                if (token != "" && index.$data.button2text == "限时抢购") {
+                    if (typeof(window.webkit) != "undefined") {
+                        window.webkit.messageHandlers.pay.postMessage({price: '10', memo: 'newUserActivity'})
+                        //window.webkit.messageHandlers.pay.postMessage({body: token});
+                    }
+                    if (typeof(webViewNative) != "undefined") {
+                        //alert("android share");
+//                    webViewNative.innerShareOpen('0.01','memo')
+                        webViewNative.pay('10', "newUserActivity");
+                    }
+                }
+            },
+            close: function () {
+                var index = this;
+                index.$data.showRegisterSuccessPop = false;
+                index.$data.showRegisterPop = false;
+            },
+            openSocial: function () {
+                //openNativePage('mjlottery://mjnative?page=homeCommunity');
+            },
+            openWisdom: function () {
+                openNativePage('mjlottery://mjnative?page=wisdomProgram&gameEn=ssq&currentPage=1');
+            },
+            registerPop: function () {
+                var index = this;
+                if (index.$data.button1text == "已领取") {
+                    openNativePage('mjlottery://mjnative?page=wisdomProgram&gameEn=ssq&currentPage=1');
+                }
+                if (index.$data.button1text == "立即领取") {
+                    // 直接领取
+                    $.ajax({
+                        type: 'POST',
+                        url: '/activity/getWisdomCoinWithOutSign',
+                        data: {
+                            'activityId': config.activityId,
+                            'token': token,
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+                            if(data&&data.co==1)
+                            if (data.code == 0) {
+                                // if (/iphone|ipod|ipad/.test(ua)) {
+                                //
+                                // } else {
+                                //
+                                // }
+                                index.$data.showRegisterSuccessPop = true;
+                                index.$data.button1text = "已领取";
+                            }
+                            if (data.code == -1) {
+                                toast('sasas')
+                            }
+                        }
+                    })
+                } else if (index.$data.button1text == "立即注册") {
+                    index.$data.showRegisterPop = true;
+                }
+            },
+            register: function () {
+                var index = this;
+                // 注册
+                if (index.$data.mobile == "") {
+                    toast("请输入手机号");
+                    return;
+                }
+                if (index.$data.mobile.length != 11) {
+                    toast("手机号格式不正确");
+                    return;
+                }
+                if (index.$data.verifyCode == "") {
+                    toast("请输入验证码");
+                    return;
+                }
+                index.$data.showRegisterPop = false;
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserAuth/login',
+                    data: {
+                        'mobile': index.$data.mobile,
+                        'verifyCode': index.$data.verifyCode,
+                        'channelType': "newUserWeb",
+                        'clientType': 1003
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        // 用户已经注册，校验出错 区分
+                        if (data.code == 0) {
+                            token = data.data.userLogin.token;
+                            // 同步客户端token
+                            if (typeof(window.webkit) != "undefined") {
+                                window.webkit.messageHandlers.checkLoginToken.postMessage({body: token});
+                            } else {
+                                if (typeof(webViewNative) != "undefined") {
+                                    webViewNative.checkLoginToken(token);
+                                }
+                            }
+
+                            // 领取奖励
+                            if (data.data.IsGivenWisdomCoin) {
+                                toast('您已领取过智慧币啦');
+                            } else {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/activity/getWisdomCoinWithOutSign',
+                                    data: {
+                                        'activityId': config.activityId,
+                                        'token': token,
+                                    },
+                                    dataType: 'json',
+                                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                                    success: function (data) {
+                                        if (data.code == 0) {
+                                            if (/iphone|ipod|ipad/.test(ua)) {
+
+                                            } else {
+
+                                            }
+                                        }
+                                        if (data.code == -1) {
+                                            toast(data.msg)
+                                        }
+                                    }
+                                })
+                                index.$data.showRegisterSuccessPop = true;
+                            }
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '/activity/checkIsGivenWisdomCoinWithOutSign',
+                                data: {
+                                    'activityId': config.activityId,
+                                    'token': token,
+                                },
+                                dataType: 'json',
+                                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                                success: function (data) {
+                                    if (data.code == 0) {
+                                        if (/iphone|ipod|ipad/.test(ua)) {
+
+                                        } else {
+                                            if (data.data.IsGivenWisdomCoin) {
+                                                index.$data.button1text = "已领取";
+                                            } else {
+                                                index.$data.button1text = "立即领取";
+                                            }
+                                            if (data.data.isBuyVip) {
+                                                index.$data.button2text = "已购买";
+                                            } else {
+                                                index.$data.button2text = "限时抢购";
+                                            }
+                                            index.$data.buyVipDate = 5 - data.data.buyVipDate;
+                                            if (data.data.buyVipDate > 5) {
+                                                index.$data.button2text = "已失效";
+                                                index.$data.buyVipDate = 0;
+                                            }
+                                        }
+                                    }
+                                    if (data.code == -1) {
+                                        toast(data.msg)
+                                    }
+                                    index.$data.button1text = "已领取";
+                                }
+                            })
+                        }
+                        if (data.code == -1) {
+                            toast('bssdsd')
+                        }
+                    }
+                })
+            },
+            getVerifyCode: function () {
+                var index = this;
+                if (index.$data.mobile == "") {
+                    toast("请输入手机号");
+                    return;
+                }
+                if (index.$data.mobile.length != 11) {
+                    toast("手机号格式不正确");
+                    return;
+                }
+                // 发送验证码
+                if (index.$data.buttonVerifyCode == "获取验证码") {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/UserAuth/sendVerifyCode',
+                        data: {
+                            'mobile': index.$data.mobile,
+                            'type': 0,
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+                            // 用户已经注册，校验出错 区分
+                            if (data.code == 0) {
+                                if (data.msg == "success") {
+                                    toast("验证码发送成功！")
+                                } else {
+                                    toast(data.msg)
+                                }
+
+                                var seconds = 60;
+                                var timer = setInterval(function () {
+                                    if (seconds == 0) {
+                                        clearInterval(timer);
+                                        index.$data.buttonVerifyCode = "获取验证码";
+                                        $('.verify-code-button').removeClass('add-class');
+                                    } else {
+                                        console.log(seconds);
+                                        seconds = seconds - 1;
+                                        index.$data.buttonVerifyCode = "还剩" + seconds + "s";
+                                        $('.verify-code-button').addClass('add-class');
+                                    }
+                                }, 1000);
+                            } else {
+                                if (data.msg == "该手机号已经注册") {
+                                    if (/iphone|ipod|ipad/.test(ua)) {
+                                        index.$data.showHaveRegisterIOS = true;
+                                    } else {
+                                        index.$data.showHaveRegister = true;
+                                    }
+                                } else {
+                                    if (data.msg == "success") {
+                                        toast("验证码已发送，请注意查收！")
+                                    } else {
+                                        toast(data.msg);
+                                    }
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    })
+
+    function nativePaySuccess() {
+        app.$data.button2text = "已购买";
+    }
+
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+
+</script>
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ThirdUser">
+    <resultMap id="thirdUserMap" type="thirdUser">
+        <result column="OAUTH_ID" property="oauthId" jdbcType="VARCHAR"/>
+        <result column="OAUTH_TYPE" property="oauthType" jdbcType="INTEGER"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        OAUTH_ID, OAUTH_TYPE, USER_ID, CREATE_TIME
+    </sql>
+
+    <select id="getUserIdByThird" resultType="java.lang.Long" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_THIRD_USER
+        where oauth_id = #{oauthId,jdbcType=VARCHAR} AND oauth_type = #{oauthType,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="thirdUser">
+        INSERT INTO TB_THIRD_USER
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{oauthId,jdbcType=VARCHAR},
+        #{oauthType,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+</mapper>

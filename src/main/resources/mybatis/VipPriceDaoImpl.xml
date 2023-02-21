@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="VipPrice">
+    <resultMap id="vipPriceMap" type="vipPrice">
+        <result column="VIP_PRICE_ID" property="vipPriceId" jdbcType="INTEGER"/>
+        <result column="ORIGIN_PRICE" property="originPrice" jdbcType="BIGINT"/>
+        <result column="PRICE" property="price" jdbcType="BIGINT"/>
+        <result column="VIP_DATE" property="vipDate" jdbcType="INTEGER"/>
+        <result column="DISCOUNT_DESC" property="discountDesc" jdbcType="VARCHAR"/>
+        <result column="DISCOUNT_IMG" property="discountImg" jdbcType="VARCHAR"/>
+        <result column="PAY_TYPE" property="payType" jdbcType="INTEGER"/>
+        <result column="ENABLE" property="enable" jdbcType="INTEGER"/>
+        <result column="CLIENT_TYPE" property="clientType" jdbcType="INTEGER"/>
+        <result column="IOS_MALL_ID" property="iosMallId" jdbcType="VARCHAR"/>
+        <result column="IS_DEFAULT" property="isDefault" jdbcType="INTEGER"/>
+        <result column="VIP_TYPE" property="vipType" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        VIP_PRICE_ID, ORIGIN_PRICE, PRICE, VIP_DATE, DISCOUNT_DESC, DISCOUNT_IMG, PAY_TYPE, IOS_MALL_ID, CLIENT_TYPE,
+         IS_DEFAULT, VIP_TYPE, CREATE_TIME
+    </sql>
+
+    <select id="getAllVipPrice" resultMap="vipPriceMap">
+        SELECT * FROM TB_VIP_PRICE
+    </select>
+
+    <update id="updateVipPriceEnable" parameterType="map">
+        UPDATE TB_VIP_PRICE SET ENABLE = #{enable,jdbcType=INTEGER} WHERE VIP_PRICE_ID = #{vipPriceId,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="vipPrice">
+        INSERT INTO TB_VIP_PRICE (<include refid="Base_Column_List"/>)
+        VALUES (#{vipPriceId, jdbcType=INTEGER}, #{originPrice,jdbcType=BIGINT}, #{price,jdbcType=BIGINT},
+        #{vipDate,jdbcType=INTEGER}, #{discountDesc,jdbcType=VARCHAR}, #{discountImg,jdbcType=VARCHAR},
+        #{payType,jdbcType=INTEGER}, #{iosMallId, jdbcType=VARCHAR}, #{clientType,jdbcType=INTEGER},
+        #{isDefault,jdbcType=INTEGER} , #{vipType,jdbcType=INTEGER}, now())
+    </insert>
+
+</mapper>

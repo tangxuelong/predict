@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserCouponIdSequence">
+    <resultMap id="userCouponIdSequenceMap" type="userCouponIdSequence">
+        <result column="COUPON_ID_SEQUENCE" property="couponIdSeq" jdbcType="BIGINT"/>
+        <result column="STUB" property="stub" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        COUPON_ID_SEQUENCE, STUB
+    </sql>
+
+    <insert id="insertIdSeq" parameterType="userCouponIdSequence">
+        <selectKey keyProperty="couponIdSeq" resultType="java.lang.Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        replace into tb_user_coupon_id_sequence(stub) values (#{stub, jdbcType=VARCHAR})
+    </insert>
+</mapper>

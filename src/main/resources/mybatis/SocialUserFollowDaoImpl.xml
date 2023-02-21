@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SocialUserFollow">
+    <resultMap id="socialUserFollowMap" type="socialUserFollow">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="FOLLOW_USER_ID" property="followUserId" jdbcType="BIGINT"/>
+        <result column="FOLLOW_TYPE" property="followType" jdbcType="INTEGER"/>
+        <result column="IS_FOLLOW" property="isFollow" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, FOLLOW_USER_ID, FOLLOW_TYPE, IS_FOLLOW, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserFollowCount" parameterType="map" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM TB_SOCIAL_USER_FOLLOW WHERE USER_ID = #{userId,jdbcType=BIGINT} AND FOLLOW_TYPE
+        =#{followType, jdbcType=INTEGER} AND IS_FOLLOW = 1
+    </select>
+
+    <select id="getFollowUserListByPage" resultMap="socialUserFollowMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_SOCIAL_USER_FOLLOW
+        where USER_ID = #{userId,jdbcType=BIGINT} AND FOLLOW_TYPE =#{followType, jdbcType=INTEGER} AND IS_FOLLOW = 1
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+    <!--<select id="getUserFollowUserIdsByLastIndex" resultType="java.lang.Long" parameterType="map">-->
+    <!--select FOLLOW_USER_ID-->
+    <!--from TB_SOCIAL_USER_FOLLOW-->
+    <!--where USER_ID = #{userId,jdbcType=BIGINT}-->
+    <!--<if test="las"></if>-->
+    <!--order by CREATE_TIME DESC-->
+    <!--</select>-->
+
+    <select id="getFollowUser" resultMap="socialUserFollowMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_SOCIAL_USER_FOLLOW
+        where USER_ID = #{userId,jdbcType=BIGINT} AND FOLLOW_TYPE =#{followType, jdbcType=INTEGER} AND FOLLOW_USER_ID
+        = #{followUserId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getFollowUserIdList" resultMap="socialUserFollowMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_SOCIAL_USER_FOLLOW
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND FOLLOW_TYPE =#{followType, jdbcType=INTEGER} AND IS_FOLLOW = 1
+        <if test="lastFollowUserId!=null">
+            AND FOLLOW_USER_ID &lt; #{lastFollowUserId, jdbcType=BIGINT}
+        </if>
+        ORDER BY FOLLOW_USER_ID DESC limit #{count, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="socialUserFollow">
+        INSERT INTO TB_SOCIAL_USER_FOLLOW
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{userId,jdbcType=BIGINT},
+        #{followUserId,jdbcType=BIGINT}, #{followType, jdbcType=INTEGER}, #{isFollow,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="socialUserFollow">
+        UPDATE TB_SOCIAL_USER_FOLLOW SET IS_FOLLOW = #{isFollow,jdbcType=INTEGER},
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND FOLLOW_USER_ID = #{followUserId,jdbcType=BIGINT} AND
+        FOLLOW_TYPE = #{followType, jdbcType=INTEGER}
+    </update>
+</mapper>

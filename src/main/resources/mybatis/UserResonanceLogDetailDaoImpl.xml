@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserResonanceLogDetail">
+    <resultMap id="userResonanceLogDetailMap" type="userResonanceLogDetail">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="RESONANCE_LOG_ID" property="resonanceLogId" jdbcType="VARCHAR"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="INTEGER"/>
+        <result column="IS_PAY" property="isPay" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        USER_ID, GAME_ID, RESONANCE_LOG_ID, PERIOD_ID, IS_PAY, CREATE_TIME
+    </sql>
+
+    <update id="updatePayStatusByResonanceLogId" parameterType="map">
+        UPDATE TB_USER_RESONANCE_LOG_DETAIL SET IS_PAY = #{setPayStatus, jdbcType=INTEGER} WHERE RESONANCE_LOG_ID =
+        #{resonanceLogId, jdbcType=VARCHAR} AND IS_PAY = #{originPayStatus, jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="map">
+        INSERT INTO TB_USER_RESONANCE_LOG_DETAIL (<include refid="Base_Column"/>) VALUES (#{userId, jdbcType=BIGINT},
+        #{gameId, jdbcType=BIGINT}, #{resonanceLogId, jdbcType=VARCHAR}, #{periodId, jdbcType=INTEGER},
+        #{isPay, jdbcType=INTEGER}, now())
+    </insert>
+
+</mapper>

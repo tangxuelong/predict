@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="VipOperateFollow">
+    <resultMap id="vipOperateFollowMap" type="vipOperateFollow">
+        <result column="VIP_OPERATE_CODE" property="vipOperateCode" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="VIP_CODE" property="vipCode" jdbcType="VARCHAR"/>
+        <result column="OPERATE_TYPE" property="operateType" jdbcType="INTEGER"/>
+        <result column="OPERATE_DESC" property="operateDesc" jdbcType="VARCHAR"/>
+        <result column="TRANSACTION_AMOUNT" property="transactionAmount" jdbcType="VARCHAR"/>
+        <result column="TRANSACTION_DAYS" property="transactionDays" jdbcType="INTEGER"/>
+        <result column="LAST_VIP_LEVEL" property="lastVipLevel" jdbcType="INTEGER"/>
+        <result column="CURRENT_VIP_LEVEL" property="currentVipLevel" jdbcType="INTEGER"/>
+        <result column="EXCHANGE_FLOW_ID" property="exchangeFlowId" jdbcType="VARCHAR"/>
+        <result column="IS_PAY" property="isPay" jdbcType="INTEGER"/>
+        <result column="VIP_TYPE" property="vipType" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="PAY_TIME" property="payTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        VIP_OPERATE_CODE, USER_ID, VIP_CODE, OPERATE_TYPE, OPERATE_DESC, TRANSACTION_AMOUNT, TRANSACTION_DAYS,
+        LAST_VIP_LEVEL, CURRENT_VIP_LEVEL, EXCHANGE_FLOW_ID, IS_PAY, VIP_TYPE, CREATE_TIME, PAY_TIME
+    </sql>
+
+    <select id="getVipFollowByVipOperateCode" resultMap="vipOperateFollowMap" parameterType="map">
+        SELECT * FROM TB_VIP_OPERATE_FOLLOW
+        WHERE VIP_OPERATE_CODE = #{vipOperateCode,jdbcType=VARCHAR} AND USER_ID = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getVipFollowByFollowIdForUpdate" resultMap="vipOperateFollowMap" parameterType="map">
+        SELECT * FROM TB_VIP_OPERATE_FOLLOW
+        WHERE VIP_OPERATE_CODE = #{vipOperateCode,jdbcType=VARCHAR}
+        <if test="lock==null">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="vipOperateFollow">
+        INSERT INTO TB_VIP_OPERATE_FOLLOW (<include refid="Base_Column_List"/>)
+        VALUES (#{vipOperateCode, jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{vipCode,jdbcType=VARCHAR},
+        #{operateType,jdbcType=INTEGER}, #{operateDesc,jdbcType=VARCHAR}, #{transactionAmount,jdbcType=VARCHAR},
+        #{transactionDays,jdbcType=INTEGER}, #{lastVipLevel,jdbcType=INTEGER}, #{currentVipLevel,jdbcType=INTEGER},
+        #{exchangeFlowId, jdbcType=VARCHAR}, #{isPay, jdbcType=INTEGER}, #{vipType, jdbcType=INTEGER}, now(),
+        #{payTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="updateVipOpreateFlowIsPay" parameterType="map">
+        UPDATE TB_VIP_OPERATE_FOLLOW SET IS_PAY = #{isPay, jdbcType=INTEGER}, EXCHANGE_FLOW_ID =
+        #{exchangeFlowId, jdbcType=VARCHAR}, PAY_TIME = now()
+        WHERE VIP_OPERATE_CODE = #{vipOperateCode,jdbcType=VARCHAR} AND IS_PAY = 0
+    </update>
+
+    <!-- 统计用sql-->
+    <!-- 下单总数-->
+    <select id="getAllOrderCountAndTotalAmount" resultType="map" parameterType="map">
+        SELECT TRANSACTION_DAYS, COUNT(VIP_OPERATE_CODE) AS ORDER_TOTAL_COUNT, sum(TRANSACTION_AMOUNT) AS
+        ORDER_TOTAL_AMOUNT FROM TB_VIP_OPERATE_FOLLOW WHERE CREATE_TIME &lt;= #{endTime, jdbcType=TIMESTAMP} AND
+        CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP} AND OPERATE_TYPE =1 GROUP BY TRANSACTION_DAYS
+    </select>
+
+    <!--下单人数 同一人只记录一次-->
+    <select id="getOrderPersonCount" resultType="map" parameterType="map">
+        SELECT TRANSACTION_DAYS, COUNT(DISTINCT(user_id)) AS PERSON_COUNT, SUM(TRANSACTION_AMOUNT)
+        AS ORDER_TOTAL_AMOUNT FROM TB_VIP_OPERATE_FOLLOW WHERE CREATE_TIME &lt;= #{endTime, jdbcType=TIMESTAMP} AND
+        CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP} AND OPERATE_TYPE =1
+        <if test="isPay!=null">
+            AND IS_PAY = #{isPay, jdbcType=INTEGER}
+        </if>
+        GROUP BY TRANSACTION_DAYS
+    </select>
+
+    <!--支付成功订单数-->
+    <select id="getOrderCountAndAmount" resultType="map" parameterType="map">
+        SELECT TRANSACTION_DAYS, COUNT(VIP_OPERATE_CODE) AS ORDER_PAY_COUNT, sum(TRANSACTION_AMOUNT) AS
+        ORDER_TOTAL_AMOUNT, IS_PAY FROM TB_VIP_OPERATE_FOLLOW WHERE CREATE_TIME &lt;= #{endTime, jdbcType=TIMESTAMP} AND
+        CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP} AND OPERATE_TYPE =1
+        <if test="isPay!=null">
+            AND IS_PAY = #{isPay, jdbcType=INTEGER}
+        </if>
+        GROUP BY TRANSACTION_DAYS
+    </select>
+
+    <!--首次下单 或支付-->
+    <select id="getFisrtOrderPersons" resultType="map" parameterType="map">
+        SELECT TRANSACTION_DAYS, USER_ID, TRANSACTION_AMOUNT, IS_PAY, CREATE_TIME FROM TB_VIP_OPERATE_FOLLOW WHERE
+        OPERATE_TYPE =1
+        <if test="isPay!=null">
+            AND IS_PAY = #{isPay, jdbcType=INTEGER}
+        </if>
+        GROUP BY USER_ID
+    </select>
+
+</mapper>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>双色球预测</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <link rel="stylesheet" href="style/pure-min.css"/>
+    <link rel="stylesheet" href="style/layout.css"/>
+    <script src="script/jswxsdk.js"></script>
+    <script src="script/config.js"></script>
+    <script type="text/javascript" src="https://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
+            charset="utf-8"></script>
+    <meta name="format-detection" content="telephone=no">
+    <style>
+        body {
+            background: #fff;
+        }
+
+        #app {
+            background: url('img/bg@3x.png') no-repeat;
+            background-size: 100% auto;
+            margin-top: -2px;
+        }
+
+        .process {
+            position: relative;
+            width: 4.8rem;
+            margin: 0 auto;
+            margin-top: 0.5rem;
+            padding: 1rem 0 0 0;
+            height: 2rem;
+        }
+
+        .wrapper {
+            position: absolute;
+            width: 4.8rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            font-size: 0.3rem;
+            color: #fff;
+            background: #E6E6E6;
+            text-align: center;
+            line-height: 0.6rem;
+            z-index: 100;
+        }
+
+        .wrapper-process {
+            position: absolute;
+            width: 0;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            font-size: 0.3rem;
+            color: #fff;
+            text-align: center;
+            line-height: 0.6rem;
+            z-index: 200;
+            left: 0;
+            background-image: -webkit-linear-gradient(to left, #FF5555, #FF8A4E);
+            background-image: linear-gradient(to left, #FF5555, #FF8A4E);
+        }
+
+        .wrapper-text {
+            position: absolute;
+            width: 4.8rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            font-size: 0.3rem;
+            color: #fff;
+            text-align: center;
+            line-height: 0.6rem;
+            z-index: 300;
+        }
+
+        .result {
+            margin-top: 1rem;
+        }
+
+        .result .code {
+            width: 5.8rem;
+            padding-top: 0.52rem;
+            margin: 0 auto;
+            height: 1.4rem;
+            background: url('img/result-bg@3x.png') no-repeat;
+            background-size: 100% auto;
+            text-align: center;
+        }
+
+        .result-red-ball {
+            display: inline-block;
+            text-align: center;
+            line-height: 0.6rem;
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            background: #FF5050;
+            font-size: 0.32rem;
+            color: #fff;
+            margin: -0.05rem;
+        }
+
+        .result-blue-ball {
+            display: inline-block;
+            text-align: center;
+            line-height: 0.6rem;
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            background: #5B8BF0;
+            font-size: 0.32rem;
+            color: #fff;
+            margin: -0.05rem;
+        }
+
+        .result-text p {
+            text-align: center;
+            font-size: 0.24rem;
+            color: #999;
+            margin-top: 0.05rem;
+        }
+
+        .award-title {
+            text-align: center;
+            background: #ff5050;
+            margin-top: -0.3rem;
+            padding: 0.1rem 0;
+        }
+
+        .award-title p {
+            background: #ff8686;
+            color: #fff;
+            font-size: 0.28rem;
+            line-height: 0.6rem;
+            border-radius: 0.3rem;
+            text-align: center;
+            display: inline-block;
+            padding: 0 0.2rem;
+        }
+    </style>
+</head>
+<body>
+<div id="index">
+    <div class="award-title">
+        <p><span v-text="nickName"></span><span v-show="nickName!=''">,</span>恭喜您获得3次大奖机会</p>
+    </div>
+    <div id="app">
+        <div class="pure-g index-title">
+            <div class="pure-u-1-3 title"><p><span v-text="'·'+currentPeriodId+'期'">·200000期</span></p></div>
+            <div class="pure-u-1-3"></div>
+            <div class="pure-u-1-3 history"><p><span><a href="/web/download/yingyongbao.html"><img src="img/history.png"
+                                                                                                   alt=""></a></span>
+            </p></div>
+        </div>
+        <div class="predict">
+            <div class="bg-animation"></div>
+            <div class="bg-animation-repeat"></div>
+            <div class="bg-animation-repeat1"></div>
+            <div class="bg-animation-repeat2"></div>
+            <div class="bg-animation-repeat3"></div>
+            <div class="bg-animation-repeat4"></div>
+            <div class="button" v-on:click="getPredictNumber">
+                <p class="total-nums"><span v-show="predictTimes>2">共</span>
+                    <span v-show="predictTimes<=2">剩</span>
+                    <span class="color-red" v-text="predictTimes"></span>次</p>
+            </div>
+        </div>
+        <p class="instr">每期科学预测10000注，点击智慧获取</p>
+
+        <div class="process" v-show="process">
+            <p class="wrapper-process"></p>
+            <p class="wrapper"></p>
+            <p class="wrapper-text">正从10000注里为您精选</p>
+        </div>
+        <div class="result" v-show="result">
+            <div class="code">
+                <span class="result-red-ball" v-text="redBalls[0]"></span>
+                <span class="result-red-ball" v-text="redBalls[1]"></span>
+                <span class="result-red-ball" v-text="redBalls[2]"></span>
+                <span class="result-red-ball" v-text="redBalls[3]"></span>
+                <span class="result-red-ball" v-text="redBalls[4]"></span>
+                <span class="result-red-ball" v-text="redBalls[5]"></span>
+                <span class="result-blue-ball" v-text="blueBalls[0]"></span>
+            </div>
+            <div class="result-text" v-show="text">
+                <p>*本期官方投注已截止，预测结果仅供参考</p>
+            </div>
+            <div class="haomafenxi">
+                <a href="/web/download/yingyongbao.html">号码分析</a>
+                <a href="/web/download/yingyongbao.html">保存</a>
+            </div>
+        </div>
+        <div class="getPredict" v-show="!result">
+            <a href="/web/download/yingyongbao.html">查看更多预测</a>
+        </div>
+        <div class="float">
+            <img src="img/float.png" alt="">
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+    var ua = navigator.userAgent.toLowerCase();
+    function uuid() {
+        var s = [];
+        var hexDigits = "0123456789abcdef";
+        for (var i = 0; i < 36; i++) {
+            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        }
+        s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+        s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+        s[8] = s[13] = s[18] = s[23] = "-";
+
+        var uuid = s.join("");
+        return uuid;
+    }
+    var uuidStr = localStorage.getItem('uuid');
+    if (null == uuidStr) {
+        uuidStr = uuid();
+        localStorage.setItem('uuid', uuidStr);
+    }
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+
+    if (getUrlParam('share') == null && getUrlParam('code') == null) {
+        var redirectUrl = window.location.protocol + "//" + window.location.host + "/web/share/index.html";
+        var link = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9fea09e960df08c0&redirect_uri=" +
+            redirectUrl + "&response_type=code&scope=snsapi_userinfo&state=" + getUrlParam("state") +
+            "#wechat_redirect";
+        window.location.href = link;
+    }
+
+    //alert('本期正在开奖，为了保证预测的准确性，请稍后再试');
+    // 该对象被加入到一个 Vue 实例中
+    var app = new Vue({
+        el: '#index',
+        data: {
+            predictTimes: "",
+            currentPeriodId: "",
+            process: false,
+            result: false,
+            text: false,
+            redBalls: [],
+            blueBalls: [],
+            nickName: '',
+            openId: '',
+        },
+        mounted: function () {
+            var index = this;
+            // 获取预测号码
+            $.ajax({
+                type: 'POST',
+                url: '/analysis/predictIndex',
+                data: {
+                    'gameEn': 'ssq',
+                    'deviceId': uuidStr
+                },
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    index.$data.currentPeriodId = data.data.currentPeriodId;
+                    index.$data.predictTimes = data.data.leftCount;
+                }
+            })
+
+            //alert(ua);
+            if (/micromessenger/.test(ua)) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/wx/getUserInfoByCode',
+                    data: {
+                        'code': getUrlParam("code")
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        index.$data.nickName = data.data.nickname;
+                        index.$data.openId = data.data.openid;
+
+                    }
+                })
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/wx/getJsApiTicket',
+                    data: {
+                        'pageUrl': window.location.href
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        try {
+                            wx.config({
+                                debug: false,
+                                // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                                appId: data.data.appId, // 必填，公众号的唯一标识
+                                timestamp: data.data.timestamp, // 必填，生成签名的时间戳
+                                nonceStr: data.data.nonceStr, // 必填，生成签名的随机串
+                                signature: data.data.signature,// 必填，签名，见附录1
+                                jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage", "onMenuShareQQ", "onMenuShareWeibo", "onMenuShareQZone"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                            });
+                        } catch (e) {
+                            alert(e);
+                        }
+
+                    }
+                })
+            } else {
+                if (getUrlParam("#access_token") == "") {
+                    QC.Login.showPopup({
+                        appId: "101441090",
+                        redirectURI: "http://zhcp.caiqr.cn/web/share/index.html"
+                    })
+                } else {
+                    QC.Login.getMe(function (openId, accessToken) {
+                        index.$data.openId = openId;
+                        console.log(openId);
+                        console.log(accessToken);
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '/wx/getUserInfoQQ',
+                            data: {
+                                'accessToken': accessToken,
+                                'appKey': "101441090",
+                                'openId': openId
+                            },
+                            dataType: 'json',
+                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                            success: function (data) {
+                                index.$data.nickName = data.data.nickname;
+                            }
+                        })
+                    })
+
+                }
+
+            }
+
+        },
+        methods: {
+            getPredictNumber: function () {
+                var index = this;
+                try {
+                    if (/micromessenger/.test(ua)) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/wx/share',
+                            data: {
+                                'gameEn': 'ssq',
+                                'token': getUrlParam('state'),
+                                'openId': index.$data.openId
+                            },
+                            dataType: 'json',
+                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                            success: function (data) {
+
+                            }, error: function (xhr) {
+
+                            }
+                        })
+                    } else {
+                        if (getUrlParam('token') == null) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '/wx/share',
+                                data: {
+                                    'gameEn': 'ssq',
+                                    'token': getUrlParam('token'),
+                                    'openId': index.$data.openId
+                                },
+                                dataType: 'json',
+                                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                                success: function (data) {
+                                }
+                            });
+                        }
+                    }
+                } catch (e) {
+                    alert(e);
+                }
+
+                var index = this;
+                // 获取预测号码
+                index.$data.result = false;
+                index.$data.text = false;
+                if (index.$data.predictTimes > 0) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/analysis/predictNum',
+                        data: {
+                            'gameEn': 'ssq',
+                            'deviceId': uuidStr
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+                            if (data.data.openAwardFlag == 2) {
+                                alert('本期正在开奖，为了保证预测的准确性，请稍后再试');
+                            }
+                            else {
+                                if (data.data.openAwardFlag == 1) {
+                                    index.$data.text = true;
+                                }
+                                index.$data.process = true;
+                                $('.getPredict a').css('margin-top', '0rem');
+                                $('.wrapper-process').animate({width: "4.8rem"}, 2500, 'linear', function () {
+                                    $('.getPredict a').css('margin-top', '1.2rem');
+                                    index.$data.predictTimes = data.data.leftCount;
+                                    index.$data.process = false;
+                                    index.$data.result = true;
+                                    index.$data.redBalls = data.data.predictWinNum.split(":")[0].split(" ");
+                                    index.$data.blueBalls[0] = data.data.predictWinNum.split(":")[1];
+                                    $('.wrapper-process').animate({width: "0rem"});
+                                    $('#index').css('padding-bottom', '2rem');
+                                    $("html,body").animate({"scrollTop": '300px'}, 1000);
+                                });
+                            }
+                        }
+                    })
+                } else {
+                    window.location.href = '/web/download/yingyongbao.html';
+                }
+            }
+        }
+    })
+
+    wx.ready(function () {
+        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+        try {
+            var title = config.shareTitle;
+            var desc = config.shareDesc;
+            var imgUrl = config.shareIcon;
+            var redirectUrl =
+                window.location.protocol + "//" + window.location.host + "/web/share/index.html?state=" + getUrlParam("state");
+            link = redirectUrl;
+
+            wx.onMenuShareTimeline({
+                title: title, // 分享标题
+                link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: imgUrl, // 分享图标
+                type: link, // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareQQ({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareWeibo({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareQZone({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+        } catch (e) {
+            alert(e);
+        }
+
+    });
+
+
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+</script>
+</html>

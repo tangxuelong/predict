@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ActivityProgram">
+    <resultMap id="activityProgramMap" type="activityProgram">
+        <result column="PROGRAM_ID" property="programId" jdbcType="INTEGER"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="LOTTERY_NUMBER" property="lotteryNumber" jdbcType="VARCHAR"/>
+        <result column="NUMBER_TYPE" property="numberType" jdbcType="VARCHAR"/>
+        <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="AWARD_COUNT" property="awardCount" jdbcType="INTEGER"/>
+        <result column="LEFT_COUNT" property="leftCount" jdbcType="INTEGER"/>
+        <result column="LAST_AWARD_TIME" property="lastAwardTime" jdbcType="TIMESTAMP"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        PROGRAM_ID, PERIOD_ID, LOTTERY_NUMBER, NUMBER_TYPE, START_TIME, AWARD_COUNT, LEFT_COUNT, LAST_AWARD_TIME, REMARK,
+        CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getActivityProgramByProgramId" resultMap="activityProgramMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_ACTIVITY_PROGRAM
+        WHERE PROGRAM_ID = #{programId,jdbcType=INTEGER}
+        <if test="isLock == true">
+            for update
+        </if>
+    </select>
+
+    <select id="getActivityPrograms" resultMap="activityProgramMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_ACTIVITY_PROGRAM
+        WHERE PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="activityProgram">
+        INSERT INTO TB_ACTIVITY_PROGRAM(
+        <include refid="Base_Column_List"/>
+        )
+        VALUES (
+        #{programId,jdbcType=INTEGER}, #{periodId,jdbcType=VARCHAR},#{lotteryNumber,jdbcType=VARCHAR},
+        #{numberType,jdbcType=VARCHAR},#{startTime,jdbcType=TIMESTAMP},#{awardCount,jdbcType=INTEGER},
+        #{leftCount,jdbcType=INTEGER},now(),
+        #{remark,jdbcType=VARCHAR},now(),now()
+        )
+    </insert>
+
+    <update id="update" parameterType="activityProgram">
+        UPDATE TB_ACTIVITY_PROGRAM
+        SET AWARD_COUNT =
+        #{awardCount,jdbcType=INTEGER}, LEFT_COUNT = #{leftCount,jdbcType=INTEGER},
+        LAST_AWARD_TIME = #{lastAwardTime,jdbcType=TIMESTAMP}, REMARK = #{remark,jdbcType=VARCHAR},
+        UPDATE_TIME = now()
+        WHERE PROGRAM_ID = #{programId,jdbcType=INTEGER}
+    </update>
+</mapper>

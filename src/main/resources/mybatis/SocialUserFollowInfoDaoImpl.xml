@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SocialUserFollowInfo">
+    <resultMap id="socialUserFollowInfoMap" type="socialUserFollowInfo">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="FOLLOW_TYPE" property="followType" jdbcType="INTEGER"/>
+        <result column="FOLLOW_COUNT" property="followCount" jdbcType="INTEGER"/>
+        <result column="FANS_COUNT" property="fansCount" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, FOLLOW_TYPE, FOLLOW_COUNT, FANS_COUNT, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserFollowInfo" resultMap="socialUserFollowInfoMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_SOCIAL_USER_FOLLOW_INFO
+        where USER_ID = #{userId,jdbcType=BIGINT} AND FOLLOW_TYPE = #{followType, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="socialUserFollowInfo">
+        INSERT INTO TB_SOCIAL_USER_FOLLOW_INFO
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{userId,jdbcType=BIGINT}, #{followType, jdbcType=INTEGER},
+        #{followCount,jdbcType=INTEGER}, #{fansCount,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="socialUserFollowInfo">
+        UPDATE TB_SOCIAL_USER_FOLLOW_INFO SET FOLLOW_COUNT = #{followCount,jdbcType=INTEGER},FANS_COUNT =
+        #{fansCount,jdbcType=INTEGER},
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND FOLLOW_TYPE = #{followType, jdbcType=INTEGER}
+    </update>
+</mapper>

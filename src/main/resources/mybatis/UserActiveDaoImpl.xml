@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserActive">
+    <resultMap id="userActiveMap" type="userActive">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="ACTIVE_DATE" property="activeDate" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, ACTIVE_DATE
+    </sql>
+
+    <select id="getUserActive" resultMap="userActiveMap">
+        SELECT * FROM tb_user_active
+        where USER_ID = #{userId,jdbcType=BIGINT} and ACTIVE_DATE = #{activeDate,jdbcType=INTEGER}
+    </select>
+
+    <select id="getCountUserActive" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM tb_user_active
+        where ACTIVE_DATE = #{activeDate,jdbcType=INTEGER}
+    </select>
+
+    <select id="getActiveUsers" resultMap="userActiveMap">
+        SELECT * FROM tb_user_active
+        where ACTIVE_DATE = #{activeDate,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="userActive">
+        INSERT INTO tb_user_active (USER_ID, ACTIVE_DATE)
+        VALUES (#{userId,jdbcType=BIGINT}, #{activeDate,jdbcType=INTEGER})
+    </insert>
+
+</mapper>

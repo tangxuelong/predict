@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>充值多送30%</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #ff5050;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .banner img {
+            display: block;
+            width: 100%;
+        }
+
+        [v-cloak] {
+            display: none
+        }
+        .main{
+            position: relative;
+        }
+        .main-bg{
+            display: block;
+            width: 100%;
+        }
+        .activity-text{
+            position: absolute;
+            width: 100vw;
+            top: 52.4vw;
+        }
+        .first-button{
+            position: absolute;
+            width: 100vw;
+            top: 62.4vw;
+        }
+        .second-button{
+            position: absolute;
+            width: 100vw;
+            top: 86.8vw;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak @click="openDownloadPage(androidAppUrl,iosAppUrl)">
+    <div class="main">
+        <p class="activity-text" style="text-align: center;color: #ffffff"><b>活动时间：10月23日00:00-11月11日24:00</b></p>
+        <img class="main-bg" src="img/bg.png" alt="">
+        <img @click="openrecharge" class="first-button" src="img/1.png" alt="">
+        <img @click="openrecharge" class="second-button" src="img/2.png" alt="">
+    </div>
+</div>
+</body>
+<!-- jquery vue-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="script/config.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            androidAppUrl:"https://cdn.caiqr.com/zhyc4.6.4.apk",
+            iosAppUrl:"https://t.mojieai.com/web/qybios3/index.html"
+        },
+        mounted: function () {
+            this.openApp("mjlottery://mjnative?page=wap&url=https://predictapi.mojieai.com/web/recharge/index.html")
+            var u = navigator.userAgent.toLowerCase();
+            if (/iphone|ipod|ipad/.test(u)) {
+                setTimeout(function () {
+                    window.location="https://t.mojieai.com/web/qybios3/index.html";
+                },2000);
+            } else {
+                setTimeout(function () {
+                    window.location="https://cdn.caiqr.com/zhyc4.6.4.apk";
+                },5000);
+            }
+        },
+        methods: {
+            openDownloadPage: function (androidUrl,iosUrl){
+
+                this.openApp(this.schemesJumpStr)
+                var u = navigator.userAgent.toLowerCase();
+
+                setTimeout(function () {
+                    if  (/iphone|ipod|ipad/.test(u)) {
+                        window.location=iosUrl;
+                    } else {
+                        window.location=androidUrl;
+                    }
+                },2000);
+
+            },
+            openApp: function (url) {
+                setTimeout(function () {
+                    try
+                    {
+                        window.location.href = url;
+                    }
+                    catch(err)
+                    {
+
+                    }
+                },1);
+
+            },
+            openrecharge:function () {
+             //   openNativePage('mjlottery://mjnative?page=wisdomCoin');
+            }
+        }
+    })
+
+    // growing IO 数据统计代码
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+
+</script>
+</html>

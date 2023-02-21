@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserAccess">
+    <resultMap id="userAccessMap" type="userAccess">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="ACCESS_LIST" property="accessList" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, PERIOD_ID, GAME_ID, ACCESS_LIST, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserAccess" resultMap="userAccessMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_ACCESS
+        where USER_ID = #{userId,jdbcType=BIGINT} AND GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID =
+        #{periodId,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="userAccess">
+        INSERT INTO TB_USER_ACCESS
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{userId,jdbcType=BIGINT},
+        #{periodId,jdbcType=VARCHAR}, #{gameId,jdbcType=BIGINT}, #{accessList,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="userAccess">
+        UPDATE TB_USER_ACCESS SET ACCESS_LIST = #{accessList,jdbcType=VARCHAR},
+        UPDATE_TIME = now()
+        WHERE USER_ID = #{userId,jdbcType=BIGINT}
+    </update>
+</mapper>

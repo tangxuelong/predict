@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>预测世界杯</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <meta name="format-detection" content="telephone=no">
+    <script src="script/config.js"></script>
+</head>
+<style>
+    body{
+        background: url("https://ojhwh2s98.qnssl.com/worldcup/zhihui2/bg_03.jpg") repeat-y;
+        background-size: 100% auto;
+    }
+    body,p{
+        margin: 0;
+        padding: 0;
+    }
+    .banner img{
+        display: block;
+        width: 100%;
+    }
+    .item{
+        position: relative;
+    }
+    .item .bg{
+        display: block;
+        width: 100%;
+    }
+    .head-img{
+        position: absolute;
+        width: 13vw;
+        top: 3vw;
+        left: 7vw;
+        border-radius: 7.5vw;
+        border: 0.5px #e6e6e6 solid;
+    }
+    .nick-name{
+        position: absolute;
+        top: 7vw;
+        left: 23vw;
+        font-size: 4vw;
+        color: RGBA(51, 51, 51, 1);
+    }
+    .item-title{
+        position: absolute;
+        top: 2vw;
+        right: 0vw;
+        width: 24vw;
+    }
+    .right-p{
+        position: absolute;
+        top: 20vw;
+        left: 16vw;
+        font-size: 4vw;
+    }
+    .value{
+        color: RGBA(255, 80, 80, 1);
+        font-size: 8vw;
+        font-family:PingFangSC-Regular;
+    }
+    .percent{
+        color: RGBA(255, 80, 80, 1);
+    }
+    .award-p{
+        position: absolute;
+        top: 20vw;
+        right: 17vw;
+        font-size: 4vw;
+    }
+    .zhanji-p {
+        position: absolute;
+        text-align: center;
+        color: RGBA(51, 51, 51, 1);
+        font-size: 3vw;
+        top: 35vw;
+        width: 100%;
+    }
+    .zhanji-img{
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        top: 40vw;
+        height: 8vw;
+    }
+    .zhanji-img img{
+        display: inline-block;
+        height: 100%;
+    }
+    [v-cloak] {
+        display: none
+    }
+    .list{
+        background: url("https://ojhwh2s98.qnssl.com/worldcup/zhihui2/bg222.png") repeat-y;
+        background-size: 100% auto;
+    }
+    .rule{
+        font-size:4vw;
+        font-family:PingFangSC-Regular;
+        color:rgba(255,255,255,1);
+        line-height: 8vw;
+        padding: 5vw;
+        color: #FFD7D7;
+    }
+    .rule .title{
+        text-align: center;
+        color: #FFF;
+    }
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="banner">
+        <img src="https://ojhwh2s98.qnssl.com/worldcup/zhihui2/bg_02.jpg" alt="">
+    </div>
+    <div class="list">
+        <div class="item" v-for="star in list" v-on:click="openNativePage(star.jumpUrl)">
+            <img class="bg" src="https://ojhwh2s98.qnssl.com/worldcup/zhihui2/bg.png" alt="">
+            <img class="head-img" v-bind:src="star.userImg" alt="">
+            <p class="nick-name" v-text="star.userName"></p>
+            <img class="item-title" v-bind:src="star.title"/>
+            <p class="right-p">命中<span class="value" v-text="star.hitRatio"></span><span class="percent">%</span></p>
+            <p class="award-p">盈利<span class="value" v-text="star.profitRatio"></span>倍</p>
+            <p class="zhanji-p">世界杯战绩趋势</p>
+            <p class="zhanji-img">
+                <img v-show="index==0" v-bind:src="i?'https://ojhwh2s98.qnssl.com/worldcup/zhihui2/1-1.png':'https://ojhwh2s98.qnssl.com/worldcup/zhihui2/0-0.png'" alt=""
+                     v-for="(i,index) in star.worldCupRecord"><img v-show="index!=0" v-bind:src="i?'https://ojhwh2s98.qnssl.com/worldcup/zhihui2/1.png':'https://ojhwh2s98.qnssl.com/worldcup/zhihui2/0.png'" alt=""
+                     v-for="(i,index) in star.worldCupRecord"><img src="https://ojhwh2s98.qnssl.com/worldcup/zhihui2/last.png" alt=""></p>
+        </div>
+    </div>
+    <div class="rule">
+        <p class="title">活动说明</p>
+        <p>1.本活动只展示预测师的世界杯战绩；</p>
+        <p>2.活动期间，只要参与世界杯预测都有机会成为明星预测师；</p>
+        <p>3.赛事预测结果只代表预测师个人意见，与智慧彩票预测无关。</p>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            list:[],
+        },
+        mounted: function () {
+            var index = this
+            $.ajax({
+                type: 'POST',
+                url: '/activity/get_star_users',
+                data: {},
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    index.list = data.data.starUsers
+                }
+            })
+        },
+        methods: {
+
+        }
+    })
+
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+
+</script>
+</html>

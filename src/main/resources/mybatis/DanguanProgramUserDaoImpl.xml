@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DanguanProgramUser">
+    <resultMap id="danguanProgramUserMap" type="danguanProgramUser">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="MATCH_ID" property="matchId" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, MATCH_ID, REMARK, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getDanguanProgramUserLog" resultMap="danguanProgramUserMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_DANGUAN_PROGRAM_USER
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND MATCH_ID = #{matchId,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="danguanProgramUser">
+        INSERT INTO TB_DANGUAN_PROGRAM_USER(<include refid="Base_Column_List"/>)
+        VALUES (
+        #{userId,jdbcType=BIGINT}, #{matchId,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="danguanProgramUser">
+        UPDATE TB_DANGUAN_PROGRAM_USER
+        SET REMARK = #{remark,jdbcType=VARCHAR}, UPDATE_TIME = now()
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND MATCH_ID = #{matchId,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ActivityInfo">
+    <resultMap id="activityInfoMap" type="activityInfo">
+        <result column="ACTIVITY_ID" property="activityId" jdbcType="INTEGER"/>
+        <result column="ACTIVITY_NAME" property="activityName" jdbcType="VARCHAR"/>
+        <result column="IMG_URL" property="imgUrl" jdbcType="VARCHAR"/>
+        <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="IS_ENABLE" property="isEnable" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ACTIVITY_ID, ACTIVITY_NAME, IMG_URL, START_TIME, END_TIME, IS_ENABLE, REMARK, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getEnabledActivity" resultMap="activityInfoMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_ACTIVITY_INFO
+        WHERE IS_ENABLE = 1
+    </select>
+
+    <select id="getActivityInfo" resultMap="activityInfoMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_ACTIVITY_INFO
+        WHERE IS_ENABLE = 1 AND ACTIVITY_ID = #{activityId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="activityInfo">
+        INSERT INTO TB_ACTIVITY_INFO(ACTIVITY_ID, ACTIVITY_NAME, IMG_URL, START_TIME, END_TIME, IS_ENABLE, REMARK,
+        CREATE_TIME,
+        UPDATE_TIME)
+        VALUES (
+        #{activityId,jdbcType=INTEGER}, #{activityName,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR},
+        #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{isEnable,jdbcType=INTEGER},
+        #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="activityInfo">
+        UPDATE TB_ACTIVITY_INFO
+        SET ACTIVITY_NAME = #{activityName,jdbcType=VARCHAR}, IMG_URL =
+        #{imgUrl,jdbcType=VARCHAR}, START_TIME = #{startTime, jdbcType=TIMESTAMP},
+        END_TIME = #{endTime,jdbcType=TIMESTAMP},IS_ENABLE = #{isEnable,jdbcType=INTEGER},
+        REMARK = #{remark,jdbcType=VARCHAR}, CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+        UPDATE_TIME = now()
+        WHERE ACTIVITY_ID = #{activityId,jdbcType=INTEGER}
+    </update>
+</mapper>

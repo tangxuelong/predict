@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserWisdomCoinFlow">
+    <resultMap id="userWisdomCoinFlowMap" type="userWisdomCoinFlow">
+        <result column="FLOW_ID" property="flowId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="EXCHANGE_TYPE" property="exchangeType" jdbcType="INTEGER"/>
+        <result column="EXCHANGE_AMOUNT" property="exchangeAmount" jdbcType="BIGINT"/>
+        <result column="EXCHANGE_WISDOM_AMOUNT" property="exchangeWisdomAmount" jdbcType="BIGINT"/>
+        <result column="EXCHANGE_NAME" property="exchangeName" jdbcType="VARCHAR"/>
+        <result column="IS_PAY" property="isPay" jdbcType="INTEGER"/>
+        <result column="MEMO" property="memo" jdbcType="VARCHAR"/>
+        <result column="EXCHANGE_FLOW_ID" property="exchangeFlowId" jdbcType="VARCHAR"/>
+        <result column="GOODS_ID" property="goodsId" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        FLOW_ID, USER_ID, EXCHANGE_TYPE, EXCHANGE_AMOUNT, EXCHANGE_WISDOM_AMOUNT, EXCHANGE_NAME, IS_PAY, MEMO,
+        EXCHANGE_FLOW_ID, GOODS_ID, CREATE_TIME
+    </sql>
+
+    <select id="getUserWisdomCoinFlowsByPage" resultMap="userWisdomCoinFlowMap">
+        SELECT * FROM TB_USER_WISDOM_COIN_FLOW
+    </select>
+
+    <select id="getUserWisdomCoinFlowByFlowId" parameterType="map" resultMap="userWisdomCoinFlowMap">
+        SELECT * FROM TB_USER_WISDOM_COIN_FLOW WHERE FLOW_ID =#{flowId, jdbcType=VARCHAR}
+    </select>
+
+    <select id="getUserWisdomCoinFlowSumByStatusByOtter" parameterType="map" resultType="java.lang.Long">
+        SELECT sum(EXCHANGE_AMOUNT) FROM TB_USER_WISDOM_COIN_FLOW WHERE EXCHANGE_TYPE = #{exchangeType,jdbcType=BIGINT}
+        and CREATE_TIME &lt;= #{endTime, jdbcType=TIMESTAMP}
+        <if test="beginTime!=null">
+            and CREATE_TIME &gt;= #{beginTime, jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
+    <update id="updateUserWisdomFlowIsPay" parameterType="map">
+        UPDATE TB_USER_WISDOM_COIN_FLOW SET IS_PAY = #{isPay,jdbcType=INTEGER}
+        WHERE FLOW_ID = #{flowId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="saveUserWisdomCoinAccountFlowId" parameterType="map">
+        UPDATE TB_USER_WISDOM_COIN_FLOW SET EXCHANGE_FLOW_ID = #{exchangeFlowId,jdbcType=VARCHAR}
+        WHERE FLOW_ID = #{flowId,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insert" parameterType="userWisdomCoinFlow">
+        INSERT INTO TB_USER_WISDOM_COIN_FLOW (<include refid="Base_Column_List"/>)
+        VALUES (#{flowId, jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{exchangeType,jdbcType=BIGINT},
+        #{exchangeAmount,jdbcType=BIGINT}, #{exchangeWisdomAmount,jdbcType=BIGINT} ,#{exchangeName,jdbcType=VARCHAR},
+        #{isPay,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{exchangeFlowId, jdbcType=VARCHAR},
+        #{goodsId,jdbcType=INTEGER}, now())
+    </insert>
+
+</mapper>

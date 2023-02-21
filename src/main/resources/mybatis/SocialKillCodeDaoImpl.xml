@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SocialKillCode">
+    <resultMap id="socialKillCodeMap" type="socialKillCode">
+        <result column="KILL_CODE_ID" property="killCodeId" jdbcType="BIGINT"/>
+        <result column="ENCIRCLE_CODE_ID" property="encircleCodeId" jdbcType="BIGINT"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="USER_KILL_CODE" property="userKillCode" jdbcType="VARCHAR"/>
+        <result column="CODE_TYPE" property="codeType" jdbcType="INTEGER"/>
+        <result column="KILL_NUMS" property="killNums" jdbcType="INTEGER"/>
+        <result column="USER_RANK" property="userRank" jdbcType="INTEGER"/>
+        <result column="RIGHT_NUMS" property="rightNums" jdbcType="INTEGER"/>
+        <result column="IS_DISTRIBUTE" property="isDistribute" jdbcType="INTEGER"/>
+        <result column="USER_AWARD_SCORE" property="userAwardScore" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        KILL_CODE_ID, ENCIRCLE_CODE_ID, GAME_ID, PERIOD_ID, USER_ID, USER_KILL_CODE, CODE_TYPE, KILL_NUMS, USER_RANK,
+        RIGHT_NUMS, IS_DISTRIBUTE, USER_AWARD_SCORE, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <insert id="insert" parameterType="socialKillCode">
+        INSERT INTO TB_USER_SOCIAL_KILL_CODE
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{killCodeId,jdbcType=INTEGER}, #{encircleCodeId,jdbcType=INTEGER}, #{gameId,jdbcType=BIGINT},
+        #{periodId,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{userKillCode,jdbcType=VARCHAR},
+        #{codeType,jdbcType=INTEGER}, #{killNums,jdbcType=INTEGER}, #{userRank,jdbcType=INTEGER},
+        #{rightNums,jdbcType=INTEGER}, #{isDistribute,jdbcType=INTEGER}, #{userAwardScore,jdbcType=INTEGER}, now(),
+        #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="getkillNumsByEncircleIdByPage" resultMap="socialKillCodeMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SOCIAL_KILL_CODE
+        WHERE ENCIRCLE_CODE_ID = #{encircleId, jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR} AND
+        GAME_ID = #{gameId,jdbcType=BIGINT}
+        <if test="userId!=null">
+            AND USER_ID = #{userId, jdbcType=BIGINT}
+        </if>
+        <if test="isDistribute==1">
+            ORDER BY USER_AWARD_SCORE DESC
+        </if>
+        <if test="isDistribute!=1">
+            ORDER BY USER_RANK
+        </if>
+
+    </select>
+
+    <select id="getKillNumsByCondition" resultMap="socialKillCodeMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SOCIAL_KILL_CODE
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+        <if test="encircleId!=null">
+            AND ENCIRCLE_CODE_ID = #{encircleId, jdbcType=BIGINT}
+        </if>
+        <if test="userId!=null">
+            AND USER_ID = #{userId, jdbcType=BIGINT}
+        </if>
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+    <select id="getUnDistributeKillNums" resultMap="socialKillCodeMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SOCIAL_KILL_CODE
+        WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND PERIOD_ID = #{periodId,jdbcType=VARCHAR}
+        AND (IS_DISTRIBUTE = 0 OR IS_DISTRIBUTE IS NULL)
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+    <select id="getKillNumsByKillCodeId" resultMap="socialKillCodeMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SOCIAL_KILL_CODE
+        WHERE KILL_CODE_ID = #{killCodeId,jdbcType=BIGINT}
+    </select>
+
+    <update id="updateRightNums" parameterType="map">
+        UPDATE TB_USER_SOCIAL_KILL_CODE SET RIGHT_NUMS = #{rightNums,jdbcType=INTEGER}
+        WHERE KILL_CODE_ID = #{killCodeId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateUserScore" parameterType="map">
+        UPDATE TB_USER_SOCIAL_KILL_CODE SET USER_AWARD_SCORE = #{userAwardScore,jdbcType=INTEGER}
+        WHERE KILL_CODE_ID = #{killCodeId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateToDistribute" parameterType="map">
+        UPDATE TB_USER_SOCIAL_KILL_CODE SET IS_DISTRIBUTE = 1
+        WHERE KILL_CODE_ID = #{killCodeId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateSocialKillCode" parameterType="socialKillCode">
+        UPDATE TB_USER_SOCIAL_KILL_CODE SET RIGHT_NUMS = #{rightNums,jdbcType=INTEGER},
+        USER_AWARD_SCORE = #{userAwardScore,jdbcType=INTEGER},
+        USER_KILL_CODE = #{userKillCode,jdbcType=VARCHAR}, UPDATE_TIME = now()
+        WHERE KILL_CODE_ID = #{killCodeId,jdbcType=BIGINT}
+    </update>
+
+</mapper>

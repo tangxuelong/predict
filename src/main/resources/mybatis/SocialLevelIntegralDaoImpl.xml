@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SocialLevelIntegral">
+    <resultMap id="socialLevelIntegralMap" type="socialLevelIntegral">
+        <result column="LEVEL_ID" property="levelId" jdbcType="INTEGER"/>
+        <result column="TITLE_ID" property="titleId" jdbcType="INTEGER"/>
+        <result column="MIN_INTEGRAL" property="minIntegral" jdbcType="BIGINT"/>
+        <result column="ENABLE" property="enable" jdbcType="INTEGER"/>
+        <result column="BIG_IMG_URL" property="bigImgUrl" jdbcType="VARCHAR"/>
+        <result column="SMALL_IMG_URL" property="smallImgUrl" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        LEVEL_ID, TITLE_ID, MIN_INTEGRAL, ENABLE, BIG_IMG_URL, SMALL_IMG_URL
+    </sql>
+
+    <select id="getAllSocialLevelIntegral" resultMap="socialLevelIntegralMap">
+        SELECT * FROM TB_SOCIAL_LEVEL_INTEGRAL WHERE ENABLE = 1 ORDER BY LEVEL_ID
+    </select>
+
+    <update id="updateSocialLevelIntegralEnable" parameterType="map">
+        UPDATE TB_SOCIAL_LEVEL_INTEGRAL SET ENABLE = #{enable,jdbcType=INTEGER} WHERE LEVEL_ID =
+        #{levelId, jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="socialLevelIntegral">
+        INSERT INTO TB_SOCIAL_LEVEL_INTEGRAL (<include refid="Base_Column_List"/>)
+        VALUES (#{levelId, jdbcType=INTEGER}, #{titleId,jdbcType=INTEGER}, #{minIntegral,jdbcType=BIGINT},
+        #{enable,jdbcType=INTEGER}, #{bigImgUrl,jdbcType=VARCHAR}, #{smallImgUrl,jdbcType=VARCHAR} )
+    </insert>
+
+</mapper>

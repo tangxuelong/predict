@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysCardBin">
+    <resultMap id="sysCardBinMap" type="sysCardBin">
+        <result column="card_id" property="cardId" jdbcType="INTEGER"/>
+        <result column="card_bin" property="cardBin" jdbcType="BIGINT"/>
+        <result column="card_type" property="cardType" jdbcType="INTEGER"/>
+        <result column="card_name" property="cardName" jdbcType="VARCHAR"/>
+        <result column="primary_account_no" property="primaryAccountNo" jdbcType="VARCHAR"/>
+        <result column="account_len" property="accountLen" jdbcType="INTEGER"/>
+        <result column="issuer_bank_name" property="issuerBankName" jdbcType="VARCHAR"/>
+        <result column="bank_short_name" property="bankShortName" jdbcType="VARCHAR"/>
+        <result column="issuer_bank_code" property="issuerBankCode" jdbcType="INTEGER"/>
+        <result column="issuer_bank_province" property="issuerBankProvince" jdbcType="VARCHAR"/>
+        <result column="issuer_bank_city" property="issuerBankCity" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="bank_img_url" property="bankImgUrl" jdbcType="VARCHAR"/>
+        <result column="bank_back_url" property="bankBackUrl" jdbcType="VARCHAR"/>
+        <result column="memo" property="memo" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="getSysCardBinByBankCardPrefix" resultMap="sysCardBinMap" parameterType="map">
+        SELECT * FROM tb_sys_card_bin where card_bin like CONCAT(#{bankCardPrefix, jdbcType=VARCHAR}, '%') limit 1
+    </select>
+
+
+</mapper>

@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>智慧币充值</title>
+</head>
+<style>
+    body, p {
+        padding: 0;
+        margin: 0;
+    }
+
+    .mobile-div {
+        position: relative;
+        padding: 7vw 3vw;
+        border-bottom: 5px solid #E6E6E6;
+        height: 13vw;
+    }
+
+    .mobile-span {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 64.33vw;
+        height: 11.2vw;
+        line-height: 11.2vw;
+        background: rgba(245, 245, 245, 1);
+        border-radius: 0.53vw;
+        border: 0.27vw solid rgba(230, 230, 230, 1);
+        text-indent: 3vw;
+        font-size: 4vw;
+        color: #333;
+        font-family: PingFangSC-Regular;
+        padding: 1px;
+    }
+    .mobile {
+        position: absolute;
+        left: 1vw;
+        top: 2.5vw;
+        border: none;
+        width: 50.33vw;
+        height: 6.2vw;
+        background: rgba(245, 245, 245, 1);
+        text-indent: 2vw;
+        font-size: 4vw;
+        color: #333;
+        font-family: PingFangSC-Regular;
+    }
+
+    .mobile:focus {
+        outline: none;
+    }
+
+    .confirm-button {
+        display: inline-block;
+        width: 21.33vw;
+        height: 12vw;
+        background: rgba(255, 80, 80, 1);
+        border-radius: 0.53vw;
+        font-size: 4vw;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 12vw;
+        text-align: center;
+        text-decoration: none;
+        margin-top: 1px;
+    }
+
+    .confirm-button-s {
+        display: inline-block;
+        width: 21.33vw;
+        height: 12vw;
+        background: rgba(255, 241, 241, 1);
+        border-radius: 0.53vw;
+        border: 0.13vw solid rgba(255, 80, 80, 1);
+        text-align: center;
+        text-decoration: none;
+        line-height: 12vw;
+        color: #FF5050;
+    }
+
+    .recharge-div {
+        padding: 3vw;
+    }
+
+    .xuanze {
+        height: 3.47vw;
+        font-size: 3.47vw;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(153, 153, 153, 1);
+        line-height: 3.47vw;
+    }
+
+    .recharge-item {
+        margin-top: 7vw;
+        display: inline-block;
+        text-decoration: none;
+        width: 28.8vw;
+        height: 16vw;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 0.53vw;
+        border: 0.27vw solid rgba(216, 216, 216, 1);
+        position: relative;
+    }
+
+    .zhihuibi {
+        font-size: 4vw;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+        line-height: 5.8vw;
+        margin-top: 3.5vw;
+        text-align: center;
+    }
+
+    .price {
+        font-size: 3.6vw;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(153, 153, 153, 1);
+        line-height: 4.8vw;
+        text-align: center;
+        letter-spacing: -0.5px;
+    }
+
+    .recharge-button {
+        display: block;
+        width: 92vw;
+        height: 12vw;
+        line-height: 12vw;
+        background: rgba(255, 80, 80, 1);
+        border-radius: 1.07vw;
+        position: fixed;
+        text-align: center;
+        bottom: 4vw;
+        left: 4vw;
+        text-decoration: none;
+        font-size: 4vw;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+    }
+
+    .rule-1 {
+        margin-top: 9vw;
+        font-size: 4vw;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+        line-height: 5.6vw;
+    }
+
+    .rule-2 {
+        font-size: 3.47vw;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(153, 153, 153, 1);
+        line-height: 5.47vw;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+
+    .mobile-div {
+        position: relative;
+    }
+
+    .user-mobile {
+        position: absolute;
+        top: 8vw;
+        height: 4.8vw;
+        font-size: 4.8vw;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(51, 51, 51, 1);
+        line-height: 4.8vw;
+    }
+
+    .user-balance {
+        position: absolute;
+        bottom: 9vw;
+        height: 3.47vw;
+        font-size: 3.47vw;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 135, 38, 1);
+        line-height: 3.47vw;
+    }
+
+    .active {
+        background: rgba(255, 80, 80, 1);
+        color: #FFF;
+    }
+
+    .active .zhihuibi {
+        color: #FFF;
+    }
+
+    .active .price {
+        color: #FFF;
+    }
+
+    .charge-icon {
+        position: absolute;
+        display: block;
+        height: 4vw;
+        left: 0px;
+        margin-left: -2px;
+        top: -2.1vw;
+    }
+
+    .shadow {
+        background: #000;
+        opacity: 0.7;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 999;
+    }
+
+    .pop-f {
+        width: 74.67vw;
+        height: 48vw;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 1.07vw;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-top: -30vw;
+        margin-left: -37.385vw;
+        z-index: 1000;
+    }
+
+    .pop {
+        position: relative;
+    }
+
+    .pop p {
+        position: absolute;
+        text-align: center;
+        top: 5vw;
+        width: 100%;
+        font-size: 4.8vw;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(51, 51, 51, 1);
+        line-height: 5.07vw;
+    }
+
+    .pop input {
+        width: 50vw;
+        height: 6.67vw;
+        font-size: 4vw;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: #333;
+        top: 16vw;
+        left: 8vw;
+        right: 5vw;
+        position: absolute;
+        border: none;
+        background: rgba(245, 245, 245, 1);
+    }
+    .pop .input {
+        display: block;
+        width: 64vw;
+        height: 10.67vw;
+        background: rgba(245, 245, 245, 1);
+        border-radius: 0.53vw;
+        border: 0.27vw solid rgba(230, 230, 230, 1);
+        font-size: 4vw;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: #333;
+        line-height: 10.67vw;
+        top: 14vw;
+        left: 5vw;
+        right: 5vw;
+        position: absolute;
+        text-indent: 15px;
+    }
+
+    .pop input:focus {
+        outline: none;
+    }
+
+    .pop a {
+        display: block;
+        width: 64vw;
+        height: 10.67vw;
+        background: rgba(255, 80, 80, 1);
+        border-radius: 0.53vw;
+        border: 0.27vw solid rgba(255, 80, 80, 1);
+        text-align: center;
+        text-decoration: none;
+        font-size: 4vw;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 1);
+        line-height: 10.67vw;
+        left: 5vw;
+        top: 32vw;
+        padding: 0.27vw 0;
+        position: absolute;
+    }
+
+    /* toast css*/
+    .toast-container {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 100%;
+        top: 100%;
+        z-index: 2999;
+    }
+
+    .toast {
+        position: absolute;
+        top: -56%;
+        left: -50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        padding: 13px 16px;
+        font-size: 14px;
+        border-radius: 2px;
+        width: auto;
+        /*颜色*/
+        color: #ccc;
+        background: rgba(37, 38, 45, 0.9);
+        /*可以输入的字数的宽度*/
+        max-width: 16em;
+    }
+
+    input {
+        outline: 0px;
+        -webkit-appearance: none;
+    }
+    .recharge-div table{
+        table-layout: fixed;
+        width: 100%;
+    }
+    .recharge-div table tr td{
+        text-align: center;
+    }
+    #app{
+        position:relative;
+    }
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="mobile-div" v-show="!showMobile">
+        <p style="position: relative">
+            <span class="mobile-span"></span>
+            <input class="mobile" v-model="mobile" placeholder="请输入智慧预测手机号" type="tel" maxlength="11">
+            <a class="confirm-button" style="position: absolute;right:0;top: 0;" href="javascript:void(0)"
+               v-on:click="confirm_mobile">确定</a>
+        </p>
+    </div>
+    <div class="mobile-div" style="text-align: right" v-show="showMobile">
+        <p>
+        <p class="user-mobile" v-text="mobile"></p>
+        <p class="user-balance" v-text="balance+'智慧币'"></p>
+        <a class="confirm-button-s fr" href="javascript:void(0)" v-on:click="openPop">切换账号</a>
+        </p>
+    </div>
+    <div class="recharge-div">
+        <p class="xuanze">请选择充值额度</p>
+        <table cellspacing="0" cellpadding="0">
+            <tr>
+                <td v-for="fillAmount in [fillAmounts[0],fillAmounts[1],fillAmounts[2]]" width="33%">
+                    <span class="recharge-item" v-bind:class="{'active':chooseAmountId==fillAmount.fillAmountId}"
+                       v-on:click="choose_item(fillAmount.fillAmountId)"
+                       href="javascript:void(0)">
+                        <img class="charge-icon" v-show="fillAmount.fillAmountIcon!=null"
+                             v-bind:src="fillAmount.fillAmountIcon"
+                             alt="">
+                        <p class="zhihuibi" v-text="fillAmount.balanceText"></p>
+                        <p class="price">
+                            <span style="text-decoration: line-through;"
+                                  v-text="fillAmount.originCashText"></span>
+                            <span class="price" v-text="fillAmount.cashText"></span>
+                        </p>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td v-for="fillAmount in [fillAmounts[3],fillAmounts[4],fillAmounts[5]]" width="33%">
+                    <span class="recharge-item" v-bind:class="{'active':chooseAmountId==fillAmount.fillAmountId}"
+                       v-on:click="choose_item(fillAmount.fillAmountId)"
+                       href="javascript:void(0)">
+                        <img class="charge-icon" v-show="fillAmount.fillAmountIcon!=null"
+                             v-bind:src="fillAmount.fillAmountIcon"
+                             alt="">
+                        <p class="zhihuibi" v-text="fillAmount.balanceText"></p>
+                        <p class="price">
+                            <span style="text-decoration: line-through;"
+                                  v-text="fillAmount.originCashText"></span>
+                            <span class="price" v-text="fillAmount.cashText"></span>
+                        </p>
+                    </span>
+                </td>
+            </tr>
+        </table>
+
+        <p class="rule-1">充值说明:</p>
+        <p class="rule-2">智慧币直抵现金，可用于购买预测或vip</p>
+    </div>
+    <div class="shadow" v-show="showPop" v-on:click="closePop">
+
+    </div>
+    <div class="pop-f" v-show="showPop">
+        <div class="pop">
+            <p>切换账号</p>
+            <span class="input"></span>
+            <input type="tel" placeholder="输入手机号" v-model="new_mobile" maxlength="11">
+            <a href="javascript:void(0)" v-on:click="change_mobile">确定</a>
+        </div>
+    </div>
+    <a class="recharge-button" href="javascript:void(0)" v-on:click="buy_wisdom">立即充值</a>
+</div>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    // toast 方法
+    function toast(msg) {
+        var str = "<div class='toast-container' style='display:none'> <div class='toast'>" + msg + "</div></div>";
+        $('body').append(str);
+        $('.toast-container').stop().fadeIn(100).delay(1500).fadeOut(400); //fade out after 3 seconds
+        setTimeout(function () {
+            $('.toast-container').remove();
+        }, 3000);
+    }
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+
+    app = new Vue({
+        el: '#app',
+        data: {
+            fillAmounts: [],
+            mobile: '',
+            new_mobile: '',
+            showMobile: 0,
+            balance: 0,
+            chooseAmountId: 0,
+            showPop: 0,
+        },
+        mounted: function () {
+            var index = this;
+            index.init_page();
+        },
+        methods: {
+            "init_page": function () {
+                var index = this;
+                if (null != localStorage.getItem("mobile")) {
+                    index.showMobile = 1;
+                    index.mobile = localStorage.getItem("mobile");
+                }
+                //请求后台接口获取页面初始化数据
+                $.ajax({
+                    type: 'POST',
+                    url: '/wx/wxapi_get_wisdom_price_list',
+                    data: {
+                        mobile: index.mobile,
+                        wxCode: getUrlParam('code')
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        index.fillAmounts = data.data.fillAmounts;
+                        index.balance = data.data.userBalance;
+                    }
+                })
+            },
+            "confirm_mobile": function () {
+                // 存下手机号
+                var index = this;
+                if (index.mobile.length != 11) {
+                    toast('手机号格式错误！请重新输入！');
+                    return
+                }
+                localStorage.setItem("mobile", index.mobile);
+                index.showMobile = 1;
+                index.init_page();
+            },
+            "change_mobile": function () {
+                // 切换手机号
+                var index = this;
+                if (index.new_mobile.length != 11) {
+                    toast('手机号格式错误！请重新输入！');
+                    return
+                }
+                localStorage.removeItem("mobile");
+                index.mobile = index.new_mobile;
+                localStorage.setItem("mobile", index.new_mobile);
+                index.closePop()
+                index.init_page();
+            },
+            "choose_item": function (fillAmountId) {
+                var index = this;
+                index.chooseAmountId = fillAmountId;
+            },
+            "buy_wisdom": function () {
+                var index = this;
+                if (index.mobile == '') {
+                    toast('请输入手机号！');
+                    return;
+                }
+                if (index.chooseAmountId == 0) {
+                    toast('请选择充值额度！');
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/wx/wxapi_purchase_wisdom',
+                    data: {
+                        wxCode: getUrlParam('code'),
+                        mobile: index.mobile,
+                        itemId: index.chooseAmountId
+                    },
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        // 支付 调用SDK
+                        if (typeof WeixinJSBridge == "undefined") {
+                            if (document.addEventListener) {
+                                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                            } else if (document.attachEvent) {
+                                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                            }
+                        } else {
+                            index.onBridgeReady(data.data);
+                        }
+                    }
+                })
+            },
+            onBridgeReady: function (payParams) {
+                var index = this;
+                WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest', payParams,
+                    function (res) {
+                        if (res.err_msg == "get_brand_wcpay_request:ok") {
+                            // 使用以上方式判断前端返回,微信团队郑重提示：
+                            //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                            index.initPage();
+                            toast('购买成功');
+                        } else {
+                            toast('购买失败');
+                        }
+                    });
+            },
+            "closePop": function () {
+                var index = this;
+                index.showPop = 0;
+            },
+            "openPop": function () {
+                var index = this;
+                index.showPop = 1;
+                index.new_mobile = '';
+            }
+        }
+    })
+</script>
+</html>

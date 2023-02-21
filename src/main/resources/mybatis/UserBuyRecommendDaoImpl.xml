@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userBuyRecommend">
+    <resultMap id="userBuyRecommendMap" type="userBuyRecommend">
+        <result column="FOOTBALL_LOG_ID" property="footballLogId" jdbcType="VARCHAR"/>
+        <result column="PROGRAM_ID" property="programId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="PROGRAM_AMOUNT" property="programAmount" jdbcType="BIGINT"/>
+        <result column="PAY_AMOUNT" property="payAmount" jdbcType="BIGINT"/>
+        <result column="WITHDRAW_AMOUNT" property="withdrawAmount" jdbcType="BIGINT"/>
+        <result column="WITHDRAW_STATUS" property="withdrawStatus" jdbcType="INTEGER"/>
+        <result column="PAY_STATUS" property="payStatus" jdbcType="INTEGER"/>
+        <result column="LOTTERY_CODE" property="lotteryCode" jdbcType="INTEGER"/>
+        <result column="MATCH_ID" property="matchId" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="AWARD_STATUS" property="awardStatus" jdbcType="INTEGER"/>
+        <result column="PLAY_TYPE" property="playType" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        FOOTBALL_LOG_ID, PROGRAM_ID, USER_ID, PROGRAM_AMOUNT, PAY_AMOUNT, WITHDRAW_AMOUNT, WITHDRAW_STATUS,
+        PAY_STATUS, MATCH_ID, LOTTERY_CODE, REMARK, AWARD_STATUS, PLAY_TYPE, CREATE_TIME
+    </sql>
+
+    <select id="getUserBuyRecommendByPk" resultMap="userBuyRecommendMap" parameterType="map">
+        SELECT * FROM TB_USER_BUY_RECOMMEND WHERE FOOTBALL_LOG_ID =
+        #{footballLogId, jdbcType=VARCHAR}
+        <if test="isLock==true">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <select id="getUserBuyRecommendByUniqueKey" resultMap="userBuyRecommendMap" parameterType="map">
+        SELECT * FROM TB_USER_BUY_RECOMMEND WHERE USER_ID = #{userId, jdbcType=BIGINT} AND PROGRAM_ID =
+        #{programId, jdbcType=VARCHAR}
+        <if test="isLock==true">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <select id="getUserPurchaseSportRecommend" resultMap="userBuyRecommendMap" parameterType="map">
+        SELECT * FROM TB_USER_BUY_RECOMMEND WHERE USER_ID = #{userId, jdbcType=BIGINT} AND LOTTERY_CODE =
+        #{lotteryCode, jdbcType=INTEGER} and PAY_STATUS = 1
+        <if test="lastIndex!=null">
+            AND FOOTBALL_LOG_ID &lt; #{lastIndex, jdbcType=VARCHAR}
+        </if>
+        ORDER BY FOOTBALL_LOG_ID DESC limit #{count, jdbcType=INTEGER}
+    </select>
+
+    <select id="getUserPurchaseRecommendByDate" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) FROM TB_USER_BUY_RECOMMEND WHERE USER_ID = #{userId, jdbcType=BIGINT} AND LOTTERY_CODE =
+        #{lotteryCode, jdbcType=INTEGER} and PAY_STATUS = 1 <![CDATA[AND CREATE_TIME <= #{endTime,jdbcType=TIMESTAMP}]]>
+        <![CDATA[AND CREATE_TIME >= #{beginTime,jdbcType=TIMESTAMP}
+
+        ]]>
+    </select>
+
+    <select id="getCouponAmountAndCountFromOtter" resultType="map" parameterType="map">
+      select sum(PROGRAM_AMOUNT) as amount, count(1) as num from TB_USER_BUY_RECOMMEND
+      where (PAY_AMOUNT is null or PAY_AMOUNT = 0) and CREATE_TIME &gt;= #{begin, jdbcType=TIMESTAMP}
+      and CREATE_TIME &lt;= #{end, jdbcType=TIMESTAMP} and PAY_STATUS = 1
+    </select>
+
+    <select id="getNotCouponOrderFromOtter" resultType="map" parameterType="map">
+      select sum(a.PAY_AMOUNT) as amount, count(1) as num, f.CHANNEL_ID as channel
+      from tb_user_buy_recommend a left join tb_user_account_flow f on a.FOOTBALL_LOG_ID = f.pay_id
+      where a.PAY_AMOUNT &gt; 0 and a.CREATE_TIME &gt;= #{begin, jdbcType=TIMESTAMP}
+        and a.CREATE_TIME &lt;= #{end, jdbcType=TIMESTAMP} and a.PAY_STATUS = 1
+        group by f.CHANNEL_ID
+    </select>
+
+    <update id="updatePayStatus" parameterType="map">
+        UPDATE TB_USER_BUY_RECOMMEND SET PAY_STATUS = #{setPayStatus,jdbcType=INTEGER}
+        <if test="couponFlag==true">
+            , PAY_AMOUNT = 0, WITHDRAW_AMOUNT = 0, WITHDRAW_STATUS = 1
+        </if>
+        WHERE FOOTBALL_LOG_ID = #{footballLogId, jdbcType=VARCHAR} AND PAY_STATUS = #{oldPayStatus,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateWithdrawStatus" parameterType="map">
+        UPDATE TB_USER_BUY_RECOMMEND SET WITHDRAW_STATUS = #{setStatus,jdbcType=INTEGER} WHERE
+        FOOTBALL_LOG_ID = #{footballLogId, jdbcType=VARCHAR} AND WITHDRAW_STATUS = #{oldStatus,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateUserRecommendAwardStatus" parameterType="map">
+        UPDATE TB_USER_BUY_RECOMMEND SET AWARD_STATUS = #{awardStatus,jdbcType=INTEGER} WHERE
+        FOOTBALL_LOG_ID = #{footballLogId, jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insert" parameterType="userBuyRecommend">
+        INSERT INTO TB_USER_BUY_RECOMMEND (<include refid="Base_Column_List"/>)
+        VALUES (#{footballLogId, jdbcType=VARCHAR}, #{programId,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT},
+        #{programAmount,jdbcType=BIGINT}, #{payAmount,jdbcType=BIGINT}, #{withdrawAmount,jdbcType=BIGINT},
+        #{withdrawStatus,jdbcType=INTEGER}, #{payStatus, jdbcType=INTEGER}, #{matchId, jdbcType=VARCHAR},
+        #{lotteryCode, jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{awardStatus, jdbcType=INTEGER},
+        #{playType, jdbcType=INTEGER}, now())
+    </insert>
+
+</mapper>

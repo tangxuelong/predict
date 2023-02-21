@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserAccountFlow">
+    <resultMap id="userAccountFlowMap" type="userAccountFlow">
+        <result column="FLOW_ID" property="flowId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="PAY_ID" property="payId" jdbcType="VARCHAR"/>
+        <result column="TOTAL_AMOUNT" property="totalAmount" jdbcType="BIGINT"/>
+        <result column="PAY_TYPE" property="payType" jdbcType="INTEGER"/>
+        <result column="CHANNEL_ID" property="channel" jdbcType="INTEGER"/>
+        <result column="PAY_AMOUNT" property="payAmount" jdbcType="BIGINT"/>
+        <result column="PAY_TIME" property="payTime" jdbcType="TIMESTAMP"/>
+        <result column="PAY_DESC" property="payDesc" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CLIENT_IP" property="clientIp" jdbcType="VARCHAR"/>
+        <result column="CLIENT_ID" property="clientId" jdbcType="INTEGER"/>
+        <result column="PRE_PAY_ID" property="prePayId" jdbcType="VARCHAR"/>
+        <result column="OPERATE_TYPE" property="operateType" jdbcType="INTEGER"/>
+        <result column="TRANSACTION_ID" property="transactionId" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        FLOW_ID, USER_ID, PAY_ID, TOTAL_AMOUNT, PAY_TYPE, CHANNEL_ID, PAY_AMOUNT, PAY_TIME, PAY_DESC, STATUS, REMARK,
+        CLIENT_IP, CLIENT_ID, PRE_PAY_ID, OPERATE_TYPE, TRANSACTION_ID, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserFlowByShardType" resultMap="userAccountFlowMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_ACCOUNT_FLOW
+        where FLOW_ID = #{flowId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getUserFlowCheck" resultMap="userAccountFlowMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_ACCOUNT_FLOW
+        where PAY_ID = #{payId,jdbcType=VARCHAR} and PAY_TYPE = #{payType,jdbcType=INTEGER}
+        <if test="userId!=null">
+            and USER_ID = #{userId, jdbcType=BIGINT}
+        </if>
+        <if test="isLock == true">
+            for update
+        </if>
+    </select>
+
+    <!-- 对账专用 -->
+    <select id="getSumAmountByChannelId" resultType="map" parameterType="map">
+        SELECT SUM(TOTAL_AMOUNT) AS totalAmount, CHANNEL_ID AS channelId FROM TB_USER_ACCOUNT_FLOW
+        WHERE PAY_TIME &lt;= #{endTime,jdbcType=TIMESTAMP} AND STATUS=2 AND PAY_TYPE =1 AND (REMARK not like
+        "%sandbox%" or REMARK is null)
+        <if test="beginTime!=null">
+            AND PAY_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP}
+        </if>
+        GROUP BY CHANNEL_ID
+    </select>
+
+    <select id="countUserFlow" resultType="java.lang.Integer" parameterType="map">
+        select
+        COUNT(1)
+        from TB_USER_ACCOUNT_FLOW
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="sumAllCashFlow" resultType="java.lang.Integer" parameterType="map">
+        select
+        SUM(PAY_AMOUNT)
+        from TB_USER_ACCOUNT_FLOW
+        where STATUS!=0 AND PAY_TYPE = 1
+    </select>
+
+    <select id="maxDayCashFlow" resultType="java.lang.Integer" parameterType="map">
+        select
+        MAX(PAY_AMOUNT)
+        from TB_USER_ACCOUNT_FLOW
+        where STATUS!=0 AND PAY_TYPE = 1
+        AND UPDATE_TIME &gt;= #{beginDate,jdbcType=TIMESTAMP}
+        AND UPDATE_TIME &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="getUserFlowListByPage" resultMap="userAccountFlowMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_ACCOUNT_FLOW
+        where user_id = #{userId,jdbcType=BIGINT} AND PAY_TYPE = #{payType,jdbcType=INTEGER} AND STATUS = 2 ORDER BY
+        CREATE_TIME DESC
+        <if test="isLock == true">
+            for update
+        </if>
+    </select>
+
+    <select id="getUserFlowByDate" resultMap="userAccountFlowMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_ACCOUNT_FLOW
+        where CREATE_TIME &gt;= #{startTime,jdbcType=TIMESTAMP} AND CREATE_TIME &lt;= #{endTime,jdbcType=TIMESTAMP}
+    </select>
+
+    <!-- 统计交易的所有的钱 -->
+    <select id="getUserAllMoney" resultType="java.lang.Long" parameterType="map">
+        SELECT sum(TOTAL_AMOUNT) FROM TB_USER_ACCOUNT_FLOW where
+        CREATE_TIME &lt;= #{createTime,jdbcType=TIMESTAMP}
+        and status=2 and pay_type=1
+    </select>
+
+    <select id="getTestUserMoney" resultType="java.lang.Long" parameterType="map">
+        SELECT sum(TOTAL_AMOUNT) FROM TB_USER_ACCOUNT_FLOW WHERE
+        CREATE_TIME &lt;= #{endTime,jdbcType=TIMESTAMP} AND STATUS=2 AND PAY_TYPE =1
+        <if test="beginTime!=null">
+            AND CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP}
+        </if>
+        AND USER_ID = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getUserRecentAccountFlow" resultType="java.lang.Integer" parameterType="map">
+        SELECT CHANNEL_ID FROM TB_USER_ACCOUNT_FLOW WHERE STATUS = #{payStatus, jdbcType=INTEGER} AND USER_ID =
+        #{userId,jdbcType=BIGINT} and PAY_TYPE = #{payType, jdbcType=INTEGER}
+        order by create_time desc limit 1
+    </select>
+
+    <select id="getTestUserFlow" resultMap="userAccountFlowMap" parameterType="map">
+        SELECT * FROM TB_USER_ACCOUNT_FLOW WHERE
+        CREATE_TIME &lt;= #{endTime,jdbcType=TIMESTAMP} AND STATUS=2 AND PAY_TYPE =1 AND (REMARK not like "%sandbox%"
+        or REMARK is null)
+        <if test="beginTime!=null">
+            AND CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP}
+        </if>
+        AND USER_ID = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getCashUserFlowByStatus" resultMap="userAccountFlowMap" parameterType="map">
+        SELECT * FROM TB_USER_ACCOUNT_FLOW WHERE  STATUS= 1 AND PAY_TYPE =1
+    </select>
+
+    <select id="getUserFlowByPayType" resultMap="userAccountFlowMap" parameterType="map">
+        SELECT * FROM TB_USER_ACCOUNT_FLOW WHERE PAY_TYPE = #{payType, jdbcType=INTEGER} AND STATUS =
+        #{status,jdbcType=INTEGER} AND PAY_TIME &lt;= #{endTime,jdbcType=TIMESTAMP} AND (REMARK not like "%sandbox%"
+        or REMARK is null)
+        <if test="beginTime!=null">
+            AND PAY_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
+    <select id="getUserFlowCountByUserIdAndTime" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) FROM TB_USER_ACCOUNT_FLOW WHERE STATUS= 1 AND PAY_TYPE =1 AND USER_ID =
+        #{userId,jdbcType=BIGINT} AND CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP} AND CREATE_TIME &lt;
+        #{endTime,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="getAllCashFlowFromOtter" resultMap="userAccountFlowMap" parameterType="map">
+        select * from tb_user_account_flow
+        where CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP} AND CREATE_TIME &lt;= #{endTime,jdbcType=TIMESTAMP}
+        and PAY_TYPE =1 and CHANNEL_ID is not null and STATUS !=0
+    </select>
+
+    <select id="getPayPersonCountFromOtter" resultType="java.lang.Integer" parameterType="map">
+        select count(distinct(USER_ID)) from tb_user_account_flow
+        where CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP} AND CREATE_TIME &lt;= #{endTime,jdbcType=TIMESTAMP}
+        and PAY_TYPE =1 and CHANNEL_ID is not null and STATUS !=0
+    </select>
+
+    <select id="getRepurchaseAmountFromOtter" resultType="java.lang.Long" parameterType="map">
+        select sum(pay_amount) from tb_user_account_flow where user_id in(
+            select distinct(user_id) from tb_user_account_flow
+            where user_id in(
+                select distinct(user_id) from tb_user_account_flow
+                where CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP} and CREATE_TIME &lt;=
+                    #{endTime,jdbcType=TIMESTAMP} and PAY_TYPE =1 and CHANNEL_ID is not null and STATUS !=0
+            ) and CREATE_TIME&lt;#{beginTime,jdbcType=TIMESTAMP} and PAY_TYPE =1 and CHANNEL_ID is not null and STATUS!=0
+        ) and CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP} and CREATE_TIME &lt;= #{endTime,jdbcType=TIMESTAMP}
+        and PAY_TYPE =1 and CHANNEL_ID is not null and STATUS !=0
+    </select>
+
+    <select id="getOrderNumAndAmountFromOtter" resultType="map" parameterType="map">
+        select sum(pay_amount) as amount, count(distinct(user_id)) as user_num, count(1) as num
+        from tb_user_account_flow
+        where CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP} and CREATE_TIME&lt;=#{endTime,jdbcType=TIMESTAMP}
+        and STATUS !=0 and CHANNEL_ID is not null and PAY_TIME is not null
+        <if test="payType!=null">
+            and PAY_TYPE = #{payType, jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getCountCashFlowFromOtterByDate" resultType="java.lang.Integer" parameterType="map">
+        select count(distinct(user_id))
+        from tb_user_account_flow
+        where CREATE_TIME &gt;= #{beginDate,jdbcType=TIMESTAMP} and CREATE_TIME&lt;=#{endDate,jdbcType=TIMESTAMP}
+        and STATUS !=0 and PAY_TYPE = 1
+    </select>
+
+    <select id="getOldUserOrderFromOtter" resultType="map" parameterType="map">
+        select count(distinct(user_id)) as num, sum(pay_amount) as amount from tb_user_account_flow
+        where USER_ID in(
+          select distinct(user_id) from tb_user_account_flow
+          where USER_ID in(
+              select distinct(user_id) from tb_user_account_flow
+              where CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP} and CREATE_TIME &lt;=#{endTime,jdbcType=TIMESTAMP}
+                and CHANNEL_ID is not null and STATUS !=0 and PAY_TIME is not null
+          ) and CREATE_TIME &lt; #{beginTime,jdbcType=TIMESTAMP} and STATUS !=0 and CHANNEL_ID is not null
+            and PAY_TIME is not null
+        ) and CREATE_TIME &gt;= #{beginTime,jdbcType=TIMESTAMP} and CREATE_TIME &lt;= #{endTime,jdbcType=TIMESTAMP}
+        and CHANNEL_ID is not null and STATUS !=0 and PAY_TIME is not null
+    </select>
+
+    <insert id="insert" parameterType="userAccountFlow">
+        INSERT INTO TB_USER_ACCOUNT_FLOW
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{flowId,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{payId,jdbcType=VARCHAR},
+        #{totalAmount,jdbcType=BIGINT}, #{payType,jdbcType=INTEGER}, #{channel,jdbcType=INTEGER},
+        #{payAmount,jdbcType=BIGINT}, #{payTime,jdbcType=TIMESTAMP}, #{payDesc,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER},
+        #{remark,jdbcType=VARCHAR},#{clientIp,jdbcType=VARCHAR},#{clientId,jdbcType=INTEGER},
+        #{prePayId,jdbcType=VARCHAR} ,#{operateType,jdbcType=INTEGER}, #{transactionId,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="userAccountFlow">
+        UPDATE TB_USER_ACCOUNT_FLOW
+        SET PAY_TIME = #{payTime,jdbcType=TIMESTAMP}
+        , STATUS = #{status,jdbcType=INTEGER}
+        , CLIENT_IP = #{clientIp,jdbcType=VARCHAR}
+        , PRE_PAY_ID = #{prePayId,jdbcType=VARCHAR}
+        , TRANSACTION_ID = #{transactionId,jdbcType=VARCHAR}
+        <if test="clientId!=null">
+            , CLIENT_ID=#{clientId,jdbcType=INTEGER}
+        </if>
+        <if test="channel!=null">
+            , CHANNEL_ID =#{channel,jdbcType=INTEGER}
+        </if>
+        <if test="payType!=null">
+            , PAY_TYPE = #{payType,jdbcType=INTEGER}
+        </if>
+        <if test="remark!=null">
+            , REMARK = #{remark,jdbcType=VARCHAR}
+        </if>
+        <if test="payId!=null">
+            , PAY_ID =#{payId, jdbcType=INTEGER}
+        </if>
+        , UPDATE_TIME = now()
+        WHERE FLOW_ID = #{flowId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateFlowStatus" parameterType="map">
+        UPDATE TB_USER_ACCOUNT_FLOW set STATUS = #{setStatus,jdbcType=INTEGER} , UPDATE_TIME = now()
+        where FLOW_ID = #{flowId,jdbcType=VARCHAR}
+        <if test="oldStatus!=null">
+            and STATUS = #{oldStatus,jdbcType=INTEGER}
+        </if>
+    </update>
+</mapper>

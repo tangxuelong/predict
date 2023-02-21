@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>大神推荐</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <meta name="format-detection" content="telephone=no">
+    <script src="script/config.js"></script>
+</head>
+<style>
+    body{
+        background: url("img/bg.png") repeat-y;
+        background-size: 100% auto;
+    }
+    body,p{
+        margin: 0;
+        padding: 0;
+    }
+    .banner img{
+        display: block;
+        width: 100%;
+    }
+    .first-date{
+        position: relative;
+        height: 10vw;
+    }
+    .date1{
+        position: absolute;
+        width: 38vw;
+        left: 31vw;
+    }
+    .date2{
+        position: absolute;
+        width: 38vw;
+        left: 31vw;
+    }
+    .date-text{
+        position: absolute;
+        font-size: 4vw;
+        color: #FFF;
+        text-align: center;
+        width: 38vw;
+        left: 31vw;
+        line-height: 7vw;
+    }
+    .first-match-list{
+        width:89.33vw;
+        margin: 0 auto;
+        height:33.33vw;
+        background:rgba(255,255,255,1);
+        border-radius:1vw;
+        position: relative;
+        margin-bottom: 20px;
+    }
+    .first-match-list-title{
+        width:100%;
+        text-align: center;
+        height:4.13vw;
+        font-size:4vw;
+        font-family:PingFangSC-Regular;
+        color:rgba(255,80,80,1);
+        line-height:9.6vw;
+    }
+    .first-match-list-title-host-img{
+        position: absolute;
+        width: 12vw;
+        left: 7.5vw;
+        top: 9vw;
+    }
+    .first-match-list-title-away-img{
+        position: absolute;
+        width: 12vw;
+        right: 7.5vw;
+        top: 9vw;
+    }
+    .first-match-list-title-host-name{
+        position: absolute;
+        font-size:3.47vw;
+        font-family:PingFangSC-Regular;
+        color:rgba(51,51,51,1);
+        width: 21vw;
+        text-align: center;
+        left: 3vw;
+        bottom: 4vw;
+    }
+    .first-match-list-title-away-name{
+        position: absolute;
+        font-size:3.47vw;
+        font-family:PingFangSC-Regular;
+        color:rgba(51,51,51,1);
+        width: 21vw;
+        text-align: center;
+        right: 3vw;
+        bottom: 4vw;
+    }
+    .first-match-list-title-season{
+        position: absolute;
+        width: 100%;
+        top: 16vw;
+        text-align: center;
+        font-size:3.47vw;
+        font-family:PingFangSC-Regular;
+        color:rgba(51,51,51,1);
+    }
+    .first-match-list-title-seasonName{
+        position: absolute;
+        width: 100%;
+        top: 11vw;
+        text-align: center;
+        font-size:3.47vw;
+        font-family:PingFangSC-Regular;
+        color:rgba(51,51,51,1);
+    }
+    .first-match-list-title-button{
+        position: absolute;
+        bottom: 4vw;
+        text-align: center;
+        font-size: 3.4vw;
+        color: RGBA(255, 165, 99, 1);
+        border: 1px solid RGBA(255, 165, 99, 1);
+        width: 24vw;
+        height: 6.8vw;
+        line-height: 6.8vw;
+        border-radius: 3.4vw;
+        left: 33vw;
+    }
+    .future-matches{
+        background: none;
+        border: 1px solid #FFF;
+        color: #FFF;
+    }
+
+    .future-matches .first-match-list-title-host-name{
+        color:#FFF;
+    }
+    .future-matches .first-match-list-title-away-name{
+        color:#FFF;
+    }
+    .future-matches .first-match-list-title-season{
+        color:#FFF;
+    }
+    .future-matches .first-match-list-title-button{
+        color:#FFF;
+        border: 1px solid #FFF;
+    }
+    .future-matches .first-match-list-title{
+        color:#FFF;
+    }
+    .more{
+        font-size:3.47vw;
+        font-family:PingFangSC-Regular;
+        color:#FFF;
+        text-align: center;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+    .table-button{
+        width: 90vw;
+        margin-left: 5vw;
+        table-layout: fixed;
+        margin-bottom: 20px;
+    }
+    .table-button td img{
+        display: block;
+        width: 90%;
+    }
+    .opercity-match{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #FFF;
+        opacity: 0.1;
+    }
+    .single_img{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 12vw;
+    }
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="banner">
+        <img src="img/banner.png" alt="">
+    </div>
+    <div class="first-date" style="margin-top: -10vw;">
+        <img class="date2" src="img/date2.png" alt="">
+        <img class="date1" src="img/date1.png" alt="">
+        <p class="date-text" v-text="latestMatches.title"></p>
+    </div>
+    <div class="first-match-list" v-on:click="openNativePage(lastmatch.jumpUrl)" v-for="lastmatch in latestMatches.matchInfos">
+        <p class="first-match-list-title" v-text="lastmatch.matchDesc"></p>
+        <img class="first-match-list-title-host-img" v-bind:src="lastmatch.hostImg" alt="">
+        <img class="first-match-list-title-away-img" v-bind:src="lastmatch.awayImg" alt="">
+        <img class="single_img" v-show="lastmatch.single" src="img/single_img.png" alt="">
+        <p class="first-match-list-title-host-name" v-text="lastmatch.hostName"></p>
+        <p class="first-match-list-title-away-name" v-text="lastmatch.awayName"></p>
+        <p class="first-match-list-title-seasonName" v-text="lastmatch.matchName"></p>
+        <p class="first-match-list-title-season" v-text="lastmatch.matchDate"></p>
+        <p class="first-match-list-title-button">立即查看</p>
+    </div>
+    <div v-for="future in futureMatches">
+        <div class="first-date">
+            <img class="date2" src="img/date2.png" alt="">
+            <img class="date1" src="img/date1.png" alt="">
+            <p class="date-text" v-text="future.title"></p>
+        </div>
+        <div class="first-match-list future-matches" v-on:click="openNativePage(lastmatch.jumpUrl)" v-for="lastmatch in future.matchInfos">
+            <div class="opercity-match">
+
+            </div>
+            <p class="first-match-list-title" v-text="lastmatch.matchDesc"></p>
+            <img class="single_img" v-show="lastmatch.single" src="img/single_img.png" alt="">
+            <img class="first-match-list-title-host-img" v-bind:src="lastmatch.hostImg" alt="">
+            <img class="first-match-list-title-away-img" v-bind:src="lastmatch.awayImg" alt="">
+            <p class="first-match-list-title-host-name" v-text="lastmatch.hostName"></p>
+            <p class="first-match-list-title-away-name" v-text="lastmatch.awayName"></p>
+            <p class="first-match-list-title-seasonName" style="color: #fff" v-text="lastmatch.matchName"></p>
+            <p class="first-match-list-title-season" v-text="lastmatch.matchDate"></p>
+            <p class="first-match-list-title-button">立即查看</p>
+        </div>
+    </div>
+    <p class="more">更多数据正在准备中</p>
+    <!--<table class="table-button" cellpadding="0" cellspacing="0">-->
+        <!--<tr>-->
+            <!--<td>-->
+                <!--<p style="position: relative"><a href="https://sports3g.mojieai.com/activity/world_cup_schedule_zhihui"><img src="img/button1.png" alt=""></a></p>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<p style="position:relative;">-->
+                    <!--<a href="https://sports3g.mojieai.com/activity/internal_reference_zhihui"><img style="float: right" src="img/button2.png" alt=""></a>-->
+                <!--</p>-->
+            <!--</td>-->
+        <!--</tr>-->
+    <!--</table>-->
+</div>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            latestMatches:[],
+            futureMatches:[]
+        },
+        mounted: function () {
+            var index = this
+            $.ajax({
+                type: 'POST',
+                url: '/activity/get_world_cup_match',
+                data: {'tagId':1},
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    index.latestMatches = data.data.latestMatches
+                    index.futureMatches = data.data.futureMatches
+                    console.log(JSON.stringify(index.futureMatches))
+                }
+            })
+        },
+        methods: {
+
+        }
+    })
+
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+
+</script>
+</html>

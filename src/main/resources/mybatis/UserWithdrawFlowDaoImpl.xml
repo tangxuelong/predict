@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserWithdrawFlow">
+    <resultMap id="userWithdrawFlowMap" type="userWithdrawFlow">
+        <result column="WITHDRAW_ID" property="withdrawId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="BANK_CARD" property="bankCard" jdbcType="VARCHAR"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="WITHDRAW_AMOUNT" property="withdrawAmount" jdbcType="BIGINT"/>
+        <result column="WITHDRAW_STATUS" property="withdrawStatus" jdbcType="INTEGER"/>
+        <result column="SERVICE_CHARGE" property="serviceCharge" jdbcType="BIGINT"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="WITHDRAW_TIME" property="withdrawTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        WITHDRAW_ID, USER_ID, BANK_CARD, USER_NAME, WITHDRAW_AMOUNT, WITHDRAW_STATUS, SERVICE_CHARGE, REMARK,
+        WITHDRAW_TIME, CREATE_TIME
+    </sql>
+
+    <select id="getUserWithdrawFlowById" resultMap="userWithdrawFlowMap" parameterType="map">
+        SELECT * FROM tb_user_withdraw_flow where WITHDRAW_ID = #{withdrawId, jdbcType=VARCHAR}
+        <if test="isLock==true">
+            for update
+        </if>
+    </select>
+
+    <select id="getUserWithdrawFlow" resultMap="userWithdrawFlowMap" parameterType="map">
+        SELECT * FROM tb_user_withdraw_flow where USER_ID = #{userId, jdbcType=BIGINT}
+        order by CREATE_TIME desc
+    </select>
+
+    <select id="getUserWithdrawSumByTime" parameterType="map" resultType="java.lang.Long">
+        SELECT sum(WITHDRAW_AMOUNT) FROM tb_user_withdraw_flow where USER_ID = #{userId, jdbcType=BIGINT} and
+        WITHDRAW_STATUS in (0, 1, 2, 5, 6)
+    </select>
+
+    <select id="getAllWithdrawOrderByStatusFromOtter" parameterType="map" resultMap="userWithdrawFlowMap">
+        select * from tb_user_withdraw_flow where WITHDRAW_STATUS = #{withdrawStatus, jdbcType=INTEGER}
+    </select>
+
+    <select id="getUserWithdrawTotalAmountByOtter" parameterType="map" resultType="java.lang.Long">
+        select sum(WITHDRAW_AMOUNT) from tb_user_withdraw_flow where WITHDRAW_STATUS = 2 and WITHDRAW_TIME &lt;=
+        #{endTime, jdbcType=TIMESTAMP}
+        <if test="beginTime!=null">
+            and WITHDRAW_TIME &gt;= #{beginTime, jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
+    <update id="updateWithdrawFlowStatus" parameterType="map">
+        UPDATE tb_user_withdraw_flow SET WITHDRAW_STATUS = #{newStatus,jdbcType=INTEGER}
+        <if test="remark!=null">
+            , REMARK = #{remark, jdbcType=VARCHAR}
+        </if>
+        <if test="saveWithdrawTime==true">
+            , WITHDRAW_TIME = now()
+        </if>
+        WHERE WITHDRAW_ID = #{withdrawId,jdbcType=VARCHAR}
+        <if test="oldStatus!=null">
+            and WITHDRAW_STATUS = #{oldStatus,jdbcType=INTEGER}
+        </if>
+    </update>
+
+    <insert id="insert" parameterType="userWithdrawFlow">
+        INSERT INTO tb_user_withdraw_flow (<include refid="Base_Column_List"/>)
+        VALUES (#{withdrawId, jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{bankCard,jdbcType=VARCHAR},
+        #{userName, jdbcType=VARCHAR}, #{withdrawAmount,jdbcType=BIGINT}, #{withdrawStatus,jdbcType=INTEGER},
+        #{serviceCharge,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, null, now())
+    </insert>
+
+</mapper>

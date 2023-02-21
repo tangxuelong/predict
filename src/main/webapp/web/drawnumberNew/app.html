@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>免费领彩票！</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <link rel="stylesheet" href="style/pure-min.css"/>
+    <link rel="stylesheet" href="style/layout.css"/>
+    <meta name="format-detection" content="telephone=no">
+    <script src="script/config.js"></script>
+    <link rel="stylesheet" href="script/swiper-3.4.2.min.css">
+    <script src="script/swiper-3.4.2.min.js"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+    <style>
+        body {
+            background: url('http://sportsimg.mojieai.com/drawnumbernewbody-bg.png') repeat-y;
+            background-size: 100% auto;
+            margin: 0 auto;
+        }
+
+        #app {
+            /*background: url('http://sportsimg.mojieai.com/drawnumbernewbg-02.png') no-repeat;*/
+            background-size: 100% auto;
+        }
+
+        [v-cloak] {
+            display: none
+        }
+
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        .award-title {
+            text-align: center;
+            margin-top: -0.3rem;
+        }
+
+        .award-title-p {
+            background: url("http://sportsimg.mojieai.com/drawnumbernewgushu-bg.png") no-repeat;
+            background-size: 120% auto;
+
+            width: 40%;
+            text-align: center;
+            display: inline-block;
+            padding: 0 0.2rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            overflow: hidden;
+        }
+
+        .award-title-p p {
+            color: #FFFFFF;
+            font-size: 0.28rem;
+            line-height: 0.6rem;
+            letter-spacing: 0.03rem;
+        }
+
+        .award-title-p span {
+            font-size: 0.32rem;
+        }
+
+        .get-times {
+            position: relative;
+
+        }
+
+        .intr-font {
+            position: absolute;
+            top: 0;
+            margin: 20px;
+        }
+
+        .intr-font table {
+            table-layout: fixed;
+            font-size: 0.24rem;
+            width: 100%;
+            color: #333333;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .td1 {
+            width: 48%;
+        }
+
+        .intr-font table td {
+            padding-top: 0.3rem;
+        }
+
+        .intr-font {
+            padding: 0.2rem 0.15rem 0.5rem 0.15rem;
+        }
+
+        .share-button {
+            display: inline-block;
+            left: 25%;
+            position: absolute;
+            bottom: -1.15rem;
+            margin-bottom: 0.2rem;
+            width: 50%;
+        }
+
+        .rebot {
+            margin-top: 0.6rem;
+            position: relative;
+        }
+
+        .rebot-bg {
+            position: absolute;
+            top: -0.3rem;
+            right: 0;
+            width: 75%;
+        }
+
+        .danshi-bg {
+            background: #fff;
+            margin: 0.15rem;
+            position: relative;
+            padding: 0.4rem 0 0.1rem 0;
+        }
+
+        .single-flag {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0.7rem;
+        }
+
+        .red-ball {
+            display: inline-block;
+            width: 0.5rem;
+            height: 0.5rem;
+            background: url("https://ohduoklem.qnssl.com/red-ball-none.png") no-repeat;
+            background-size: 100% 100%;
+            margin: 0.05rem;
+        }
+
+        .blue-ball {
+            display: inline-block;
+            width: 0.5rem;
+            height: 0.5rem;
+            background: url("https://ohduoklem.qnssl.com/blue-ball-none.png") no-repeat;
+            background-size: 100% 100%;
+            margin: 0.05rem;
+        }
+
+        .red-ball-number {
+            display: inline-block;
+            width: 0.5rem;
+            height: 0.5rem;
+            background: url("https://ohduoklem.qnssl.com/red-ball-number.png") no-repeat;
+            background-size: 100% 100%;
+            margin: 0.05rem;
+            line-height: 0.5rem;
+            text-align: center;
+            font-size: 0.28rem;
+            color: #fff;
+        }
+
+        .history-number {
+            margin: 0.02rem;
+        }
+
+        .blue-ball-number {
+            display: inline-block;
+            width: 0.5rem;
+            height: 0.5rem;
+            background: url("https://ohduoklem.qnssl.com/blue-ball-number.png") no-repeat;
+            background-size: 100% 100%;
+            margin: 0.05rem;
+            line-height: 0.5rem;
+            text-align: center;
+            font-size: 0.28rem;
+            color: #fff;
+        }
+
+        .danshi-bg .button {
+            float: right;
+            width: 24%;
+            margin-right: 0.08rem;
+        }
+
+        .danshi-bg .button img {
+
+        }
+
+        .danshi-bg {
+            font-size: 0.24rem;
+            padding-left: 0.1rem;
+        }
+
+        .danshi-bg p {
+            margin-left: 0.05rem;
+
+        }
+
+        .danshi-bg p.text {
+            margin-left: 0.1rem;
+            margin-top: 0.1rem;
+        }
+
+        .wocanyude-middle .danshi-bg p.text {
+            margin-left: 0.1rem;
+            margin-top: 0;
+        }
+
+        .fr-status {
+            float: right;
+            margin-right: 0.15rem;
+        }
+
+        .fushi-p {
+            display: inline-block;
+            min-width: 3rem;
+        }
+
+        .danshi-bg .fushi-button {
+            margin-top: -0.4rem;
+            position: relative;
+        }
+
+        .danshi-bg .danshi-button {
+            margin-top: -0.62rem;
+            position: relative;
+        }
+
+        .button-text {
+            position: absolute;
+            text-align: center;
+            display: inline-block;
+            width: 70px;
+            height: 22px;
+            top: 50%;
+            left: 50%;
+            margin-left: -35px;
+            margin-top: -11px;
+            color: #FFF;
+            font-size: 13px;
+            line-height: 22px;
+        }
+
+        .danshi-01 {
+            position: relative;
+        }
+
+        .right-1 {
+            position: absolute;
+            right: 0;
+            bottom: -0.1rem;
+            width: 0.5rem;
+            z-index: 999;
+        }
+
+        .left-1 {
+            position: absolute;
+            left: 0;
+            bottom: 0rem;
+            width: 0.35rem;
+            z-index: 999;
+        }
+
+        .left-2 {
+            width: 3rem;
+        }
+
+        .wocanyude {
+            margin-top: 0.1rem;
+        }
+
+        .wocanyude-code {
+            background: #ffcf93;
+            background-size: 100% 100%;
+            margin-bottom: 0.3rem;
+            padding-top: 0.1rem;
+            padding-left: 1.5%;
+            padding-right: 1.5%;
+        }
+
+        .danshi-bg span.fushi-status {
+            margin-right: 0.26rem;
+            line-height: 0.55rem;
+            text-align: center;
+        }
+
+        .danshi-bg span.fushi-status-img {
+            margin-right: 0.2rem;
+            line-height: 0.55rem;
+            text-align: right;
+        }
+
+        .banner-img-rule {
+            position: absolute;
+            top: 0;
+            right: 0.2rem;
+            width: 0.6rem;
+        }
+
+        .rebot-p {
+            position: absolute;
+            color: #5B2000;
+            right: 0;
+            top: -0.3rem;
+            font-size: 0.24rem;
+            width: 68%;
+            text-align: center;
+            margin-right: 0.2rem;
+            line-height: 0.28rem;
+            margin-top: 0.05rem;
+        }
+
+        .rebot-p-2 {
+            position: absolute;
+            color: #5B2000;
+            right: 0;
+            top: -0.3rem;
+            font-size: 0.24rem;
+            width: 68%;
+            text-align: center;
+            margin-right: 0.2rem;
+            line-height: 0.28rem;
+            margin-top: 0.15rem;
+        }
+
+        .wocanyude-middle {
+            background: url('http://sportsimg.mojieai.com/drawnumbernewwocanyude-middle.png') repeat-y;
+            background-size: 100% auto;
+            padding-bottom: 0.3rem;
+        }
+
+        .wocanyude-middle .danshi-bg {
+            margin: 0 0.2rem;
+            background: none;
+            padding-top: 0;
+        }
+
+        .border-bottom {
+            height: 1px;
+            border-bottom: 1px dashed #cbb3f0;
+            width: 90%;
+            position: absolute;
+            bottom: 0.2rem;
+            margin-left: 5%;
+        }
+
+        .award-popup {
+            background: #000;
+            opacity: 0.7;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .award-popup-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .award-right {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            height: 6rem;
+            margin-top: -3rem;
+            width: 100%;
+            margin-left: -50%;
+        }
+
+        .award-relative {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .close {
+            position: absolute;
+            top: 0.4rem;
+            right: 0.4rem;
+            width: 0.4rem;
+        }
+
+        .award-rule {
+            font-size: 0.26rem;
+            color: #772d00;
+            background: #fff;
+            width: 90%;
+            margin-left: -45%;
+            height: 8rem;
+            border-radius: 0.1rem;
+        }
+
+        .award-rule .overflow {
+            overflow: scroll;
+        }
+
+        .award-rule p {
+            margin: 0 5%;
+        }
+
+        .award-rule p span {
+            font-weight: 900;
+            margin: 0.1rem 0 0 0;
+            display: block;
+        }
+
+        .award-rule img {
+            width: 44%;
+            margin-left: 28%;
+            margin-top: 0.3rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .award-rule img.close {
+            width: 0.5rem;
+            top: -0.2rem;
+            right: -0.2rem;
+            margin-top: 0;
+        }
+
+        .jingxuanfangan {
+            background: #ffcf93;
+            background-size: 100% 100%;
+            padding-bottom: 10px;
+        }
+
+        .margin-top-none {
+            margin-top: 0;
+        }
+
+        .padding-top {
+            padding-top: 0.15rem;
+        }
+
+        .color-red {
+            color: #ff4e6f;
+        }
+
+        .hese {
+            color: #da7600;
+        }
+
+        .popup-bg {
+            width: 100%;
+        }
+
+        .close-button {
+            position: absolute;
+            width: 0.4rem;
+            top: 0.4rem;
+            right: 0.4rem;
+        }
+
+        .content {
+            position: absolute;
+            top: 2rem;
+            width: 100%;
+        }
+
+        .award-right .content p {
+            color: #333;
+            font-size: 0.28rem;
+            text-align: center;
+            margin: 0.35rem 0;
+        }
+
+        .award-right .content span {
+            font-size: 0.26rem;
+            color: #fff;
+            width: 2rem;
+            line-height: 0.8rem;
+            height: 0.8rem;
+            display: inline-block;
+            margin: 0 0.15rem;
+        }
+
+        .award-right .content span.red-button {
+            background: url("https://ohduoklem.qnssl.com/red-button.png") no-repeat;
+            background-size: 100% auto;
+        }
+
+        .award-right .content span.yellow-button {
+            background: url("https://ohduoklem.qnssl.com/yellow-button.png") no-repeat;
+            background-size: 100% auto;
+        }
+
+        .award-pop {
+            top: 50%;
+        }
+
+        .award-popup {
+            background: #000;
+            opacity: 0.7;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .content span.dateStr {
+            display: inline;
+            color: #000;
+            margin: 0;
+            padding: 0;
+            font-size: 0.28rem;
+            line-height: 0.28rem;
+        }
+
+        .history-fushi-p {
+            width: 4rem;
+        }
+
+        .zhanwujilu {
+            padding-top: 30px;
+        }
+
+        .toast-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 100%;
+            top: 100%;
+            z-index: 2999;
+        }
+
+        .toast {
+            position: absolute;
+            top: -56%;
+            left: -50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            padding: 13px 16px;
+            font-size: 14px;
+            border-radius: 2px;
+            width: auto;
+            /*颜色*/
+            color: #ccc;
+            background: rgba(37, 38, 45, 0.9);
+            /*可以输入的字数的宽度*/
+            max-width: 16em;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="banner">
+        <img class="banner-img" src="http://sportsimg.mojieai.com/drawnumbernewbanner.png" alt="">
+        <img class="banner-img-rule" v-on:click="showRule" src="http://sportsimg.mojieai.com/drawnumbernewrule.png"
+             alt="">
+    </div>
+    <div class="award-title " style="position:relative;">
+        <div class="award-title-p">
+            <p>本期还可以领<span v-text="leftTimes">5</span>股</p>
+        </div>
+        <img style="position: absolute;width: 84px;right: 35px;top:24px;"
+             src="http://sportsimg.mojieai.com/drawnumbernewbg-02.png" alt="">
+    </div>
+    <div class="get-times">
+        <img src="ruhelingqu.png" alt="">
+        <div class="intr-font">
+            <table>
+                <tr>
+                    <td class="td1">1.去“我的”页面每日签到</td>
+                    <td class="text-center">+1股</td>
+                    <td class="text-right" v-show="isDoneSign">已完成</td>
+                    <td class="text-right" v-show="!isDoneSign">未完成
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td1">2.邀请好友注册智慧</td>
+                    <td class="text-center">邀请1人+1股</td>
+                    <td class="text-right">已邀请<span v-text="shareNums">0</span>人</td>
+                </tr>
+            </table>
+            <img class="share-button" v-on:click="share" src="http://sportsimg.mojieai.com/drawnumbernewbutton.png"
+                 alt="">
+        </div>
+    </div>
+    <div class="rebot">
+        <img src="http://sportsimg.mojieai.com/drawnumbernewrebot.png" alt="">
+        <img class="rebot-bg" src="http://sportsimg.mojieai.com/drawnumbernewrebot-bg.png" alt="">
+        <p class="rebot-p">周一、周三、周五早上10点开抢新方案<br>
+            只有邀请新用户注册才能增加股份！</p>
+        <!--<p class="rebot-p-2">下期方案明天早上9点开领</p>-->
+    </div>
+    <div class="jingxuanfangan">
+        <div class="danshi-01 padding-top" v-for="program in programs">
+            <div class="danshi-bg margin-top-none">
+                <!--单式复式标志-->
+                <img class="single-flag" v-show="program.isSingleFlag"
+                     src="https://ohduoklem.qnssl.com/single-flag.png" alt="">
+                <img class="single-flag" v-show="!program.isSingleFlag"
+                     src="https://ohduoklem.qnssl.com/fushi-flag.png" alt="">
+                <!-- 看不见的-->
+                <p class="fushi-p" v-show="program.status!=4"><span class="red-ball"
+                                                                    v-for="number in program.firstNumber.split(':')[0].split(' ')"
+                                                                    v-show="number!=''"></span>
+                    <span class="blue-ball"
+                          v-for="number in (typeof(program.firstNumber.split(':')[1])=='undefined'?'':program.firstNumber.split(':')[1].split(' '))"
+
+                          v-show="number!=''"></span>
+                </p>
+                <p class="fushi-p" v-show="program.status!=4">
+                    <span class="red-ball"
+                          v-for="number in program.secondNumber.split(':')[0].split(' ')"
+                          v-show="number!=''"></span>
+                    <span class="blue-ball"
+                          v-for="number in (typeof(program.secondNumber.split(':')[1])=='undefined'?'':program.secondNumber.split(':')[1].split(' '))"
+                          v-show="number!=''"></span>
+                </p>
+                <!-- 能看见的-->
+                <p class="fushi-p" v-show="program.status==4"><span class="red-ball-number"
+                                                                    v-for="number in program.firstNumber.split(':')[0].split(' ')"
+                                                                    v-show="number!=''" v-text="number"></span>
+                    <span class="blue-ball-number"
+                          v-for="number in (typeof(program.firstNumber.split(':')[1])=='undefined'?'':program.firstNumber.split(':')[1].split(' '))"
+
+                          v-show="number!=''" v-text="number"></span>
+                </p>
+                <p class="fushi-p" v-show="program.status==4">
+                    <span class="red-ball-number"
+                          v-for="number in program.secondNumber.split(':')[0].split(' ')"
+                          v-show="number!=''" v-text="number"></span>
+                    <span class="blue-ball-number"
+                          v-for="number in (typeof(program.secondNumber.split(':')[1])=='undefined'?'':program.secondNumber.split(':')[1].split(' '))"
+                          v-show="number!=''" v-text="number"></span>
+                </p>
+                <!-- 立即领取 1-->
+                <span
+                        class="button"
+                        v-bind:class="{ 'fushi-button': !program.isSingleFlag,'danshi-button': program.isSingleFlag }"
+                        v-show="true"
+                        v-on:click="draw(program.programId)"><img
+                        src="https://ohduoklem.qnssl.com/lijilingqu-button.png" alt=""
+                        v-show="program.status==1"></span>
+                <!-- 已经结束 3-->
+
+                <span
+                        class="button"
+                        v-bind:class="{ 'fushi-button': !program.isSingleFlag,'danshi-button': program.isSingleFlag }"
+                        v-show="program.status==3"><img
+                        src="https://ohduoklem.qnssl.com/yijieshu.png"
+                        alt=""></span>
+                <!-- 已经领完 2-->
+                <span class="button"
+                      v-bind:class="{ 'fushi-button': !program.isSingleFlag,'danshi-button': program.isSingleFlag }"
+                      v-show="program.status==2" v-on:click="showGetAllNot">
+                    <img src="https://ohduoklem.qnssl.com/yilingwan.png" alt=""></span>
+                <!-- 未开始 0-->
+                <span class="button"
+                      v-bind:class="{ 'fushi-button': !program.isSingleFlag,'danshi-button': program.isSingleFlag }"
+                      v-show="program.status==0"
+                      v-on:click="drawShowTime(program.statusText)"><img
+                        src="http://sportsimg.mojieai.com/drawnumbernewnot-start-button.png" alt="">
+                    <span v-text="program.statusText.substring(0,2)" style="position: absolute;
+    text-align: center;
+    display: inline-block;
+    width: 70px;
+    height: 22px;
+    top: 50%;
+    left: 50%;
+    margin-left: -35px;
+    margin-top: -35px;
+    color: #000;
+    font-size: 13px;
+    line-height: 22px;"></span>
+                    <span class="button-text"
+                          v-text="program.statusText.substring(2,program.statusText.length)+'开抢'"></span>
+
+                </span>
+                <!-- 已经领取 4-->
+                <span class="button"
+                      v-bind:class="{ 'fushi-button': !program.isSingleFlag,'danshi-button': program.isSingleFlag }"
+                      v-show="program.status==4"><img
+                        src="https://ohduoklem.qnssl.com/yilingqu.png" alt=""></span>
+
+                <p class="text"><span>总股数:<span v-text="program.awardCount">5</span></span><span>&nbsp&nbsp&nbsp
+                    剩余:<span class="color-red" v-text="program.leftCount">5</span></span>
+                    <!--开奖状态-->
+                    <span class="fr-status" v-show="!currentAward">状态:待开奖</span>
+                    <span class="fr-status" v-show="currentAward">状态:已开奖</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="wocanyude">
+        <img src="http://sportsimg.mojieai.com/drawnumbernewwocanyude.png" alt="">
+    </div>
+    <div class="wocanyude-code">
+        <img src="http://sportsimg.mojieai.com/drawnumbernewwocanyude-top.png" alt="">
+        <div class="danshi-01 wocanyude-middle" v-show="myHistory.length==0">
+            <div class="danshi-bg">
+                <p class="text"><span class="hese"></span></p>
+                <p class="text-center zhanwujilu">暂无记录</p>
+                <span
+                        class="button fushi-status"></span>
+                <span
+                        class="button fushi-status"></span>
+                <p class="text"></p>
+            </div>
+        </div>
+
+
+        <div class="danshi-01 wocanyude-middle" v-for="history in myHistory">
+            <div class="danshi-bg">
+                <p class="text"><span class="hese" v-text="history.period">2017000期</span></p>
+                <p class="fushi-p history-fushi-p">
+                    <span class="red-ball-number history-number"
+                          v-for="number in history.activityProgram.lotteryNumber.split(':')[0].split(' ')"
+                          v-text="number">00
+                    </span>
+                    <span class="blue-ball-number history-number"
+                          v-for="number in history.activityProgram.lotteryNumber.split(':')[1].split(' ')"
+                          v-text="number">00
+                    </span>
+                </p>
+                <span class="button fushi-status-img" v-show="history.isAward&&history.awardAmount>0"
+                      v-on:click="goToAward(history.awardAmount)"><img
+                        src="https://ohduoklem.qnssl.com/qulingjiang.png" alt=""></span>
+                <span
+                        class="button fushi-status" v-show="!history.isAward">待开奖</span>
+                <span
+                        class="button fushi-status" v-show="history.isAward&&history.awardAmount<=0">未中奖</span>
+                <p class="text"><span>总股数:<span v-text="history.activityProgram.awardCount"></span></span></p>
+            </div>
+            <div class="border-bottom" v-show="true">
+
+            </div>
+        </div>
+        <img src="http://sportsimg.mojieai.com/drawnumbernewwocanyude-bottom.png" alt="">
+    </div>
+    <div class="award-popup"
+         v-show="showRuleFlag||showGetSuccess||showYilingwan||showNoTime||showNoTimeToSocial||showNoTimeTo||showGoToAward">
+    </div>
+    <div class="award-popup-fixed"
+         v-show="showRuleFlag||showGetSuccess||showYilingwan||showNoTime||showNoTimeToSocial||showNoTimeTo||showGoToAward">
+        <!--活动规则-->
+        <div class="award-right award-rule" v-show="showRuleFlag">
+            <div class="award-relative not-right">
+                <img class="close" v-on:click="closeRule" src="https://ohduoklem.qnssl.com/rule-close.png" alt="">
+                <div class="overflow">
+                    <img src="https://ohduoklem.qnssl.com/activity-rule.png" alt="">
+                    <p><span>活动时间：</span></p>
+                    <p>5月8日-5月15日</p>
+                    <p><span>活动规则：</span></p>
+                    <p>每期推出6个精选双色球方案，智慧出钱购买，若方案中奖，由成功领取该方案的用户平分奖金</p>
+                    <p><span>如何增加股份：</span></p>
+                    <p>每拥有一股，即可领取一个双色球方案。分享活动页面，好友进入分享的页面完成注册即可增加股份（必须是新用户注册）</p>
+                    <p>每人每期最多领取6份，同个方案只能领取一次。</p>
+                    <p><span>如何领奖：</span></p>
+                    <p>只要成功领取方案，并且该方案中奖，即可添加客服微信号：zhihuicp，奖金通过微信红包的形式进行派发</p>
+                </div>
+            </div>
+        </div>
+        <!--领取成功弹窗-->
+        <div class="award-right award-pop" v-show="showGetSuccess">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg" src="https://ohduoklem.qnssl.com/con-get.png" alt="">
+            <div class="content">
+                <p>您成功领取了1股</br>可以平分该方案奖金</p>
+                <p><span class="yellow-button" v-on:click="close">ok</span><span class="red-button" v-on:click="share">
+                    分享加次数</span></p>
+            </div>
+        </div>
+        <!--已领完弹窗-->
+        <div class="award-right award-pop" v-show="showYilingwan">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg" src="https://ohduoklem.qnssl.com/no-get.png" alt="">
+            <div class="content">
+                <p>该方案股份已领取完毕</br>试着换一个方案吧!</p>
+                <p><span class="red-button" v-on:click="close">去抢下一个</span></p>
+            </div>
+        </div>
+        <!--次数弹窗-->
+        <div class="award-right award-pop" v-show="showNoTime">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg" src="https://ohduoklem.qnssl.com/no-get.png" alt="">
+            <div class="content">
+                <p>您的股份已用完</br>分享给好友增加股份!</p>
+                <p><span class="red-button" v-on:click="share">
+                    分享加次数</span></p>
+            </div>
+        </div>
+        <!--次数杀号弹窗-->
+        <div class="award-right award-pop" v-show="showNoTimeToSocial">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg" src="https://ohduoklem.qnssl.com/no-get.png" alt="">
+            <div class="content">
+                <p>您的股份已用完</br>前去个人中心签到可增加股份!</p>
+                <p><span class="yellow-button" v-on:click="close">ok</span><span class="red-button"
+                                                                                 v-on:click="openNativeSign">
+                    去签到</span></p>
+            </div>
+        </div>
+        <!--次数杀号弹窗-->
+        <div class="award-right award-pop" v-show="showNoTimeTo">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg" src="https://ohduoklem.qnssl.com/no-get.png" alt="">
+            <div class="content">
+                <p>您的股份已用完</br>下期再来领吧</p>
+                <p><span class="yellow-button" v-on:click="close">ok</span></p>
+            </div>
+        </div>
+        <!--次数杀号弹窗-->
+        <div class="award-right award-pop" v-show="showGoToAward">
+            <img class="close-button" v-on:click="close" src="https://ohduoklem.qnssl.com/close.png" alt="">
+            <img class="popup-bg" src="https://ohduoklem.qnssl.com/con-get.png" alt="">
+            <div class="content">
+                <p>您的方案喜中<span class="dateStr" v-text="awardAmount"></span>元您可分得部分奖金</br>添加客服微信:zhihuicp领取红包</p>
+                <p><span class="yellow-button" v-on:click="close">知道了</span><span class="red-button"
+                                                                                  v-on:click="copy">复制微信号</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    function toast(msg) {
+        var str = "<div class='toast-container' style='display:none'> <div class='toast'>" + msg + "</div></div>";
+        $('body').append(str);
+        $('.toast-container').stop().fadeIn(100).delay(1500).fadeOut(400); //fade out after 3 seconds
+        setTimeout(function () {
+            $('.toast-container').remove();
+        }, 3000);
+    }
+
+    token = getCookie('token');
+    //token = "06204b8d-f6b5-4028-886d-25ec90b5d68415";
+    var app = new Vue({
+        el: '#app',
+        data: {
+            showRuleFlag: false, // 规则弹窗
+            leftTimes: 0, // 剩余次数
+            isDoneSign: 0, //是否签到
+            shareNums: 0,   //分享次数
+            programs: [],   //号码
+            myHistory: [],  //历史
+            currentAward: false,   //号码
+            showGetSuccess: false,
+            showYilingwan: false,
+            showNoTime: false,
+            showGoToAward: false,
+            showNoTimeToSocial: false,
+            showNoTimeTo: false,
+            awardAmount: 0,
+            userId: ''
+        },
+        mounted: function () {
+            var index = this;
+            var params = {'activityId': config.activityId};
+            if (token != '') {
+                params['token'] = token;
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/activity/getActivityInfo',
+                data: params,
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    // 是否签到:
+                    index.$data.isDoneSign = data.data.isDoneSign;
+                    // 剩余次数:
+                    index.$data.leftTimes = data.data.leftTimes;
+                    // 已经分享人数
+                    index.$data.shareNums = data.data.shareNums;
+                    // 方案
+                    index.$data.programs = data.data.activityPrograms;
+                    // 当前期次开奖状态
+                    index.$data.currentAward = data.data.currentAward;
+                    // 历史记录
+                    index.$data.myHistory = data.data.myHistory;
+                }
+            })
+
+        },
+        methods: {
+            // 显示活动规则
+            showRule: function () {
+                var index = this;
+                index.$data.showRuleFlag = true;
+            },
+            copy: function () {
+                copyWxFunction();
+            },
+            // 关闭
+            closeRule: function () {
+                var index = this;
+                index.$data.showRuleFlag = false;
+            },
+            // 分享
+            share: function () {
+                // 分享的方法
+                var index = this;
+                // 如果未登录 登录
+                if (token == "") {
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1000);
+                    openNativePage("mjlottery://mjnative?page=login");
+                } else {
+                    var redirectUrl = window.location.protocol + "//" + window.location.host +
+                        "/web/drawnumberNew/index.html";
+                    //window.location.href = url;
+                    var params = {
+                        "title": config.shareTitle,
+                        "content": config.shareDesc,
+                        "icon": config.shareIcon,
+                        "wxUrl": redirectUrl + "?uid=" + token,
+                        "qqUrl": redirectUrl + "?uid=" + token
+                    };
+                    share(JSON.stringify(params));
+                }
+            },
+            // 去签到
+            openNativeSign: function () {
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+                openNativePage("mjlottery://mjnative?page=homeMine");
+            },
+            refresh: function () {
+                var index = this;
+                var params = {'activityId': config.activityId};
+                if (token != '') {
+                    params['token'] = token;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/activity/getActivityInfo',
+                    data: params,
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        // 是否签到:
+                        index.$data.isDoneSign = data.data.isDoneSign;
+                        // 剩余次数:
+                        index.$data.leftTimes = data.data.leftTimes;
+                        // 已经分享人数
+                        index.$data.shareNums = data.data.shareNums;
+                        // 方案
+                        index.$data.programs = data.data.activityPrograms;
+                        // 当前期次开奖状态
+                        index.$data.currentAward = data.data.currentAward;
+                        // 历史记录
+                        index.$data.myHistory = data.data.myHistory;
+                    }
+                })
+            },
+            // 领取的方法
+            draw: function (programId) {
+                var index = this;
+                // 如果未登录 登录
+                if (token == "") {
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1000);
+                    openNativePage("mjlottery://mjnative?page=login");
+                } else {
+                    if (parseInt(index.$data.leftTimes) <= 0 && !index.$data.isDoneSign) {
+                        index.$data.showNoTime = true;
+                        return;
+                    }
+                    if (parseInt(index.$data.leftTimes) <= 0 && parseInt(index.$data.shareNums) < 3) {
+                        index.$data.showNoTime = true;
+                        return;
+                    }
+                    if (parseInt(index.$data.leftTimes) <= 0) {
+                        index.$data.showNoTimeTo = true;
+                        return;
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/activity/drawNumber',
+                        data: {
+                            'activityId': config.activityId,
+                            'token': token,
+                            'programId': programId
+                        },
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function (data) {
+                            if (parseInt(data.data.awardStatus) == 0) {
+                                index.$data.showGetSuccess = true;
+                                // 次数更新
+                                index.refresh();
+                            }
+                        }
+                    })
+                }
+            },
+            showGetSuccess: function () {
+                var index = this;
+                index.$data.showGetSuccess = true;
+            },
+            showAward: function () {
+                var index = this;
+                index.$data.showGoToAward = true;
+            },
+            showGetAllNot: function () {
+                var index = this;
+                index.$data.showYilingwan = true;
+            },
+            showNoTime: function () {
+                var index = this;
+                index.$data.showNoTime = true;
+            },
+            showNoTimeToSocial: function () {
+                var index = this;
+                index.$data.showNoTimeToSocial = true;
+            },
+            showNoTimeTo: function () {
+                var index = this;
+                index.$data.showNoTimeTo = true;
+            },
+            close: function () {
+                var index = this;
+                index.$data.showGetSuccess = false;
+                index.$data.showYilingwan = false;
+                index.$data.showNoTime = false;
+                index.$data.showNoTimeToSocial = false;
+                index.$data.showNoTimeTo = false;
+                index.$data.showGoToAward = false;
+                index.refresh();
+            },
+            drawShowTime(text) {
+                if (token == "") {
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1000);
+                    openNativePage("mjlottery://mjnative?page=login");
+                } else {
+                    toast(text + '开抢');
+                }
+
+            },
+            goToAward: function (amount) {
+                var index = this;
+                index.$data.awardAmount = amount;
+                index.showAward();
+            }
+        }
+    });
+    // growingIO统计代码
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+</script>
+</html>

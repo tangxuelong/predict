@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>智慧彩票预测</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="transfer"/>
+
+</head>
+<body>
+<div id="app" v-cloak>
+
+</div>
+</body>
+<!-- jquery vue-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {},
+        mounted: function () {
+
+            if (typeof(window.webkit) != "undefined") {
+                this.gotoIosPackegeAddres()
+            }
+            if (typeof(webViewNative) != "undefined") {
+                this.gotoAndroidPackegeAddres()
+            }
+        },
+        methods: {
+            gotoIosPackegeAddres: function () {
+                window.location.herf = "https://t.mojieai.com/web/qybios/index.html"
+            },
+            gotoAndroidPackegeAddres: function () {
+                window.location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=com.mjanroidlottery"
+            }
+        }
+    })
+
+
+
+</script>
+</html>

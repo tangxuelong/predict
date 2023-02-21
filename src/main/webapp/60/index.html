@@ -1,0 +1,48 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Language" content="zh-cn"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <title>预约彩票外卖</title>
+    <script type="text/javascript" src='https://ohduoklem.qnssl.com/static/js/jquery-1.9.0.min.js'></script>
+    <script type="text/javascript" src='https://cdn.jsdelivr.net/npm/vue/dist/vue.js'></script>
+
+    <style type="text/css">
+        .bottom_button{
+            position: fixed;
+            bottom: 10px;
+            width: 80vw;
+            left: 10vw;
+        }
+
+    </style>
+</head>
+
+<body style="margin: 0; background: rgb(38,153,129);">
+
+<img src="https://apk.11max.com/mj_order_to_lecheng_top.png" style="width: 100%">
+<img src="https://apk.11max.com/mj_order_to_lecheng_content.png" style="width: 100%">
+<div style="height: 15vw;"></div>
+<div class="bottom_button">
+    <img onclick="download_app()" src="https://apk.11max.com/mj_order_to_lecheng_download.png" alt="" style="width: 100%">
+</div>
+
+</body>
+
+<script>
+
+    function download_app() {
+
+        if (typeof(webViewNative) != "undefined") {
+            webViewNative.downloadApk("http://apk.11max.com/lecheng.apk");
+        }  else {
+            window.location.href = "http://apk.11max.com/lecheng.apk";
+        }
+    }
+
+</script>
+
+<script src="https://m.caiqr.com/js/user_lib_js/statistics_summary.js"></script>
+
+</html>

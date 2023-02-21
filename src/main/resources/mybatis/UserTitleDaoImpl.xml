@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserTitle">
+    <resultMap id="userTitleMap" type="userTitle">
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="TITLE_ID" property="titleId" jdbcType="INTEGER"/>
+        <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="COUNTS" property="counts" jdbcType="INTEGER"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_column">
+        GAME_ID, USER_ID, TITLE_ID, END_TIME, COUNTS
+    </sql>
+
+    <select id="getUserTitleByUserIdAndTitleId" resultMap="userTitleMap" parameterType="map">
+        SELECT * FROM tb_user_title WHERE USER_ID=#{userId, jdbcType=BIGINT} AND TITLE_ID=#{titleId, jdbcType=INTEGER}
+        AND GAME_ID =#{gameId, jdbcType=BIGINT}
+        <if test="isLock==true">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <select id="getUserAllTitle" resultMap="userTitleMap" parameterType="java.lang.Long">
+        SELECT * FROM tb_user_title WHERE USER_ID=#{userId, jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="map">
+        INSERT INTO tb_user_title (<include refid="Base_column"/>) VALUES (#{gameId, jdbcType=BIGINT},
+        #{userId, jdbcType=BIGINT}, #{titleId, jdbcType=INTEGER}, #{endTime, jdbcType=TIMESTAMP},
+        #{counts, jdbcType=INTEGER})
+    </insert>
+
+    <update id="updateUserTitleAviable" parameterType="map">
+        UPDATE tb_user_title SET COUNTS=#{counts, jdbcType=INTEGER}, END_TIME=#{endTime, jdbcType=TIMESTAMP} WHERE
+        USER_ID=#{userId, jdbcType=BIGINT} AND TITLE_ID =#{titleId, jdbcType=INTEGER} AND GAME_ID =
+        #{gameId, jdbcType=BIGINT}
+    </update>
+
+</mapper>

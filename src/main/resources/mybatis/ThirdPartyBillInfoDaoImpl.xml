@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ThirdPartyBillInfo">
+    <resultMap id="thirdPartyBillInfoMap" type="thirdPartyBillInfo">
+        <result column="BILL_ID" property="billId" jdbcType="INTEGER"/>
+        <result column="RPT_DATE" property="rptDate" jdbcType="INTEGER"/>
+        <result column="DEAL_TIME" property="dealTime" jdbcType="TIMESTAMP"/>
+        <result column="MCH_ID" property="mchId" jdbcType="VARCHAR"/>
+        <result column="THIRD_PARTY_ID" property="thirdPartyId" jdbcType="VARCHAR"/>
+        <result column="ORDER_ID" property="orderId" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
+        <result column="AMOUNT" property="amount" jdbcType="DOUBLE"/>
+        <result column="REFUND_THIRD_PARTY_ID" property="refundThirdPartyId" jdbcType="VARCHAR"/>
+        <result column="REFUND_ID" property="refundId" jdbcType="VARCHAR"/>
+        <result column="REFUND_AMOUNT" property="refundAmount" jdbcType="DOUBLE"/>
+        <result column="REFUND_STATUS" property="refundStatus" jdbcType="VARCHAR"/>
+        <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR"/>
+        <result column="POUNDAGE" property="poundage" jdbcType="DOUBLE"/>
+        <result column="POUNDAGE_RATE" property="poundageRate" jdbcType="DOUBLE"/>
+        <result column="BUSINESS_TYPE" property="businessType" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        RPT_DATE, DEAL_TIME, MCH_ID, THIRD_PARTY_ID, ORDER_ID, STATUS, AMOUNT, REFUND_THIRD_PARTY_ID, REFUND_ID,
+         REFUND_AMOUNT, REFUND_STATUS, PRODUCT_NAME, POUNDAGE, POUNDAGE_RATE, BUSINESS_TYPE, REMARK
+    </sql>
+
+    <select id="getThirdPartyBillInfoByTime" resultMap="thirdPartyBillInfoMap" parameterType="map">
+        SELECT * FROM tb_third_party_bill_info where RPT_DATE &lt;= #{endRptDate, jdbcType=INTEGER}
+        and RPT_DATE &gt;= #{beginRptDate, jdbcType=INTEGER} and MCH_ID = #{mchId,jdbcType=VARCHAR}
+        <if test="status!=null">
+            and STATUS = #{status, jdbcType=VARCHAR}
+        </if>
+        <if test="businessType!=null">
+            and BUSINESS_TYPE = #{businessType, jdbcType=VARCHAR}
+        </if>
+        order by DEAL_TIME
+    </select>
+
+    <select id="getThirdPartSumInfoByIntervalTimeAndMerchant" resultType="map" parameterType="map">
+        SELECT MCH_ID as mchId, sum(AMOUNT) as amount, sum(POUNDAGE) as poundage FROM tb_third_party_bill_info
+        where DEAL_TIME &lt;= #{endTime, jdbcType=TIMESTAMP} and DEAL_TIME &gt;= #{beginTime, jdbcType=TIMESTAMP} and
+         (BUSINESS_TYPE ="支付单" or BUSINESS_TYPE = "交易") and (STATUS="成功" or STATUS="success") group by MCH_ID
+    </select>
+
+    <select id="getSumThirdPartyBillInfoByTimeAndType" resultType="map" parameterType="map">
+        select sum(AMOUNT) amount, sum(POUNDAGE) fee from tb_third_party_bill_info where DEAL_TIME &lt;=
+        #{endTime, jdbcType=TIMESTAMP} and DEAL_TIME &gt;= #{beginTime, jdbcType=TIMESTAMP} and MCH_ID =
+        #{mchId,jdbcType=VARCHAR} and STATUS = #{status,jdbcType=VARCHAR} and BUSINESS_TYPE =
+        #{businessType,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="thirdPartyBillInfo">
+        INSERT INTO tb_third_party_bill_info (<include refid="Base_Column_List"/>)
+        VALUES (#{rptDate, jdbcType=INTEGER}, #{dealTime,jdbcType=TIMESTAMP}, #{mchId,jdbcType=VARCHAR},
+        #{thirdPartyId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+        #{amount,jdbcType=DOUBLE}, #{refundThirdPartyId, jdbcType=VARCHAR}, #{refundId,jdbcType=INTEGER},
+        #{refundAmount,jdbcType=DOUBLE} , #{refundStatus,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR},
+        #{poundage,jdbcType=DOUBLE}, #{poundageRate,jdbcType=DOUBLE}, #{businessType,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR})
+    </insert>
+
+</mapper>

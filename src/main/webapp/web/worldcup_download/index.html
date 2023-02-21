@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>智慧预测大师</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <meta name="format-detection" content="telephone=no">
+    <script src="script/config.js"></script>
+</head>
+<style>
+    body {
+        background: RGBA(245, 245, 245, 1);
+    }
+
+    body {
+        margin: 0;
+        padding: 0 0 50vw 0;
+        font-family: PingFang SC;
+    }
+    p{
+        margin: 0;
+        padding: 0;
+        font-family: PingFang SC;
+    }
+
+    .person-info {
+        position: relative;
+        height: 51vw;
+        background: #FFF;
+        margin-bottom: 1vw;
+        padding-bottom: 1vw;
+    }
+
+    .head-img {
+        position: absolute;
+        width: 16vw;
+        top: 4vw;
+        left: 4vw;
+        border-radius: 8vw;
+    }
+
+    .nick-name {
+        color: #333333;
+        position: absolute;
+        font-size: 4vw;
+        top: 7vw;
+        left: 22vw;
+    }
+
+    .fans-num {
+        color: RGBA(153, 153, 153, 1);
+        position: absolute;
+        font-size: 4vw;
+        top: 13vw;
+        left: 22vw;
+    }
+
+    .person-ins {
+        position: absolute;
+        width: 91vw;
+        font-size: 4vw;
+        left: 4vw;
+        top: 22vw;
+        color: #333333;
+    }
+
+    .value {
+        width: 22vw;
+        text-align: center;
+        color: RGBA(244, 69, 69, 1);
+        font-size: 5.33vw;
+    }
+
+    .value-desc {
+        color: RGBA(153, 153, 153, 1);
+        font-size: 3.2vw;
+        width: 22vw;
+        text-align: center;
+    }
+
+    .lianzhong {
+        position: absolute;
+        top: 37vw;
+        left: 4vw;
+    }
+
+    .right {
+        position: absolute;
+        top: 37vw;
+        left: 50vw;
+        margin-left: -11vw;
+    }
+
+    .award {
+        position: absolute;
+        top: 37vw;
+        right: 4vw;
+    }
+
+    .last-predict {
+        background: #FFF;
+        position: relative;
+        height: 39vw;
+    }
+
+    .match-time {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        top: 2vw;
+        font-size: 3vw;
+    }
+
+    .host-img {
+        width: 10.67vw;
+        /*border-radius: 5.335vw;*/
+        position: absolute;
+        top: 9vw;
+        left: 10vw;
+    }
+
+    .right-img {
+        width: 10.67vw;
+        /*border-radius: 5.335vw;*/
+        position: absolute;
+        top: 9vw;
+        right: 10vw;
+    }
+
+    .host-name {
+        width: 20vw;
+        position: absolute;
+        top: 21vw;
+        left: 15.335vw;
+        margin-left: -10vw;
+        text-align: center;
+    }
+
+    .away-name {
+        width: 20vw;
+        position: absolute;
+        top: 21vw;
+        right: 15.335vw;
+        margin-right: -10vw;
+        text-align: center;
+    }
+
+    .match-right {
+        width: 14vw;
+        position: absolute;
+        top: 12vw;
+        left: 41vw;
+    }
+
+    .predict-button {
+        position: absolute;
+        display: inline-block;
+        width: 32vw;
+        height: 8vw;
+        background: rgba(255, 80, 80, 1);
+        border-radius: 1vw;
+        bottom: 3vw;
+        left: 34vw;
+        color: #FFF;
+        text-decoration: none;
+        text-align: center;
+        line-height: 8vw;
+        font-size: 4vw;
+    }
+
+    .newst-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20vw;
+    }
+
+    .newst-title {
+        width: 100%;
+    }
+
+    .newst-title img {
+        width: 100%;
+        display: block;
+        padding: 4vw 0;
+    }
+
+    .match-list {
+        height: 29vw;
+        position: relative;
+        background: #FFF;
+        margin-bottom: 2vw;
+    }
+
+    .match-type {
+        width: 10.67vw;
+        height: 4vw;
+        background: rgba(255, 156, 50, 1);
+        border-radius: 2vw;
+        position: absolute;
+        top: 2vw;
+        left: 4vw;
+        font-size: 2.93vw;
+        text-align: center;
+        line-height: 4vw;
+        color: #FFF;
+    }
+
+    .match-time {
+        position: absolute;
+        top: 2vw;
+        font-size: 3.2vw;
+        font-family: PingFangSC-Regular;
+        color: rgba(51, 51, 51, 1);
+        text-align: center;
+    }
+
+    .match-time2 {
+        position: absolute;
+        top: 2vw;
+        right: 4vw;
+        font-size: 3.2vw;
+        font-family: PingFangSC-Regular;
+        color: rgba(51, 51, 51, 1);
+        text-align: right;
+    }
+
+    .match-info {
+        position: absolute;
+        top: 7vw;
+        left: 4vw;
+        width: 92vw;
+        height: 17.33vw;
+        background: rgba(245, 245, 245, 1);
+    }
+
+    .match-sn {
+        position: absolute;
+        top: 3vw;
+        left: 4vw;
+        font-size: 3.2vw;
+        font-family: PingFangSC-Regular;
+        color: rgba(51, 51, 51, 1);
+    }
+
+    .battleTeam {
+        position: absolute;
+        top: 10vw;
+        left: 4vw;
+        font-size: 4vw;
+        font-family: PingFangSC-Medium;
+        color: rgba(51, 51, 51, 1);
+    }
+
+    .statusImg {
+        position: absolute;
+        bottom: 4vw;
+        right: 4vw;
+        width: 13vw;
+    }
+
+    .free-button {
+        width: 86.67vw;
+        height: 11.73vw;
+        background: rgba(255, 113, 80, 1);
+        border-radius: 1vw;
+        margin: 3vw 7vw;
+        display: inline-block;
+        color: #FFF;
+        font-size: 4.53vw;
+        font-family: PingFangSC-Regular;
+        line-height: 11.73vw;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .free-button-bg {
+        background: #FFF;
+        position: fixed;
+        bottom: 0;
+    }
+</style>
+<body>
+<div id="app" v-cloak v-on:click="openNativePage">
+    <div class="person-info">
+        <img class="head-img" src="img/1_03.png" alt="">
+        <p class="nick-name">前竞彩中心分析师</p>
+        <p class="fans-num">粉丝：9999+</p>
+        <p class="person-ins">专业足彩专家，前竞彩中心大数据分析师。每天在智慧彩票预测App上免费发布预测！</p>
+        <div class="lianzhong">
+            <p class="value">13连中</p>
+            <p class="value-desc">近期连中</p>
+        </div>
+        <div class="lianzhong">
+            <p class="value">13连中</p>
+            <p class="value-desc">近期连中</p>
+        </div>
+        <div class="right">
+            <p class="value">92%</p>
+            <p class="value-desc">近期7天命中</p>
+        </div>
+        <div class="award">
+            <p class="value">236%</p>
+            <p class="value-desc">近期7天收益</p>
+        </div>
+    </div>
+    <div class="last-predict">
+        <img class="newst-img" src="img/1_06.png" alt="">
+        <p class="match-time" v-text="recentMatch.matchDesc">周四001 A组第一轮 23:00</p>
+        <img class="host-img" v-bind:src="recentMatch.hostImg" alt="">
+        <img class="right-img" v-bind:src="recentMatch.awayImg" alt="">
+        <p class="host-name" v-text="recentMatch.hostName">法国</p>
+        <p class="away-name" v-text="recentMatch.awayName">法国</p>
+        <div class="match-right">
+            <p class="value">89%</p>
+            <p class="value-desc">命中率</p>
+        </div>
+        <a class="predict-button" href="javascript:void(0)">免费看预测</a>
+    </div>
+    <div class="newst-title">
+        <img src="img/1_08.png" alt="">
+    </div>
+    <div class="match-list" v-for="match in historyMatch">
+        <p class="match-type" v-text="match.playType"></p>
+        <!--<p class="match-time2" v-text="match.createTime"></p>-->
+        <div class="match-info">
+            <p class="match-sn" v-text="match.matchDesc"></p>
+            <p class="battleTeam" v-text="match.battleTeam"></p>
+            <img class="statusImg" v-bind:src="match.statusImg" alt="">
+        </div>
+    </div>
+    <div class="free-button-bg">
+        <a class="free-button" href="javascript:void(0)">
+            免费下载，查看更多预测》
+        </a>
+    </div>
+
+</div>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            recentMatch: {},
+            historyMatch: []
+        },
+        mounted: function () {
+            this.initPage();
+        },
+        methods: {
+            initPage:function(){
+                var index = this
+                $.ajax({
+                    type: 'POST',
+                    url: '/activity/get_sports_wisdomer_spread',
+                    data: {},
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (data) {
+                        index.recentMatch = data.data.recentMatch
+                        index.historyMatch = data.data.historyMatch
+                    }
+                })
+            },
+            openNativePage: function () {
+                var downLoad = "https://cdn.caiqr.com/%E8%B6%B3%E5%BD%A9%E5%85%8D%E8%B4%B9%E6%8E%A8%E8%8D%904.6.4.apk";
+                var iosURL = "https://itunes.apple.com/cn/app/id1291221326";
+                var url = 'caiqrgames://caiqrNative?page=browser&url=' + downLoad;
+                if (typeof(window.jsCallNativeObjc) != "undefined") {
+                    window.location.href = iosURL;
+                } else {
+                    if (typeof(shareAndroid) != "undefined") {
+                        shareAndroid.jumpNativeIntent(url)
+                    } else {
+                        var url = {
+                            open: 'mjLottery://mjNative',
+                            down: "https://cdn.caiqr.com/%E8%B6%B3%E5%BD%A9%E5%85%8D%E8%B4%B9%E6%8E%A8%E8%8D%904.6.4.apk",
+                            WX: "http://a.app.qq.com/o/simple.jsp?pkgname=com.mjanroidlottery",
+                            IOS: "https://itunes.apple.com/cn/app/%E6%99%BA%E6%85%A7%E5%BD%A9%E7%A5%A8%E9%A2%84%E6%B5%8B%E4%B8%93%E4%B8%9A%E7%89%88-%E5%8F%8C%E8%89%B2%E7%90%83%E9%80%89%E5%8F%B7/id1291221326?mt=8"
+                        };
+                        var ua = navigator.userAgent.toLowerCase();
+                        if (/micromessenger/.test(ua)) {
+                            window.location.href = url.WX;
+                        } else {
+                            if (/iphone|ipod|ipad/.test(ua)) {
+                                window.location.href = url.IOS;
+                            } else {
+                                window.location.href = url.down;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    })
+
+
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+
+</script>
+</html>

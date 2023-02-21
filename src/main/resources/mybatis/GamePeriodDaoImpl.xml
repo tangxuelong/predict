@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="GamePeriod">
+    <resultMap id="gamePeriodMap" type="gamePeriod">
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="AWARD_TIME" property="awardTime" jdbcType="TIMESTAMP"/>
+        <result column="WINNING_NUMBERS" property="winningNumbers" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="OPEN_TIME" property="openTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getLoadedGamePeriod" resultMap="gamePeriodMap" parameterType="map">
+		select * from TB_GAME_PERIOD where game_id = #{gameId,jdbcType=BIGINT}
+		order by END_TIME desc, AWARD_TIME desc
+		limit #{periodLoaded,jdbcType=INTEGER}
+	</select>
+
+    <select id="getPeriodsByGameIdAndPeriods" resultMap="gamePeriodMap" parameterType="map">
+        select * from TB_GAME_PERIOD where game_id = #{gameId,jdbcType=BIGINT}
+        AND period_id in
+        <foreach collection="periodIds" item="id" open="(" separator="," close=")">#{id,jdbcType=VARCHAR}</foreach>
+        order by END_TIME desc, AWARD_TIME desc
+    </select>
+
+    <select id="getGamePeriod" resultMap="gamePeriodMap" parameterType="map">
+        select * from TB_GAME_PERIOD where game_id = #{gameId,jdbcType=BIGINT}
+        AND period_id = #{periodId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getLastPeriod" resultMap="gamePeriodMap" parameterType="map">
+        select * from TB_GAME_PERIOD where game_id = #{gameId,jdbcType=BIGINT}
+        <![CDATA[AND period_id < #{periodId,jdbcType=VARCHAR}]]>
+        order by period_id desc
+        limit 1
+    </select>
+
+    <select id="getIntervalPeriod" resultType="java.lang.String" parameterType="map">
+        select PERIOD_ID from TB_GAME_PERIOD where game_id = #{gameId,jdbcType=BIGINT}
+        <![CDATA[AND period_id <= #{periodId,jdbcType=VARCHAR}]]>
+        ORDER BY PERIOD_ID desc limit #{periodNum,jdbcType=INTEGER}
+    </select>
+
+    <update id="updateGamePeriodWinningNumbers" parameterType="map">
+        UPDATE TB_GAME_PERIOD
+        set WINNING_NUMBERS = #{winningNumbers,jdbcType=VARCHAR}, OPEN_TIME = now()
+        where game_id = #{gameId,jdbcType=BIGINT} AND period_id = #{periodId,jdbcType=VARCHAR}
+        and (WINNING_NUMBERS is null or WINNING_NUMBERS = '')
+    </update>
+
+    <insert id="insert" parameterType="gamePeriod">
+        INSERT INTO TB_GAME_PERIOD (GAME_ID, PERIOD_ID, START_TIME, END_TIME, AWARD_TIME, CREATE_TIME)
+        VALUES ( #{gameId,jdbcType=BIGINT}, #{periodId,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP},
+        #{endTime,jdbcType=TIMESTAMP}, #{awardTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <!-- 以下sql仅用于测试 -->
+    <select id="getPeriodsSortByStartTimeLteDesc" resultMap="gamePeriodMap" parameterType="map">
+        select * from TB_GAME_PERIOD where GAME_ID = #{gameId,jdbcType=BIGINT}
+        AND START_TIME <![CDATA[<=]]> #{start_time,jdbcType=TIMESTAMP}
+        order by START_TIME desc limit #{limit,jdbcType=INTEGER}
+    </select>
+
+    <!-- 以下sql仅用于测试 -->
+    <select id="getPeriodsSortByStartTimeGteAsc" resultMap="gamePeriodMap" parameterType="map">
+        select * from TB_GAME_PERIOD where GAME_ID = #{gameId,jdbcType=BIGINT}
+        AND START_TIME <![CDATA[>=]]> #{start_time,jdbcType=TIMESTAMP}
+        order by START_TIME asc limit #{limit,jdbcType=INTEGER}
+    </select>
+
+    <!-- 此SQL为后台调用修改期次开奖号码 -->
+    <update id="updateWinningNumber" parameterType="java.util.Map">
+        UPDATE TB_GAME_PERIOD
+        set WINNING_NUMBERS = #{winningNumbers,jdbcType=VARCHAR}
+        where game_id = #{gameId,jdbcType=BIGINT} AND period_id = #{periodId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateRemark" parameterType="java.util.Map">
+        UPDATE TB_GAME_PERIOD
+        set REMARK = #{newRemark,jdbcType=VARCHAR}
+        where game_id = #{gameId,jdbcType=BIGINT} AND period_id = #{periodId,jdbcType=VARCHAR}
+        <if test="oldRemark == null">
+            AND REMARK IS NULL
+        </if>
+        <if test="oldRemark != null">
+            AND REMARK = #{oldRemark,jdbcType=VARCHAR}
+        </if>
+    </update>
+
+    <insert id="addGamePeriodBatch" useGeneratedKeys="true" parameterType="java.util.HashMap">
+        insert into TB_GAME_PERIOD (GAME_ID, PERIOD_ID, START_TIME, END_TIME, AWARD_TIME, CREATE_TIME, WINNING_NUMBERS,
+        OPEN_TIME)
+        values
+        <foreach collection="gamePeriods" item="item" index="index" separator=",">
+            (#{item.gameId},#{item.periodId},#{item.startTime},#{item.endTime},#{item.awardTime},#{item.createTime},
+            #{item.winningNumbers}, #{item.openTime})
+        </foreach>
+    </insert>
+</mapper>

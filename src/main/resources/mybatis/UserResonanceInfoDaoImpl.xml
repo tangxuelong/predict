@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserResonanceInfo">
+    <resultMap id="userResonanceInfoMap" type="userResonanceInfo">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="LAST_PERIOD" property="lastPeriod" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        USER_ID, GAME_ID, LAST_PERIOD, CREATE_TIME
+    </sql>
+
+    <select id="getUserResonanceInfo" parameterType="map" resultMap="userResonanceInfoMap">
+        SELECT * FROM TB_USER_RESONANCE_INFO WHERE USER_ID = #{userId, jdbcType=BIGINT} AND GAME_ID=
+        #{gameId, jdbcType=BIGINT}
+        <if test="isLock==true">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <update id="updateLastPeriod" parameterType="map">
+        UPDATE TB_USER_RESONANCE_INFO SET LAST_PERIOD = #{setPeriod, jdbcType=INTEGER} WHERE USER_ID =
+        #{userId, jdbcType=BIGINT} AND GAME_ID=#{gameId, jdbcType=BIGINT}
+        <if test="originPeriod!=null">
+            AND LAST_PERIOD &gt;= #{originPeriod, jdbcType=INTEGER}
+        </if>
+    </update>
+
+    <insert id="insert" parameterType="map">
+        INSERT INTO TB_USER_RESONANCE_INFO (<include refid="Base_Column"/>) VALUES (#{userId, jdbcType=BIGINT},
+        #{gameId, jdbcType=BIGINT}, #{lastPeriod, jdbcType=INTEGER}, now())
+    </insert>
+
+</mapper>

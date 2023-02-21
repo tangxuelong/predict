@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        // 调用分享按钮
+        function share() {
+            if (typeof(window.webkit) != "undefined") {
+                window.webkit.messageHandlers.checkLoginToken.postMessage({body: "aaa"})
+            } else {
+                if (typeof(webViewNative) != "undefined") {
+                    //alert("android share");
+//                    webViewNative.innerShareOpen('0.01','memo')
+                    webViewNative.pay('0.01', 'memo');
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+Hello word!
+<button onclick="share()">hello click me</button>
+</body>
+</html>

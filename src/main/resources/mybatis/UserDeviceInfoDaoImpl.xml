@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserDeviceInfo">
+    <resultMap id="userDeviceInfoMap" type="userDeviceInfo">
+        <result column="DEVICE_ID" property="deviceId" jdbcType="BIGINT"/>
+        <result column="DEVICE_NAME" property="deviceName" jdbcType="VARCHAR"/>
+        <result column="DEVICE_IMEI" property="deviceImei" jdbcType="VARCHAR"/>
+        <result column="CLIENT_TYPE" property="clientType" jdbcType="INTEGER"/>
+        <result column="CLIENT_ID" property="clientId" jdbcType="VARCHAR"/>
+        <result column="PUSH_GAME_ENS" property="pushGameEns" jdbcType="VARCHAR"/>
+        <result column="CHANNEL" property="channel" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="PUSH_TYPE" property="pushType" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        DEVICE_ID, DEVICE_NAME, DEVICE_IMEI, CLIENT_TYPE, CLIENT_ID, PUSH_GAME_ENS, CHANNEL, USER_ID,PUSH_TYPE,
+        CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserDeviceInfoByDeviceId" resultMap="userDeviceInfoMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_DEVICE_INFO
+        where device_id = #{deviceId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getAllUserDeviceInfoByShardType" resultMap="userDeviceInfoMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_DEVICE_INFO
+    </select>
+
+    <select id="getNewDeviceCountByDate" resultMap="userDeviceInfoMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_DEVICE_INFO
+        WHERE CREATE_TIME &gt;= #{beginDate,jdbcType=TIMESTAMP}
+        AND CREATE_TIME &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="getDayActiveDeviceCountByDate" resultType="java.lang.Integer" parameterType="map">
+        select
+        COUNT(1)
+        from TB_USER_DEVICE_INFO
+        WHERE UPDATE_TIME &gt;= #{beginDate,jdbcType=TIMESTAMP}
+        AND UPDATE_TIME &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="getAllDeviceCount" resultType="java.lang.Integer" parameterType="map">
+        select
+        COUNT(1)
+        from TB_USER_DEVICE_INFO
+    </select>
+
+    <select id="getIosDayActiveDeviceCountByDate" resultType="java.lang.Integer" parameterType="map">
+        select
+        COUNT(1)
+        from TB_USER_DEVICE_INFO
+        WHERE CLIENT_TYPE IN (1001,1021)
+        AND UPDATE_TIME &gt;= #{beginDate,jdbcType=TIMESTAMP}
+        AND UPDATE_TIME &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="getDeviceIdByUserId" resultType="java.lang.Long" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_DEVICE_INFO
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="userDeviceInfo">
+        INSERT INTO TB_USER_DEVICE_INFO
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{deviceId,jdbcType=BIGINT},
+        #{deviceName,jdbcType=VARCHAR}, #{deviceImei,jdbcType=VARCHAR}, #{clientType,jdbcType=INTEGER},
+        #{clientId,jdbcType=VARCHAR}, #{pushGameEns,jdbcType=VARCHAR},
+        #{channel,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT},#{pushType,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="userDeviceInfo">
+        UPDATE TB_USER_DEVICE_INFO SET DEVICE_NAME = #{deviceName,jdbcType=VARCHAR},
+        DEVICE_IMEI = #{deviceImei,jdbcType=VARCHAR}, CLIENT_TYPE = #{clientType,jdbcType=INTEGER},
+        CLIENT_ID = #{clientId,jdbcType=INTEGER}, PUSH_GAME_ENS = #{pushGameEns,jdbcType=INTEGER},
+        CHANNEL = #{channel,jdbcType=VARCHAR}, USER_ID = #{userId,jdbcType=BIGINT}, PUSH_TYPE =
+        #{pushType,jdbcType=BIGINT}, UPDATE_TIME = now()
+        WHERE DEVICE_ID = #{deviceId,jdbcType=BIGINT}
+    </update>
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SsqSocialResonanceData">
+    <resultMap id="ssqSocialResonanceDataMap" type="ssqSocialResonanceData">
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="SOCIAL_TYPE" property="socialType" jdbcType="INTEGER"/>
+        <result column="RESONANCE_TYPE" property="resonanceType" jdbcType="INTEGER"/>
+        <result column="NUMBER_01" property="number01" jdbcType="INTEGER"/>
+        <result column="NUMBER_02" property="number02" jdbcType="INTEGER"/>
+        <result column="NUMBER_03" property="number03" jdbcType="INTEGER"/>
+        <result column="NUMBER_04" property="number04" jdbcType="INTEGER"/>
+        <result column="NUMBER_05" property="number05" jdbcType="INTEGER"/>
+        <result column="NUMBER_06" property="number06" jdbcType="INTEGER"/>
+        <result column="NUMBER_07" property="number07" jdbcType="INTEGER"/>
+        <result column="NUMBER_08" property="number08" jdbcType="INTEGER"/>
+        <result column="NUMBER_09" property="number09" jdbcType="INTEGER"/>
+        <result column="NUMBER_10" property="number10" jdbcType="INTEGER"/>
+        <result column="NUMBER_11" property="number11" jdbcType="INTEGER"/>
+        <result column="NUMBER_12" property="number12" jdbcType="INTEGER"/>
+        <result column="NUMBER_13" property="number13" jdbcType="INTEGER"/>
+        <result column="NUMBER_14" property="number14" jdbcType="INTEGER"/>
+        <result column="NUMBER_15" property="number15" jdbcType="INTEGER"/>
+        <result column="NUMBER_16" property="number16" jdbcType="INTEGER"/>
+        <result column="NUMBER_17" property="number17" jdbcType="INTEGER"/>
+        <result column="NUMBER_18" property="number18" jdbcType="INTEGER"/>
+        <result column="NUMBER_19" property="number19" jdbcType="INTEGER"/>
+        <result column="NUMBER_20" property="number20" jdbcType="INTEGER"/>
+        <result column="NUMBER_21" property="number21" jdbcType="INTEGER"/>
+        <result column="NUMBER_22" property="number22" jdbcType="INTEGER"/>
+        <result column="NUMBER_23" property="number23" jdbcType="INTEGER"/>
+        <result column="NUMBER_24" property="number24" jdbcType="INTEGER"/>
+        <result column="NUMBER_25" property="number25" jdbcType="INTEGER"/>
+        <result column="NUMBER_26" property="number26" jdbcType="INTEGER"/>
+        <result column="NUMBER_27" property="number27" jdbcType="INTEGER"/>
+        <result column="NUMBER_28" property="number28" jdbcType="INTEGER"/>
+        <result column="NUMBER_29" property="number29" jdbcType="INTEGER"/>
+        <result column="NUMBER_30" property="number30" jdbcType="INTEGER"/>
+        <result column="NUMBER_31" property="number31" jdbcType="INTEGER"/>
+        <result column="NUMBER_32" property="number32" jdbcType="INTEGER"/>
+        <result column="NUMBER_33" property="number33" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        PERIOD_ID, SOCIAL_TYPE, RESONANCE_TYPE, NUMBER_01, NUMBER_02, NUMBER_03, NUMBER_04, NUMBER_05, NUMBER_06,
+        NUMBER_07, NUMBER_08, NUMBER_09, NUMBER_10, NUMBER_11, NUMBER_12, NUMBER_13, NUMBER_14, NUMBER_15, NUMBER_16,
+         NUMBER_17, NUMBER_18, NUMBER_19, NUMBER_20, NUMBER_21, NUMBER_22, NUMBER_23, NUMBER_24, NUMBER_25,
+         NUMBER_26, NUMBER_27, NUMBER_28, NUMBER_29, NUMBER_30, NUMBER_31, NUMBER_32, NUMBER_33, REMARK,
+        CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getAllTypeResonanceCurrentPeriod" resultMap="ssqSocialResonanceDataMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_SSQ_SOCIAL_RESONANCE_DATA
+        WHERE PERIOD_ID = #{periodId,jdbcType=VARCHAR} AND SOCIAL_TYPE = #{socialType,jdbcType=INTEGER}
+    </select>
+
+    <select id="getTypeResonanceCurrentPeriod" resultMap="ssqSocialResonanceDataMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_SSQ_SOCIAL_RESONANCE_DATA
+        WHERE PERIOD_ID = #{periodId,jdbcType=VARCHAR} AND SOCIAL_TYPE = #{socialType,jdbcType=INTEGER} AND
+        RESONANCE_TYPE = #{resonanceType,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="ssqSocialResonanceData">
+        INSERT INTO TB_SSQ_SOCIAL_RESONANCE_DATA(
+        <include refid="Base_Column_List"/>
+        )
+        VALUES (
+        #{periodId,jdbcType=VARCHAR}, #{socialType,jdbcType=INTEGER},#{resonanceType,jdbcType=INTEGER},
+        #{number01,jdbcType=INTEGER}, #{number02,jdbcType=INTEGER}, #{number03,jdbcType=INTEGER},
+        #{number04,jdbcType=INTEGER}, #{number05,jdbcType=INTEGER}, #{number06,jdbcType=INTEGER},
+        #{number07,jdbcType=INTEGER}, #{number08,jdbcType=INTEGER}, #{number09,jdbcType=INTEGER},
+        #{number10,jdbcType=INTEGER}, #{number11,jdbcType=INTEGER}, #{number12,jdbcType=INTEGER},
+        #{number13,jdbcType=INTEGER},
+        #{number14,jdbcType=INTEGER}, #{number15,jdbcType=INTEGER}, #{number16,jdbcType=INTEGER},
+        #{number17,jdbcType=INTEGER}, #{number18,jdbcType=INTEGER}, #{number19,jdbcType=INTEGER},
+        #{number20,jdbcType=INTEGER}, #{number21,jdbcType=INTEGER}, #{number22,jdbcType=INTEGER},
+        #{number23,jdbcType=INTEGER},
+        #{number24,jdbcType=INTEGER}, #{number25,jdbcType=INTEGER}, #{number26,jdbcType=INTEGER},
+        #{number27,jdbcType=INTEGER}, #{number28,jdbcType=INTEGER}, #{number29,jdbcType=INTEGER},
+        #{number30,jdbcType=INTEGER}, #{number31,jdbcType=INTEGER}, #{number32,jdbcType=INTEGER},
+        #{number33,jdbcType=INTEGER},
+        #{remark,jdbcType=VARCHAR},now(),now()
+        )
+    </insert>
+
+    <update id="update" parameterType="ssqSocialResonanceData">
+        UPDATE TB_SSQ_SOCIAL_RESONANCE_DATA
+        SET NUMBER_01 = #{number01,jdbcType=INTEGER},
+        NUMBER_02 = #{number02,jdbcType=INTEGER},
+        NUMBER_03 = #{number03,jdbcType=INTEGER},
+        NUMBER_04 = #{number04,jdbcType=INTEGER},
+        NUMBER_05 = #{number05,jdbcType=INTEGER},
+        NUMBER_06 = #{number06,jdbcType=INTEGER},
+        NUMBER_07 = #{number07,jdbcType=INTEGER},
+        NUMBER_08 = #{number08,jdbcType=INTEGER},
+        NUMBER_09 = #{number09,jdbcType=INTEGER},
+        NUMBER_10 = #{number10,jdbcType=INTEGER},
+        NUMBER_11 = #{number11,jdbcType=INTEGER},
+        NUMBER_12 = #{number12,jdbcType=INTEGER},
+        NUMBER_13 = #{number13,jdbcType=INTEGER},
+        NUMBER_14 = #{number14,jdbcType=INTEGER},
+        NUMBER_15 = #{number15,jdbcType=INTEGER},
+        NUMBER_16 = #{number16,jdbcType=INTEGER},
+        NUMBER_17 = #{number17,jdbcType=INTEGER},
+        NUMBER_18 = #{number18,jdbcType=INTEGER},
+        NUMBER_19 = #{number19,jdbcType=INTEGER},
+        NUMBER_20 = #{number20,jdbcType=INTEGER},
+        NUMBER_21 = #{number21,jdbcType=INTEGER},
+        NUMBER_22 = #{number22,jdbcType=INTEGER},
+        NUMBER_23 = #{number23,jdbcType=INTEGER},
+        NUMBER_24 = #{number24,jdbcType=INTEGER},
+        NUMBER_25 = #{number25,jdbcType=INTEGER},
+        NUMBER_26 = #{number26,jdbcType=INTEGER},
+        NUMBER_27 = #{number27,jdbcType=INTEGER},
+        NUMBER_28 = #{number28,jdbcType=INTEGER},
+        NUMBER_29 = #{number29,jdbcType=INTEGER},
+        NUMBER_30 = #{number30,jdbcType=INTEGER},
+        NUMBER_31 = #{number31,jdbcType=INTEGER},
+        NUMBER_32 = #{number32,jdbcType=INTEGER},
+        NUMBER_33 = #{number33,jdbcType=INTEGER},
+        REMARK = #{remark,jdbcType=VARCHAR},
+        UPDATE_TIME = now()
+        WHERE PERIOD_ID = #{periodId,jdbcType=VARCHAR} AND SOCIAL_TYPE = #{socialType,jdbcType=INTEGER} AND
+        RESONANCE_TYPE = #{resonanceType,jdbcType=INTEGER}
+    </update>
+</mapper>

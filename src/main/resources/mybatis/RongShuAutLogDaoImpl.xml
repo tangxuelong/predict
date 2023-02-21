@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RongShuAutLog">
+    <resultMap id="rongShuAutLogMap" type="rongShuAutLog">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="AUT_TYPE" property="autType" jdbcType="INTEGER"/>
+        <result column="AUT_STATUS" property="autStatus" jdbcType="INTEGER"/>
+        <result column="AUT_RESULT" property="vipDate" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, AUT_TYPE, AUT_RESULT, CREATE_TIME
+    </sql>
+
+    <insert id="insert" parameterType="rongShuAutLog">
+        INSERT INTO tb_rong_shu_auth_log (<include refid="Base_Column_List"/>)
+        VALUES (#{userId, jdbcType=BIGINT}, #{autType,jdbcType=INTEGER}, #{autStatus,jdbcType=INTEGER},
+        #{autResult,jdbcType=VARCHAR}, now())
+    </insert>
+
+</mapper>

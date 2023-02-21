@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ExchangeMall">
+    <resultMap id="exchangeMallMap" type="exchangeMall">
+        <result column="ITEM_ID" property="itemId" jdbcType="INTEGER"/>
+        <result column="ITEM_NAME" property="itemName" jdbcType="VARCHAR"/>
+        <result column="ITEM_IMG" property="itemImg" jdbcType="VARCHAR"/>
+        <result column="ITEM_PRICE" property="itemPrice" jdbcType="BIGINT"/>
+        <result column="ITEM_ORIGIN_PRICE" property="itemOriginPrice" jdbcType="BIGINT"/>
+        <result column="ITEM_TYPE" property="itemType" jdbcType="INTEGER"/>
+        <result column="ITEM_COUNT" property="itemCount" jdbcType="BIGINT"/>
+        <result column="ACCOUNT_TYPE" property="accountType" jdbcType="INTEGER"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="IS_DEFAULT" property="isDefault" jdbcType="INTEGER"/>
+        <result column="IOS_MALL_ID" property="iosMallId" jdbcType="VARCHAR"/>
+        <result column="VIP_DISCOUNT" property="vipDiscount" jdbcType="INTEGER"/>
+        <result column="CLIENT_ID" property="clientId" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ITEM_ID, ITEM_NAME, ITEM_IMG, ITEM_PRICE, ITEM_ORIGIN_PRICE, ITEM_TYPE, ITEM_COUNT, ACCOUNT_TYPE, GAME_ID,
+        STATUS, IOS_MALL_ID, VIP_DISCOUNT, CLIENT_ID, REMARK, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getExchangeMallList" resultMap="exchangeMallMap" parameterType="map">
+        select * from TB_EXCHANGE_MALL WHERE STATUS = 1
+        <if test="itemType!=null">
+            AND ITEM_TYPE =#{itemType, jdbcType=INTEGER}
+        </if>
+        <if test="gameId!=null">
+            AND GAME_ID =#{gameId, jdbcType=BIGINT}
+        </if>
+        <if test="clientId!=null">
+            AND CLIENT_ID = #{clientId, jdbcType=INTEGER}
+        </if>
+        order by ITEM_PRICE
+    </select>
+
+    <select id="getExchangeMall" resultMap="exchangeMallMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_EXCHANGE_MALL WHERE ITEM_ID = #{itemId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getExchangeMallsByAccountType" resultMap="exchangeMallMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_EXCHANGE_MALL WHERE ACCOUNT_TYPE = #{accountType,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="exchangeMall">
+        INSERT INTO TB_EXCHANGE_MALL
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR},
+        #{itemImg,jdbcType=VARCHAR}, #{itemPrice,jdbcType=BIGINT}, #{itemOriginPrice,jdbcType=BIGINT},
+        #{itemType,jdbcType=INTEGER}, #{itemCount,jdbcType=BIGINT}, #{accountType,jdbcType=INTEGER},
+        #{gameId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER},#{iosMallId,jdbcType=VARCHAR},
+        #{vipDiscount, jdbcType=INTEGER}, #{clientId, jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="exchangeMall">
+        UPDATE TB_EXCHANGE_MALL SET ITEM_NAME = #{itemName,jdbcType=VARCHAR},
+        ITEM_IMG = #{itemName,jdbcType=VARCHAR},ITEM_PRICE = #{itemPrice,jdbcType=BIGINT},
+        ITEM_ORIGIN_PRICE = #{itemOriginPrice,jdbcType=BIGINT},
+        ITEM_TYPE = #{itemType,jdbcType=INTEGER},ITEM_COUNT = #{itemCount,jdbcType=BIGINT},
+        ACCOUNT_TYPE = #{accountType,jdbcType=INTEGER}, GAME_ID = #{gameId,jdbcType=BIGINT},
+        STATUS = #{status,jdbcType=BIGINT}, IOS_MALL_ID =#{iosMallId,jdbcType=VARCHAR}, VIP_DISCOUNT =
+        #{vipDiscount, jdbcType=INTEGER}, UPDATE_TIME = now(), REMARK = #{remark,jdbcType=VARCHAR}
+        WHERE ITEM_ID = #{itemId,jdbcType=INTEGER}
+    </update>
+</mapper>

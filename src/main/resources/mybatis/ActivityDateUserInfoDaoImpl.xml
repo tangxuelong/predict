@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ActivityDateUserInfo">
+    <resultMap id="activityDateUserInfoMap" type="activityDateUserInfo">
+        <result column="ACTIVITY_ID" property="activityId" jdbcType="INTEGER"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="DATE_ID" property="dateId" jdbcType="VARCHAR"/>
+        <result column="TIMES" property="times" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ACTIVITY_ID, USER_ID, DATE_ID, TIMES, REMARK, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserTimesByDate" resultMap="activityDateUserInfoMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_ACTIVITY_DATE_USER_INFO
+        WHERE ACTIVITY_ID = #{activityId,jdbcType=INTEGER} AND USER_ID = #{userId,jdbcType=BIGINT}
+        AND DATE_ID = #{dateId,jdbcType=VARCHAR}
+        <if test="isLock == true">
+            for update
+        </if>
+    </select>
+
+    <select id="getUserByDate" resultMap="activityDateUserInfoMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_ACTIVITY_DATE_USER_INFO
+        WHERE ACTIVITY_ID = #{activityId,jdbcType=INTEGER} AND DATE_ID = #{dateId,jdbcType=VARCHAR}
+        <if test="isLock == true">
+            for update
+        </if>
+    </select>
+
+    <select id="getAllActivityUserInfo" resultMap="activityDateUserInfoMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_ACTIVITY_DATE_USER_INFO
+        WHERE ACTIVITY_ID = #{activityId,jdbcType=INTEGER} AND USER_ID = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="activityDateUserInfo">
+        INSERT INTO TB_ACTIVITY_DATE_USER_INFO(ACTIVITY_ID, USER_ID, DATE_ID, TIMES, REMARK, CREATE_TIME, UPDATE_TIME)
+        VALUES (
+        #{activityId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{dateId,jdbcType=VARCHAR},
+        #{times,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="activityDateUserInfo">
+        UPDATE TB_ACTIVITY_DATE_USER_INFO
+        SET TIMES = #{times,jdbcType=INTEGER}, REMARK = #{remark,jdbcType=VARCHAR},
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}, UPDATE_TIME = now()
+        WHERE ACTIVITY_ID = #{activityId,jdbcType=INTEGER} AND USER_ID = #{userId,jdbcType=BIGINT} AND DATE_ID =
+        #{dateId,jdbcType=VARCHAR}
+    </update>
+</mapper>

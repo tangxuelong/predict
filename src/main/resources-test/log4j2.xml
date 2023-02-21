@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+    <Properties>
+        <Property name="logDir">${sys:catalina.home}/logs/predict</Property>
+    </Properties>
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--<ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>-->
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </Console>
+
+        <!-- predictFile -->
+        <RollingFile name="predict-info" fileName="${logDir}/predict.log"
+                     filePattern="${logDir}/$${date:yyyy-MM}/%d{yyyy-MM-dd}.predict.info.log.gz">
+            <Filters>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss,SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="1024 MB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="predict-warn" fileName="${logDir}/predict-warn.log"
+                     filePattern="${logDir}/$${date:yyyy-MM}/predict.%d{yyyy-MM-dd}.warn.log.gz">
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss,SSS} %-5level %l %C{36} %L %M - %m%xEx%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="1024 MB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="predict-error" fileName="${logDir}/predict-error.log"
+                     filePattern="${logDir}/$${date:yyyy-MM}/predict.%d{yyyy-MM-dd}.error.log.gz">
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss,SSS} %-5level %l %C{36} %L %M - %m%xEx%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="1024 MB"/>
+            </Policies>
+        </RollingFile>
+
+    </appenders>
+    <loggers>
+        <logger name="predict" level="debug" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="predict-info"/>
+            <appender-ref ref="predict-warn"/>
+            <appender-ref ref="predict-error"/>
+        </logger>
+        <logger name="org.quartz" level="info">
+        </logger>
+        <root level="debug">
+            <appender-ref ref="Console"/>
+        </root>
+    </loggers>
+
+</configuration>

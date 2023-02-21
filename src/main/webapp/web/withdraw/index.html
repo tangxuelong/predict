@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>提现</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <meta name="format-detection" content="telephone=no">
+    <script src="script/config.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .toast-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 100%;
+            top: 100%;
+            z-index: 2999;
+        }
+
+        .toast {
+            position: absolute;
+            top: -56%;
+            left: -50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            padding: 13px 16px;
+            font-size: 14px;
+            border-radius: 2px;
+            width: auto;
+            /*颜色*/
+            color: #ccc;
+            background: rgba(37, 38, 45, 0.9);
+            /*可以输入的字数的宽度*/
+            max-width: 16em;
+        }
+
+        [v-cloak] {
+            display: none
+        }
+
+        .withdraw-balance img {
+            width: 100%;
+            display: block;
+        }
+
+        .withdraw-balance {
+            position: relative;
+        }
+
+        .balance {
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            height: 30px;
+            top: 50%;
+            left: 0;
+            margin-top: -20px;
+            padding: 0;
+            font-size: 30px;
+            color: #FFF;
+            line-height: 20px;
+        }
+
+        .withdraw-text {
+            font-size: 13px;
+            font-weight: 100;
+        }
+
+        .balance-end {
+            font-size: 16px;
+        }
+
+        .withdraw-button {
+            width: 345px;
+            height: 45px;
+            background: rgba(255, 80, 80, 1);
+            border-radius: 4px;
+            font-size: 15px;
+            font-family: PingFangSC-Regular;
+            color: rgba(255, 255, 255, 1);
+            line-height: 21px;
+            margin: 40px auto 13px auto;
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            line-height: 45px;
+        }
+
+        .withdraw-rule {
+            text-align: center;
+            font-size: 13px;
+            font-family: PingFangSC-Regular;
+            color: rgba(153, 153, 153, 1);
+        }
+
+        .withdraw-rule a {
+            font-size: 13px;
+            font-family: PingFangSC-Regular;
+            color: #6E92F0;
+            text-decoration: none;
+        }
+
+        .checkbox {
+            display: inline-block;
+            vertical-align: middle;
+            margin-top: -1px;
+        }
+
+        [v-cloak] {
+            display: none
+        }
+
+        .toast-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 100%;
+            top: 100%;
+            z-index: 2999;
+        }
+
+        .toast {
+            position: absolute;
+            top: -56%;
+            left: -50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            padding: 13px 16px;
+            font-size: 14px;
+            border-radius: 2px;
+            width: auto;
+            /*颜色*/
+            color: #ccc;
+            background: rgba(37, 38, 45, 0.9);
+            /*可以输入的字数的宽度*/
+            max-width: 16em;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .toast-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 100%;
+            top: 100%;
+            z-index: 2999;
+        }
+
+        .toast {
+            position: absolute;
+            top: -56%;
+            left: -50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            padding: 13px 16px;
+            font-size: 14px;
+            border-radius: 2px;
+            width: auto;
+            /*颜色*/
+            color: #ccc;
+            background: rgba(37, 38, 45, 0.9);
+            /*可以输入的字数的宽度*/
+            max-width: 16em;
+        }
+
+        [v-cloak] {
+            display: none
+        }
+
+        .withdraw-balance img {
+            width: 100%;
+            display: block;
+        }
+
+        .withdraw-balance {
+            position: relative;
+        }
+
+        .balance {
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            height: 30px;
+            top: 50%;
+            left: 0;
+            margin-top: -20px;
+            padding: 0;
+            font-size: 30px;
+            color: #FFF;
+            line-height: 20px;
+        }
+
+        .withdraw-text {
+            font-size: 13px;
+            font-weight: 100;
+        }
+
+        .balance-end {
+            font-size: 16px;
+        }
+
+        .withdraw-content2 {
+            background: #FFF;
+            padding: 27px 13px;
+        }
+
+        .withdraw-content2 p {
+            font-size: 13px;
+            font-family: PingFangSC-Regular;
+            color: rgba(51, 51, 51, 1);
+        }
+
+        .withdraw-content2 p.title {
+            font-size: 15px;
+        }
+
+        .withdraw-content-info {
+            padding: 13px 13px;
+        }
+
+        .withdraw-content-info p {
+            font-size: 13px;
+            font-family: PingFangSC-Regular;
+            color: #999;
+            padding: 0;
+            margin: 0;
+            line-height: 22px;
+        }
+
+        .withdraw-content-info p.title {
+            font-size: 15px;
+        }
+
+        body {
+            background: rgba(245, 245, 245, 1);
+        }
+
+        a.withdraw-button2 {
+            width: 50px;
+            height: 22px;
+            background: rgba(255, 80, 80, 1);
+            border-radius: 2px;
+            display: inline-block;
+            color: #FFF;
+            text-align: center;
+            line-height: 22px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="withdraw-balance">
+        <img src="img/withdraw-bg.png" alt="">
+        <p class="balance"><span class="balance-front" v-text="balanceFront">0</span><span class="balance-end"
+                                                                                           v-text="balanceBack">.0</span>
+            <br><span class="withdraw-text">可提现金额(元)</span></p>
+
+    </div>
+    <div class="withdraw-content" v-show="!showWithDraw">
+        <a class="withdraw-button" href="javascript:void(0)" v-on:click="gotoWithDraw">去提现</a>
+        <p class="withdraw-rule"><input class="checkbox" type="checkbox" checked="checked"/>我已同意并阅读<span><a
+                href="https://m.caiqr.com/daily/tixianxieyi/index.htm">《足彩提现协议》</a></span></p>
+    </div>
+
+    <div class="withdraw-content2" v-show="showWithDraw">
+        <p class="title">提现流程：</p>
+        <p>1、添加客服微信“zhihuicp” <a class="withdraw-button2" href="javascript:void(0)" v-on:click="copyWX">复制</a></p>
+        <p>2、向客服提供您的注册手机号，通过短信验证后可继续提现</p>
+        <p>3、说明您的提现金额（每次不小于100元），客服完成转账</p>
+    </div>
+    <div class="withdraw-content-info" v-show="showWithDraw">
+        <p class="title">公告：</p>
+        <p>1、成为智慧预测师可提成酬金的50%；</p>
+        <p>2、单笔提现最低100元起，每月最多提现800元，提现金额限 制如有变动，以本公告为准；</p>
+        <p>3、智慧客服上班时间为周一到周五10:00-18:00。</p>
+    </div>
+
+
+</div>
+
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript">
+    function toast(msg) {
+        var str = "<div class='toast-container' style='display:none'> <div class='toast'>" + msg + "</div></div>";
+        $('body').append(str);
+        $('.toast-container').stop().fadeIn(100).delay(1500).fadeOut(400); //fade out after 3 seconds
+        setTimeout(function () {
+            $('.toast-container').remove();
+        }, 3000);
+    }
+
+    token = getCookie('token');
+    var app = new Vue({
+        el: '#app',
+        data: {
+            balanceFront: 0,
+            checked: true,
+            balanceBack: 0,
+            showWithDraw: false
+        },
+        mounted: function () {
+            var index = this;
+            $.ajax({
+                type: 'POST',
+                url: '/UserAuth/balanceWithOutSign',
+                data: {
+                    'token': token
+                },
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    index.$data.balanceFront = data.data.balanceFront;
+                    index.$data.balanceBack = data.data.balanceBack;
+                }
+            })
+            if (localStorage.getItem('showWithDraw') != null) {
+                index.$data.showWithDraw = localStorage.getItem('showWithDraw');
+            }
+        },
+        methods: {
+            gotoWithDraw: function () {
+                var index = this;
+                if (index.$data.checked) {
+                    index.$data.showWithDraw = true;
+                    localStorage.setItem('showWithDraw', index.$data.showWithDraw);
+                }
+
+            },
+            copyWX:function () {
+                copyWxFunction();
+            }
+        }
+    })
+
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+
+</script>
+</html>

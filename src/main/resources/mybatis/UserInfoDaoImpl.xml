@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserInfo">
+    <resultMap id="userInfoMap" type="userInfo">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR"/>
+        <result column="HEAD_IMG_URL" property="headImgUrl" jdbcType="VARCHAR"/>
+        <result column="CHANNEL_TYPE" property="channelType" jdbcType="VARCHAR"/>
+        <result column="DEVICE_ID" property="deviceId" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="FOOTBALL_INTRODUCE" property="footballIntroduce" jdbcType="VARCHAR"/>
+        <result column="IS_RE_MASTER" property="isReMaster" jdbcType="INTEGER"/>
+        <result column="PUSH_INFO" property="pushInfo" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, NICK_NAME, HEAD_IMG_URL, CHANNEL_TYPE, DEVICE_ID, CREATE_TIME, UPDATE_TIME ,FOOTBALL_INTRODUCE,
+        IS_RE_MASTER, PUSH_INFO, REMARK
+    </sql>
+
+    <select id="getUserInfo" resultMap="userInfoMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_INFO
+        where user_id = #{userId,jdbcType=BIGINT}
+        <if test="isLock==true">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <select id="geUserInfosByDate" resultMap="userInfoMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_INFO
+        WHERE CREATE_TIME &gt;= #{beginDate,jdbcType=TIMESTAMP}
+        AND CREATE_TIME &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="geAllUserInfos" resultMap="userInfoMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_INFO
+    </select>
+
+    <select id="getCountAllUserInfos" resultType="java.lang.Integer" parameterType="map">
+        select
+        COUNT(1)
+        from TB_USER_INFO
+    </select>
+
+    <select id="getTodayNewUserCount" resultType="java.lang.Integer" parameterType="map">
+        select
+        COUNT(1)
+        from TB_USER_INFO
+        WHERE CREATE_TIME &gt;= #{beginDate,jdbcType=TIMESTAMP}
+        AND CREATE_TIME &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="getUserInfoByNickNameFromOtter" resultMap="userInfoMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_USER_INFO
+        where NICK_NAME like CONCAT(#{nickName, jdbcType=VARCHAR}, '%')
+    </select>
+
+    <insert id="insert" parameterType="userInfo">
+        INSERT INTO TB_USER_INFO
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{userId,jdbcType=BIGINT},
+        #{nickName,jdbcType=VARCHAR}, #{headImgUrl,jdbcType=VARCHAR}, #{channelType,jdbcType=VARCHAR},
+        #{deviceId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+        #{footballIntroduce,jdbcType=VARCHAR}, #{isReMaster,jdbcType=INTEGER}, #{pushInfo, jdbcType=VARCHAR},
+        #{remark, jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="userInfo">
+        UPDATE TB_USER_INFO SET USER_ID = #{userId,jdbcType=BIGINT},
+        NICK_NAME = #{nickName,jdbcType=VARCHAR}, HEAD_IMG_URL = #{headImgUrl,jdbcType=VARCHAR},
+        CHANNEL_TYPE = #{channelType,jdbcType=VARCHAR}, DEVICE_ID = #{deviceId,jdbcType=VARCHAR},
+        UPDATE_TIME = now(), FOOTBALL_INTRODUCE = #{footballIntroduce,jdbcType=VARCHAR}, IS_RE_MASTER =
+        #{isReMaster,jdbcType=INTEGER}, PUSH_INFO = #{pushInfo, jdbcType=VARCHAR}, REMARK =
+        #{remark, jdbcType=VARCHAR}
+        WHERE USER_ID = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateDeviceId" parameterType="map">
+        UPDATE TB_USER_INFO SET DEVICE_ID = #{deviceId,jdbcType=VARCHAR},
+        UPDATE_TIME = now()
+        WHERE USER_ID = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateRemark" parameterType="map">
+        UPDATE TB_USER_INFO SET REMARK =#{setRemark, jdbcType=VARCHAR}, UPDATE_TIME = now()
+        WHERE USER_ID = #{userId,jdbcType=BIGINT}
+        <if test="originRemark==null">
+            AND REMARK IS NULL
+        </if>
+        <if test="originRemark!=null">
+            AND REMARK =#{originRemark, jdbcType=VARCHAR}
+        </if>
+
+    </update>
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AppVersion">
+    <resultMap id="appVersionMap" type="appVersion">
+        <result column="VERSION_ID" property="versionId" jdbcType="INTEGER"/>
+        <result column="CLIENT_ID" property="clientId" jdbcType="INTEGER"/>
+        <result column="CLIENT_NAME" property="clientName" jdbcType="VARCHAR"/>
+        <result column="VERSION_CODE" property="versionCode" jdbcType="INTEGER"/>
+        <result column="VERSION_CODE_NAME" property="versionCodeName" jdbcType="VARCHAR"/>
+        <result column="UPGRADE_DESC" property="upgradeDesc" jdbcType="VARCHAR"/>
+        <result column="FORCE_UPGRADE" property="forceUpgrade" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        VERSION_ID, CLIENT_ID, CLIENT_NAME, VERSION_CODE,VERSION_CODE_NAME, UPGRADE_DESC, FORCE_UPGRADE, CREATE_TIME
+    </sql>
+
+    <select id="getAllAppVersion" resultMap="appVersionMap">
+        SELECT * FROM TB_APP_VERSION
+        <if test="clientId!=null">
+            CLIENT_ID = #{clientId, jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getLatestAppVersionByClientId" resultMap="appVersionMap" parameterType="map">
+        SELECT * FROM TB_APP_VERSION WHERE CLIENT_ID = #{clientId, jdbcType=INTEGER} ORDER BY VERSION_CODE DESC limit 1
+    </select>
+
+    <select id="getAppVersionByUnikey" resultMap="appVersionMap" parameterType="map">
+        SELECT * FROM TB_APP_VERSION WHERE CLIENT_ID = #{clientId, jdbcType=INTEGER} AND VERSION_CODE =
+        #{versionCode,jdbcType=INTEGER}
+    </select>
+
+    <select id="getAppVersionByPk" resultMap="appVersionMap" parameterType="map">
+        SELECT * FROM TB_APP_VERSION WHERE VERSION_ID =#{versionId, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="appVersion">
+        INSERT INTO TB_APP_VERSION (CLIENT_ID, CLIENT_NAME, VERSION_CODE,VERSION_CODE_NAME, UPGRADE_DESC,
+         FORCE_UPGRADE, CREATE_TIME)
+        VALUES (#{clientId,jdbcType=INTEGER}, #{clientName,jdbcType=VARCHAR}, #{versionCode,jdbcType=INTEGER},
+        #{versionCodeName,jdbcType=VARCHAR}, #{upgradeDesc,jdbcType=VARCHAR}, #{forceUpgrade,jdbcType=INTEGER}, now())
+    </insert>
+
+    <update id="update" parameterType="appVersion">
+        update TB_APP_VERSION set CLIENT_ID = #{clientId,jdbcType=INTEGER}, CLIENT_NAME=#{clientName,jdbcType=VARCHAR},
+        VERSION_CODE=#{versionCode,jdbcType=INTEGER},VERSION_CODE_NAME = #{versionCodeName,jdbcType=VARCHAR},
+        UPGRADE_DESC = #{upgradeDesc,jdbcType=VARCHAR}, FORCE_UPGRADE = #{forceUpgrade,jdbcType=INTEGER}
+        where VERSION_ID = #{versionId, jdbcType=INTEGER}
+    </update>
+
+</mapper>

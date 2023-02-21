@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserSportSocialRecommend">
+    <resultMap id="userSportSocialRecommendMap" type="userSportSocialRecommend">
+        <result column="RECOMMEND_ID" property="recommendId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="LOTTERY_CODE" property="lotteryCode" jdbcType="INTEGER"/>
+        <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="MATCH_ID" property="matchId" jdbcType="VARCHAR"/>
+        <result column="PLAY_TYPE" property="playType" jdbcType="INTEGER"/>
+        <result column="RECOMMEND_INFO" property="recommendInfo" jdbcType="VARCHAR"/>
+        <result column="ITEM_ID" property="itemId" jdbcType="INTEGER"/>
+        <result column="PRICE" property="price" jdbcType="BIGINT"/>
+        <result column="BASE_ON" property="baseOn" jdbcType="VARCHAR"/>
+        <result column="REASON" property="reason" jdbcType="VARCHAR"/>
+        <result column="IS_RIGHT" property="isRight" jdbcType="INTEGER"/>
+        <result column="IS_DISTRIBUTE" property="isDistribute" jdbcType="INTEGER"/>
+        <result column="HANDICAP" property="handicap" jdbcType="INTEGER"/>
+        <result column="AWARD_AMOUNT" property="awardAmount" jdbcType="INTEGER"/>
+        <result column="SALE_COUNT" property="saleCount" jdbcType="INTEGER"/>
+        <result column="COUPON_SALE_COUNT" property="couponSaleCount" jdbcType="INTEGER"/>
+        <result column="RECOMMEND_TITLE" property="recommendTitle" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        RECOMMEND_ID, USER_ID, LOTTERY_CODE, END_TIME, MATCH_ID, PLAY_TYPE, RECOMMEND_INFO, ITEM_ID, PRICE, BASE_ON,
+        REASON, IS_RIGHT, IS_DISTRIBUTE, HANDICAP, AWARD_AMOUNT, SALE_COUNT, COUPON_SALE_COUNT,
+        RECOMMEND_TITLE, REMARK, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getSportSocialRecommendById" resultMap="userSportSocialRecommendMap" parameterType="map">
+        SELECT *
+        FROM TB_USER_SPORT_SOCIAL_RECOMMEND
+        WHERE RECOMMEND_ID = #{recommendId,jdbcType=VARCHAR}
+        <if test="isLock == true">
+            for update
+        </if>
+    </select>
+
+    <select id="getSportSocialRecommendByMatchId" resultMap="userSportSocialRecommendMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SPORT_SOCIAL_RECOMMEND
+        WHERE MATCH_ID = #{matchId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getSportSocialRecommendByMatchIdAndPlayType" resultMap="userSportSocialRecommendMap"
+            parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SPORT_SOCIAL_RECOMMEND
+        WHERE MATCH_ID = #{matchId,jdbcType=VARCHAR} AND PLAY_TYPE = #{playType,jdbcType=INTEGER}
+    </select>
+
+    <select id="getSportSocialRecommendByUserIdMatchId" resultMap="userSportSocialRecommendMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SPORT_SOCIAL_RECOMMEND
+        WHERE MATCH_ID = #{matchId,jdbcType=VARCHAR} AND USER_ID = #{userId,jdbcType=BIGINT}
+    </select>
+
+
+    <select id="getUserSportSocialRecommends" resultMap="userSportSocialRecommendMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SPORT_SOCIAL_RECOMMEND
+        WHERE USER_ID = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getUserSportSocialRecommendsByTime" resultType="java.lang.Integer" parameterType="map">
+        SELECT count(1) FROM TB_USER_SPORT_SOCIAL_RECOMMEND WHERE USER_ID = #{userId,jdbcType=BIGINT} AND
+        CREATE_TIME &gt;= #{begin, jdbcType=TIMESTAMP} AND CREATE_TIME &lt;= #{end, jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="getSportSocialRecommendByDate" resultMap="userSportSocialRecommendMap" parameterType="map">
+        SELECT * FROM TB_USER_SPORT_SOCIAL_RECOMMEND WHERE USER_ID = #{userId,jdbcType=BIGINT} AND
+        CREATE_TIME &gt;= #{beginTime, jdbcType=TIMESTAMP} AND CREATE_TIME &lt;= #{endTime, jdbcType=TIMESTAMP} AND
+        IS_RIGHT IS NOT NULL ORDER BY RECOMMEND_ID
+    </select>
+
+    <select id="getUserCanPurchaseRecommend" resultMap="userSportSocialRecommendMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SPORT_SOCIAL_RECOMMEND
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND PLAY_TYPE=#{playType,jdbcType=INTEGER} AND END_TIME > now()
+    </select>
+
+    <select id="getUserSportRecommendsBySize" resultMap="userSportSocialRecommendMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SPORT_SOCIAL_RECOMMEND
+        WHERE USER_ID = #{userId,jdbcType=BIGINT}
+        <if test="lastIndex!=null">
+            AND <![CDATA[RECOMMEND_ID < #{lastIndex,jdbcType=VARCHAR}]]>
+        </if>
+        ORDER BY RECOMMEND_ID DESC limit #{count, jdbcType=INTEGER}
+    </select>
+
+    <select id="getUserRecommendCount" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(1) FROM TB_USER_SPORT_SOCIAL_RECOMMEND
+        WHERE USER_ID = #{userId,jdbcType=BIGINT}
+        AND <![CDATA[CREATE_TIME >= #{beginTime,jdbcType=TIMESTAMP}]]>
+        AND <![CDATA[CREATE_TIME <= #{endTime,jdbcType=TIMESTAMP}
+        ]]>
+    </select>
+
+    <select id="getUserSportSocialRecommendByDate" resultMap="userSportSocialRecommendMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SPORT_SOCIAL_RECOMMEND
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND <![CDATA[CREATE_TIME >= #{beginTime,jdbcType=TIMESTAMP}]]>
+        AND <![CDATA[CREATE_TIME <= #{endTime,jdbcType=TIMESTAMP}]]>
+        ORDER BY RECOMMEND_ID DESC limit #{count, jdbcType=INTEGER}
+    </select>
+
+    <select id="getUserRecentRecommend" resultMap="userSportSocialRecommendMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_SPORT_SOCIAL_RECOMMEND
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} ORDER BY CREATE_TIME DESC LIMIT #{count, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="userSportSocialRecommend">
+        INSERT INTO TB_USER_SPORT_SOCIAL_RECOMMEND(<include refid="Base_Column_List"/>)
+        VALUES (
+        #{recommendId,jdbcType=VARCHAR},
+        #{userId,jdbcType=BIGINT},#{lotteryCode,jdbcType=INTEGER},#{endTime,jdbcType=TIMESTAMP},
+        #{matchId,jdbcType=VARCHAR}, #{playType,jdbcType=INTEGER}, #{recommendInfo,jdbcType=VARCHAR},
+        #{itemId,jdbcType=INTEGER}, #{price,jdbcType=BIGINT}, #{baseOn,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR},
+        #{isRight,jdbcType=INTEGER}, #{isDistribute,jdbcType=INTEGER}, #{handicap,jdbcType=INTEGER}, #{awardAmount,jdbcType=INTEGER},
+        #{saleCount,jdbcType=INTEGER}, #{couponSaleCount,jdbcType=INTEGER}, #{recommendTitle,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR},
+        now(), now()
+        )
+    </insert>
+
+    <update id="update" parameterType="userSportSocialRecommend">
+        UPDATE TB_USER_SPORT_SOCIAL_RECOMMEND
+        SET PLAY_TYPE = #{playType,jdbcType=INTEGER},RECOMMEND_INFO =
+        #{recommendInfo,jdbcType=VARCHAR}, ITEM_ID = #{itemId,jdbcType=BIGINT}, PRICE = #{price,jdbcType=BIGINT},
+        BASE_ON = #{baseOn,jdbcType=VARCHAR}, REASON = #{reason,jdbcType=VARCHAR}, IS_RIGHT
+        = #{isRight,jdbcType=INTEGER},AWARD_AMOUNT = #{awardAmount,jdbcType=INTEGER},
+        IS_DISTRIBUTE = #{isDistribute,jdbcType=INTEGER},
+        RECOMMEND_TITLE = #{recommendTitle,jdbcType=VARCHAR}, REMARK = #{remark,jdbcType=VARCHAR},UPDATE_TIME =
+        now()
+        WHERE RECOMMEND_ID = #{recommendId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateSaleCount" parameterType="map">
+        UPDATE TB_USER_SPORT_SOCIAL_RECOMMEND
+        SET SALE_COUNT = #{saleCount,jdbcType=INTEGER}, COUPON_SALE_COUNT = #{couponSaleCount,jdbcType=INTEGER}
+        WHERE RECOMMEND_ID = #{recommendId,jdbcType=VARCHAR}
+    </update>
+</mapper>

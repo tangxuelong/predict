@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserNumberBook">
+    <resultMap id="userNumberBookMap" type="userNumberBook">
+        <result column="NUM_ID" property="numId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR"/>
+        <result column="NUM_TYPE" property="numType" jdbcType="INTEGER"/>
+        <result column="NUMS" property="nums" jdbcType="VARCHAR"/>
+        <result column="NUM_COUNT" property="numCount" jdbcType="INTEGER"/>
+        <result column="IF_AWARD" property="ifAward" jdbcType="INTEGER"/>
+        <result column="AWARD_DESC" property="awardDesc" jdbcType="VARCHAR"/>
+        <result column="IS_ENABLE" property="isEnable" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        NUM_ID, USER_ID, GAME_ID, PERIOD_ID, NUM_TYPE, NUMS, NUM_COUNT, IF_AWARD, AWARD_DESC, IS_ENABLE, CREATE_TIME
+    </sql>
+
+    <select id="getUserNumBookCount" parameterType="map" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM TB_USER_NUMBER_BOOK WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND
+         USER_ID=#{userId,jdbcType=BIGINT} AND IS_ENABLE = 1
+    </select>
+
+    <select id="getUserMostRomoteDateId" parameterType="map" resultType="java.lang.String">
+        SELECT NUM_ID FROM TB_USER_NUMBER_BOOK WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND
+        USER_ID=#{userId,jdbcType=BIGINT} AND IS_ENABLE = 1 ORDER BY CREATE_TIME limit 1
+    </select>
+
+    <select id="getCurrentPageLastPeriodId" resultType="java.lang.String" parameterType="map">
+        SELECT PERIOD_ID FROM TB_USER_NUMBER_BOOK WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND IS_ENABLE = 1
+        <if test="lastNumId!=null">
+            AND NUM_ID &lt; #{lastNumId, jdbcType=VARCHAR}
+        </if>
+        GROUP BY PERIOD_ID ORDER BY PERIOD_ID DESC limit #{periodSize, jdbcType=INTEGER}
+    </select>
+
+    <select id="getUserNumsByUserIdAndLastNumId" resultMap="userNumberBookMap" parameterType="map">
+        SELECT * FROM TB_USER_NUMBER_BOOK WHERE GAME_ID = #{gameId,jdbcType=BIGINT} AND
+        USER_ID = #{userId,jdbcType=BIGINT} AND IS_ENABLE = 1
+        <if test="lastNumId!=null">
+            AND NUM_ID &lt; #{lastNumId, jdbcType=VARCHAR}
+        </if>
+        <if test="periodId!=null">
+            AND PERIOD_ID &gt;= #{periodId, jdbcType=VARCHAR}
+        </if>
+        ORDER BY PERIOD_ID DESC, CREATE_TIME DESC
+    </select>
+
+    <select id="getUserNumsByUserId" resultMap="userNumberBookMap" parameterType="map">
+        SELECT * FROM TB_USER_NUMBER_BOOK WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND USER_ID =
+        #{userId, jdbcType=BIGINT} AND IS_ENABLE = 1 ORDER BY PERIOD_ID DESC
+    </select>
+
+    <select id="getOneTaleAllDataByPeriodId" resultMap="userNumberBookMap" parameterType="map">
+        SELECT * FROM TB_USER_NUMBER_BOOK WHERE GAME_ID = #{gameId, jdbcType=BIGINT} AND PERIOD_ID =
+        #{periodId, jdbcType=VARCHAR} AND IS_ENABLE = 1
+    </select>
+
+    <update id="updateUserNumEnable" parameterType="map">
+        UPDATE TB_USER_NUMBER_BOOK SET IS_ENABLE = #{isEnable, jdbcType=INTEGER} WHERE
+        NUM_ID = #{numId, jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateUserNumBookNumsAndAwardDesc" parameterType="map">
+        UPDATE TB_USER_NUMBER_BOOK SET NUMS = #{nums, jdbcType=VARCHAR}, AWARD_DESC= #{awardDesc, jdbcType=VARCHAR}
+        WHERE NUM_ID = #{numId, jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insert" parameterType="userNumberBook">
+        INSERT INTO TB_USER_NUMBER_BOOK (<include refid="Base_Column_List"/>)
+        VALUES (#{numId, jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{gameId,jdbcType=BIGINT},
+        #{periodId, jdbcType=VARCHAR}, #{numType, jdbcType=INTEGER}, #{nums, jdbcType=VARCHAR},
+        #{numCount, jdbcType=INTEGER}, #{ifAward, jdbcType=INTEGER}, #{awardDesc, jdbcType=VARCHAR},
+        #{isEnable, jdbcType=INTEGER}, now())
+    </insert>
+
+</mapper>

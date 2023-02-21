@@ -1,0 +1,44 @@
+<html>
+<head>
+    <title>智慧支付</title>
+    <script>
+
+    </script>
+</head>
+<body>
+<form method="post" action="https://wepay.jd.com/jdpay/saveOrder" id="batchForm">
+    <input name="version" type="hidden" id="version" value="V2.0"/><br/>
+    <input name="merchant" type="hidden" id="merchant" value="22294531"/><br/>
+    <input name="device" type="hidden" id="device" value="111"/><br/>
+    <input name="tradeNum" type="hidden" id="tradeNum" value="636295894581936326"/><br/>
+    <input name="tradeName" type="hidden" id="tradeName" value="商品1111"/><br/>
+    <input name="tradeDesc" type="hidden" id="tradeDesc" value="交易描述"/><br/>
+    <input name="tradeTime" type="hidden" id="tradeTime" value="20170505135738"/><br/>
+    <input name="amount" type="hidden" id="amount" value="1"/><br/>
+    <input name="currency" type="hidden" id="currency" value=" CNY "/><br/>
+    <input name="note" type="hidden" id="note" value="备注"/><br/>
+    <input name="callbackUrl" type="hidden" id="callbackUrl"
+           value=" http://10.13.81.116:63917/SuccessForm1.aspx "/><br/>
+    <input name="notifyUrl" type="hidden" id="notifyUrl"
+           value=" http://10.13.81.116:63917/AsynNotifyHandler.ashx "/><br/>
+    <input name="ip" type="hidden" id="ip" value="10.13.42.23"/><br/>
+    <input name="userType" type="hidden" id="userType" value="BIZ"/><br/>
+    <input name="userId" type="hidden" id="userId" value="123456"/><br/>
+    <input name="expireTime" type="hidden" id="expireTime" value="1000"/><br/>
+    <input name="orderType" type="hidden" id="orderType" value="1"/><br/>
+    <input name="industryCategoryCode" type="hidden" id="industryCategoryCode"/><br/>
+    <input name="specCardNo" type="hidden" id="specCardNo"/><br/>
+    <input name="specId" type="hidden" id="specId"/><br/>
+    <input name="specName" type="hidden" id="specName"/><br/>
+    <input type="hidden" name="goodsInfo"
+           value="[{'id':'12345','name':'iphone5','cat1':'abc','type':'GT01','price':'510000','num':'1'},
+    {'id':'23456','name':'iphone6','cat1':'abc','type':'GT01','price':'600000','num':'1'}]"/>
+    <input type="hidden" name="riskInfo " value="{'omId':'123456','omName':'必胜客**路店',
+            'omRt':'486094410000','omType':'004001','omAdd','北京市朝阳区**路**号'}"/>
+    <input name="sign" type="hidden" id="sign" value="V29xd6eK8vkTx9zLDLEWGxvshsNBJCkamEhCbV8VisXUKCWlVZp0P3MFjm40l8fSO2xlaykYNCwE
+c478k1GWCvOlBEcHGpFZSpP1J9aLNx8MloVKTIQgNDWMEHDy/Z1gUDyLhvfVpeWTpwGhOmYVM+ec
++Za0GTKKAAoOAFLD/Jw="/><br/>
+    <input type="submit" value="提交"/>
+</form>
+</body>
+</html>

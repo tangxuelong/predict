@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PurchaseOrderStatistic">
+    <resultMap id="purchaseOrderStatisticMap" type="purchaseOrderStatistic">
+        <result column="ORDER_CLASS" property="orderClass" jdbcType="INTEGER"/>
+        <result column="ORDER_TYPE" property="orderType" jdbcType="INTEGER"/>
+        <result column="STATISTIC_DATE" property="statisticDate" jdbcType="INTEGER"/>
+        <result column="ORDER_PERSON_COUNT" property="orderPersonCount" jdbcType="INTEGER"/>
+        <result column="PAY_PERSON_COUNT" property="payPersonCount" jdbcType="INTEGER"/>
+        <result column="FIRST_ORDER_PERSON_COUNT" property="firstOrderPersonCount" jdbcType="INTEGER"/>
+        <result column="FIRST_PAY_PERSON_COUNT" property="fisrtPayPersonCount" jdbcType="INTEGER"/>
+        <result column="ORDER_COUNT" property="orderCount" jdbcType="INTEGER"/>
+        <result column="PAY_COUNT" property="payCount" jdbcType="INTEGER"/>
+        <result column="TOTAL_ORDER_AMOUNT" property="totalOrderAmount" jdbcType="INTEGER"/>
+        <result column="TOTAL_PAY_AMOUNT" property="totalPayAmount" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ORDER_CLASS, ORDER_TYPE, STATISTIC_DATE, ORDER_PERSON_COUNT, PAY_PERSON_COUNT, FIRST_ORDER_PERSON_COUNT,
+        FIRST_PAY_PERSON_COUNT, ORDER_COUNT, PAY_COUNT, TOTAL_ORDER_AMOUNT, TOTAL_PAY_AMOUNT, CREATE_TIME
+    </sql>
+
+    <select id="getPurchaseOrderStatisticByTime" resultMap="purchaseOrderStatisticMap" parameterType="map">
+        SELECT * FROM TB_PURCHASE_ORDER_STATISTIC WHERE STATISTIC_DATE &gt;= #{beginTime, jdbcType=INTEGER} AND
+        STATISTIC_DATE &lt;= #{endTime, jdbcType=INTEGER} AND ORDER_CLASS = #{orderClass, jdbcType=INTEGER} ORDER BY
+        STATISTIC_DATE DESC
+    </select>
+
+    <insert id="insert" parameterType="purchaseOrderStatistic">
+        INSERT INTO TB_PURCHASE_ORDER_STATISTIC (<include refid="Base_Column_List"/>)
+        VALUES (#{orderClass, jdbcType=INTEGER}, #{orderType,jdbcType=INTEGER}, #{statisticDate,jdbcType=INTEGER},
+        #{orderPersonCount,jdbcType=INTEGER}, #{payPersonCount,jdbcType=INTEGER},
+        #{firstOrderPersonCount, jdbcType=INTEGER}, #{fisrtPayPersonCount,jdbcType=INTEGER},
+        #{orderCount, jdbcType=INTEGER}, #{payCount,jdbcType=INTEGER}, #{totalOrderAmount,jdbcType=INTEGER},
+        #{totalPayAmount,jdbcType=INTEGER} ,now())
+    </insert>
+
+</mapper>

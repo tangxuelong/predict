@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SportsRecommendOrderReport">
+    <resultMap id="sportsRecommendOrderReportMap" type="sportsRecommendOrderReport">
+        <result column="REPORT_DATE" property="reportDate" jdbcType="INTEGER"/>
+        <result column="WISDOM_ORDER_COUNT" property="wisdomOrderCount" jdbcType="INTEGER"/>
+        <result column="WISDOM_AMOUNT" property="wisdomAmount" jdbcType="BIGINT"/>
+        <result column="CASH_ORDER_COUNT" property="cashOrderCount" jdbcType="INTEGER"/>
+        <result column="CASH_AMOUNT" property="cashAmount" jdbcType="BIGINT"/>
+        <result column="COUPON_ORDER_COUNT" property="couponOrderCount" jdbcType="INTEGER"/>
+        <result column="COUPON_AMOUNT" property="couponAmount" jdbcType="BIGINT"/>
+        <result column="STATISTIC_FLAG" property="statisticFlag" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        REPORT_DATE, WISDOM_ORDER_COUNT, WISDOM_AMOUNT, CASH_ORDER_COUNT,CASH_AMOUNT, COUPON_ORDER_COUNT,
+        COUPON_AMOUNT, STATISTIC_FLAG, CREATE_TIME
+    </sql>
+
+    <select id="getSportsRecommendOrderReportByDate" resultMap="sportsRecommendOrderReportMap" resultType="map">
+        SELECT * FROM tb_sports_recommend_order_report
+        where  REPORT_DATE = #{date,jdbcType=INTEGER}
+    </select>
+
+    <select id="getAllSportsRecommendOrderReportByDate" resultMap="sportsRecommendOrderReportMap" resultType="map">
+        SELECT * FROM tb_sports_recommend_order_report
+        where 1=1
+        <if test="beginDate!=null">
+            and REPORT_DATE &gt;= #{beginDate,jdbcType=INTEGER}
+        </if>
+        <if test="endDate!=null">
+            and REPORT_DATE &lt;= #{endDate,jdbcType=INTEGER}
+        </if>
+        order by REPORT_DATE desc limit 100
+    </select>
+
+    <update id="update" parameterType="sportsRecommendOrderReport">
+      UPDATE tb_sports_recommend_order_report
+      SET WISDOM_ORDER_COUNT = #{wisdomOrderCount, jdbcType=INTEGER}, WISDOM_AMOUNT = #{wisdomAmount, jdbcType=BIGINT},
+      CASH_ORDER_COUNT = #{cashOrderCount, jdbcType=INTEGER}, CASH_AMOUNT =#{cashAmount, jdbcType=BIGINT},
+      COUPON_ORDER_COUNT = #{couponOrderCount, jdbcType=INTEGER}, COUPON_AMOUNT = #{couponAmount, jdbcType=BIGINT}
+      WHERE REPORT_DATE = #{reportDate,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="sportsRecommendOrderReport">
+        INSERT INTO tb_sports_recommend_order_report (<include refid="Base_Column_List"/>)
+        VALUES (#{reportDate, jdbcType=INTEGER}, #{wisdomOrderCount,jdbcType=BIGINT}, #{wisdomAmount,jdbcType=BIGINT},
+        #{cashOrderCount,jdbcType=INTEGER}, #{cashAmount,jdbcType=BIGINT}, #{couponOrderCount,jdbcType=INTEGER},
+        #{couponAmount,jdbcType=BIGINT}, #{statisticFlag,jdbcType=INTEGER}, now())
+    </insert>
+
+</mapper>

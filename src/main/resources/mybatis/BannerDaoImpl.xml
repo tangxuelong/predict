@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Banner">
+    <resultMap id="bannerMap" type="banner">
+        <result column="BANNER_ID" property="bannerId" jdbcType="INTEGER"/>
+        <result column="TITLE" property="title" jdbcType="VARCHAR"/>
+        <result column="IMG_URL" property="imgUrl" jdbcType="VARCHAR"/>
+        <result column="DETAIL_URL" property="detailUrl" jdbcType="VARCHAR"/>
+        <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="IS_DEL" property="isDel" jdbcType="INTEGER"/>
+        <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="ACTION_TYPE" property="actionType" jdbcType="INTEGER"/>
+        <result column="POSITION_TYPE" property="positionType" jdbcType="INTEGER"/>
+        <result column="EXCLUSIVE_CLIENT_ID" property="exclusiveClientId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        BANNER_ID, TITLE, IMG_URL, DETAIL_URL, START_TIME, END_TIME, IS_DEL, WEIGHT, GAME_ID, ACTION_TYPE,
+        POSITION_TYPE, EXCLUSIVE_CLIENT_ID
+    </sql>
+
+    <select id="getAllUsableBanners" resultMap="bannerMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_BANNER
+        ORDER BY WEIGHT DESC
+    </select>
+
+    <select id="getAllBanners" resultMap="bannerMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_BANNER
+        WHERE IS_DEL = 1
+        ORDER BY WEIGHT DESC
+    </select>
+
+    <insert id="insert" parameterType="banner">
+        INSERT INTO tb_banner(TITLE, IMG_URL, DETAIL_URL, START_TIME, END_TIME, IS_DEL, ACTION_TYPE, WEIGHT,
+        POSITION_TYPE, GAME_ID, EXCLUSIVE_CLIENT_ID)
+        VALUES (
+        #{title,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR},#{detailUrl,jdbcType=VARCHAR},
+        #{startTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP},#{isDel,jdbcType=INTEGER},
+        #{actionType,jdbcType=INTEGER},#{weight,jdbcType=INTEGER},#{positionType,jdbcType=INTEGER},
+        #{gameId,jdbcType=BIGINT}, #{exclusiveClientId, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!--<insert id="insert" parameterType="banner">
+        INSERT INTO TB_BANNER(BANNER_ID, TITLE, IMG_URL, DETAIL_URL, START_TIME, END_TIME, IS_DEL, WEIGHT, ACTION_TYPE)
+        VALUES (#{bannerId, jdbcType=INTEGER},#{title,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR},
+        #{detailUrl,jdbcType=VARCHAR}, #{isDel,jdbcType=INTEGER},#{weight, jdbcType=INTEGER},
+        #{actionType,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP})
+    </insert>-->
+
+    <update id="update" parameterType="banner">
+        UPDATE TB_BANNER
+        SET TITLE = #{title,jdbcType=VARCHAR}, IMG_URL = #{imgUrl,jdbcType=VARCHAR}, DETAIL_URL =
+        #{detailUrl,jdbcType=VARCHAR}, START_TIME = #{startTime,jdbcType=TIMESTAMP}, END_TIME = #{endTime,jdbcType=TIMESTAMP},
+        IS_DEL = #{isDel,jdbcType=INTEGER}, WEIGHT = #{weight,jdbcType=INTEGER}, ACTION_TYPE =
+        #{actionType,jdbcType=INTEGER}, GAME_ID = #{gameId,jdbcType=BIGINT},
+        POSITION_TYPE = #{positionType,jdbcType=BIGINT}, EXCLUSIVE_CLIENT_ID = #{exclusiveClientId, jdbcType=VARCHAR}
+        WHERE BANNER_ID = #{bannerId,jdbcType=INTEGER}
+    </update>
+</mapper>

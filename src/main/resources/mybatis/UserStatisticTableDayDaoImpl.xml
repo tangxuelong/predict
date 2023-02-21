@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserStatisticTableDay">
+    <resultMap id="userStatisticTableDayMap" type="userStatisticTableDay">
+        <result column="DATE_ID" property="dateId" jdbcType="INTEGER"/>
+        <result column="DEVICE_TOTAL_NUM" property="deviceTotalNum" jdbcType="INTEGER"/>
+        <result column="DEVICE_NEW_NUM" property="deviceNewNum" jdbcType="INTEGER"/>
+        <result column="DEVICE_DAY_ACTIVE_NUM" property="deviceDayActiveNum" jdbcType="INTEGER"/>
+        <result column="DEVICE_ANDROID_ACTIVE_NUM" property="deviceAndroidActiveNum" jdbcType="INTEGER"/>
+        <result column="DEVICE_IOS_ACTIVE_NUM" property="deviceIosActiveNum" jdbcType="INTEGER"/>
+        <result column="DEVICE_DAY_ACTIVE_HISTORY_NUM" property="deviceDayActiveHistoryNum" jdbcType="INTEGER"/>
+        <result column="USER_TOTAL_REGISTER_NUM" property="userTotalRegisterNum" jdbcType="INTEGER"/>
+        <result column="USER_NEW_NUM" property="userNewNum" jdbcType="INTEGER"/>
+        <result column="USER_DAY_ACTIVE_NUM" property="userDayActiveNum" jdbcType="INTEGER"/>
+        <result column="USER_ANDROID_ACTIVE_NUM" property="userAndroidActiveNum" jdbcType="INTEGER"/>
+        <result column="USER_IOS_ACTIVE_NUM" property="userIosActiveNum" jdbcType="INTEGER"/>
+        <result column="USER_DAY_VIP_ACTIVE_NUM" property="userDayVipActiveNum" jdbcType="INTEGER"/>
+        <result column="USER_DAY_PAY_NUM" property="userDayPayNum" jdbcType="INTEGER"/>
+        <result column="DAY_INCOME" property="dayIncome" jdbcType="INTEGER"/>
+        <result column="REMARK_INCOME" property="remarkIncome" jdbcType="INTEGER"/>
+        <result column="MAX_PAY" property="maxPay" jdbcType="INTEGER"/>
+        <result column="TOTAL_INCOME" property="totalIncome" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        DATE_ID, DEVICE_TOTAL_NUM, DEVICE_NEW_NUM, DEVICE_DAY_ACTIVE_NUM, DEVICE_ANDROID_ACTIVE_NUM,
+        DEVICE_IOS_ACTIVE_NUM, DEVICE_DAY_ACTIVE_HISTORY_NUM, USER_TOTAL_REGISTER_NUM, USER_NEW_NUM,
+        USER_DAY_ACTIVE_NUM, USER_ANDROID_ACTIVE_NUM, USER_IOS_ACTIVE_NUM, USER_DAY_VIP_ACTIVE_NUM,
+        USER_DAY_PAY_NUM, DAY_INCOME, REMARK_INCOME, MAX_PAY, TOTAL_INCOME, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserStatisticTableDayByPage" resultMap="userStatisticTableDayMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_STATISTIC_TABLE_DAY
+        ORDER BY DATE_ID DESC
+    </select>
+
+    <select id="getUserStatisticTableDayByDateId" resultMap="userStatisticTableDayMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_STATISTIC_TABLE_DAY
+        WHERE DATE_ID = #{dateId,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="userStatisticTableDay">
+        INSERT INTO TB_USER_STATISTIC_TABLE_DAY(<include refid="Base_Column_List"/>)
+        VALUES (
+        #{dateId,jdbcType=INTEGER}, #{deviceTotalNum,jdbcType=INTEGER}, #{deviceNewNum,jdbcType=INTEGER},
+        #{deviceDayActiveNum,jdbcType=INTEGER},
+        #{deviceAndroidActiveNum,jdbcType=INTEGER}, #{deviceIosActiveNum,jdbcType=INTEGER},
+        #{deviceDayActiveHistoryNum,jdbcType=INTEGER},
+        #{userTotalRegisterNum,jdbcType=INTEGER}, #{userNewNum,jdbcType=INTEGER}, #{userDayActiveNum,jdbcType=INTEGER},
+        #{userAndroidActiveNum,jdbcType=INTEGER}, #{userIosActiveNum,jdbcType=INTEGER},
+        #{userDayVipActiveNum,jdbcType=INTEGER},
+        #{userDayPayNum,jdbcType=INTEGER}, #{dayIncome,jdbcType=INTEGER}, #{remarkIncome,jdbcType=INTEGER},
+        #{maxPay,jdbcType=INTEGER},
+        #{totalIncome,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="userStatisticTableDay">
+        UPDATE TB_USER_STATISTIC_TABLE_DAY
+        SET DEVICE_TOTAL_NUM = #{deviceTotalNum,jdbcType=INTEGER}, DEVICE_NEW_NUM = #{deviceNewNum,jdbcType=INTEGER},
+        DEVICE_DAY_ACTIVE_NUM = #{deviceDayActiveNum,jdbcType=INTEGER},
+        DEVICE_ANDROID_ACTIVE_NUM = #{deviceAndroidActiveNum,jdbcType=INTEGER},DEVICE_IOS_ACTIVE_NUM =
+        #{deviceIosActiveNum,jdbcType=INTEGER},
+        DEVICE_DAY_ACTIVE_HISTORY_NUM = #{deviceDayActiveHistoryNum,jdbcType=INTEGER},
+        USER_TOTAL_REGISTER_NUM = #{userTotalRegisterNum,jdbcType=INTEGER}, USER_NEW_NUM =
+        #{userNewNum,jdbcType=INTEGER},
+        USER_DAY_ACTIVE_NUM = #{userDayActiveNum,jdbcType=INTEGER},
+        USER_ANDROID_ACTIVE_NUM = #{userAndroidActiveNum,jdbcType=INTEGER}, USER_IOS_ACTIVE_NUM =
+        #{userIosActiveNum,jdbcType=INTEGER},
+        USER_DAY_VIP_ACTIVE_NUM = #{userDayVipActiveNum,jdbcType=INTEGER},
+        USER_DAY_PAY_NUM = #{userDayPayNum,jdbcType=INTEGER}, DAY_INCOME = #{dayIncome,jdbcType=INTEGER},
+        REMARK_INCOME = #{remarkIncome,jdbcType=INTEGER}, MAX_PAY = #{maxPay,jdbcType=INTEGER},
+        TOTAL_INCOME = #{totalIncome,jdbcType=INTEGER}, UPDATE_TIME = now()
+        WHERE DATE_ID = #{dateId,jdbcType=INTEGER}
+    </update>
+</mapper>

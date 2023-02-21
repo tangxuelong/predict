@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserIdSequence">
+    <resultMap id="userIdSequenceMap" type="userIdSequence">
+        <result column="USER_ID_SEQ" property="userIdSeq" jdbcType="BIGINT"/>
+        <result column="STUB" property="stub" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID_SEQ, STUB
+    </sql>
+
+    <insert id="insertUserIdSeq" parameterType="userIdSequence">
+        <selectKey keyProperty="userIdSeq" resultType="java.lang.Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        replace into tb_user_id_sequence(stub) values (#{stub, jdbcType=VARCHAR})
+    </insert>
+</mapper>

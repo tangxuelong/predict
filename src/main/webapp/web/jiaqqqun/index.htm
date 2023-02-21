@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="apple-itunes-app" content="" id="appleURl"/>
+    <title>加入QQ群</title>
+    <link rel="stylesheet" href="res/a4e8d2d92df83dd8.css"/>
+    <base target="_blank"/>
+    <style>.hidden {
+        display: none;
+    }
+
+    .wx-share-png {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 999;
+    }</style>
+</head>
+<body ontouchstart="">
+<noscript>
+    <div id="noScript">请开启浏览器的Javascript功能，或使用支持javascript的浏览器访问</div>
+</noscript>
+<div id="_">
+    <div style="padding-top: 150px;">
+        <!--<section style="padding:0 0 0 0;margin:0 1rem 1.25rem 1rem;background-color:transparent">
+            <div class="imgBox">
+                <image src='https://ohduoklem.qnssl.com/zhihui.png'/>
+            </div>
+        </section>-->
+        <section style="color:#5d5d5d;background-color:transparent;padding:0 0 0 0;margin:0 1rem 1.25rem 1rem"
+                 class="p fs2 center bigLH"><p>加入足彩交流群：791986342<br>每日精选推单，共享足球盛宴</p></section>
+        <section style="color:#5d5d5d;background-color:transparent;padding:0 0 0 0;margin:0 1rem 1.25rem 1rem"
+                 class="p fs2 left indent bigLH">
+            <p>
+                <a target="_blank"
+                   href="javascript:openNativePage()">
+                    <img border="0" src="http://7vzspj.com2.z0.glb.clouddn.com/WX20170904-105649@2x.png" alt="智慧预测交流群"
+                         title="智慧预测交流群">
+                </a>
+            </p>
+        </section>
+        <section style="color:#5d5d5d;background-color:transparent;padding:0 0 0 0;margin:13.333rem 1rem 1.25rem 1rem"
+                 class="p fs2 left indent bigLH"><p id="btnTxt" style="text-align: center;text-indent: 0;"></p>
+        </section>
+    </div>
+</div>
+</body>
+<script src="//cdn.bootcss.com/jquery/3.0.0-beta1/jquery.js"></script>
+<script src="res/429fdfd53aabde3c.js"></script>
+<script>
+    $.ajax({
+        type: "post",
+        url: "/attach/communicationWithOutSign",
+        data: {
+            'type': 1
+        },
+        dataType: "json",
+        success: function (data) {
+            $('#btnTxt').html(data.data.qqShow.btnText);
+        }
+    })
+    $(function () {
+        $("#wx-share-png").click(function (e) {
+            $(this).addClass("hidden")
+        });
+    });
+    var openNativePage = function () {
+        $.ajax({
+            type: "post",
+            url: "/attach/communicationWithOutSign",
+            dataType: "json",
+            success: function (data) {
+                if (typeof(window.webkit) != "undefined") {
+                    window.webkit.messageHandlers.goNative.postMessage({body: data.data.qqShow.url})
+                } else {
+                    if (typeof(webViewNative) != "undefined") {
+                        webViewNative.goNative(data.data.qqShow.url)
+                    } else {
+                        window.location.href = data.data.qqShow.url
+                    }
+                }
+            }
+        })
+
+    };
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?63bddc67b59d3358e5ead1bdd5491123";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();</script>
+</html>

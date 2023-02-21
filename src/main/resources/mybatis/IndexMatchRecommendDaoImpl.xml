@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IndexMatchRecommend">
+    <resultMap id="indexMatchRecommendMap" type="indexMatchRecommend">
+        <result column="MATCH_ID" property="matchId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="RECOMMEND_ID" property="recommendId" jdbcType="VARCHAR"/>
+        <result column="IS_RANK" property="isRank" jdbcType="INTEGER"/>
+        <result column="RANK_TIME" property="rankTime" jdbcType="TIMESTAMP"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        MATCH_ID, USER_ID, RECOMMEND_ID, IS_RANK, RANK_TIME, REMARK,
+        CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getRecommendUserByMatchId" resultMap="indexMatchRecommendMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_INDEX_MATCH_RECOMMEND
+        WHERE MATCH_ID = #{matchId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getAllWaitCalculateRecommend" resultMap="indexMatchRecommendMap">
+        SELECT * FROM TB_INDEX_MATCH_RECOMMEND WHERE IS_RANK IS NULL
+    </select>
+
+    <select id="getRecommendIds" resultMap="indexMatchRecommendMap" parameterType="map">
+        SELECT * FROM TB_INDEX_MATCH_RECOMMEND WHERE MATCH_ID = #{matchId,jdbcType=VARCHAR}
+        <if test="lastIndex!=null">
+            and RECOMMEND_ID &lt;= #{lastIndex, jdbcType=VARCHAR}
+        </if>
+        order by CREATE_TIME desc limit #{count, jdbcType=INTEGER}
+    </select>
+
+    <select id="slaveGetIndexMatchByTime" parameterType="map" resultMap="indexMatchRecommendMap">
+        select * from TB_INDEX_MATCH_RECOMMEND where CREATE_TIME &gt;= #{createTime, jdbcType=TIMESTAMP} and IS_RANK is
+        not null
+    </select>
+
+    <select id="slaveGetAllRecommendUserId" resultType="java.lang.Long">
+        select distinct(USER_ID) from TB_INDEX_MATCH_RECOMMEND
+    </select>
+
+    <select id="getMatchPredictCount" resultType="java.lang.Integer" parameterType="map">
+        select count(1) from TB_INDEX_MATCH_RECOMMEND where MATCH_ID = #{matchId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="indexMatchRecommend">
+        INSERT INTO TB_INDEX_MATCH_RECOMMEND(
+        <include refid="Base_Column_List"/>
+        )
+        VALUES (
+        #{matchId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{recommendId,jdbcType=VARCHAR},
+        #{isRank,jdbcType=INTEGER}, #{rankTime,jdbcType=TIMESTAMP},
+        #{remark,jdbcType=VARCHAR},now(), now()
+        )
+    </insert>
+
+    <update id="update" parameterType="indexMatchRecommend">
+        UPDATE TB_INDEX_MATCH_RECOMMEND
+        SET IS_RANK = #{isRank,jdbcType=INTEGER}, RANK_TIME = now(), UPDATE_TIME = now()
+        WHERE MATCH_ID = #{matchId,jdbcType=VARCHAR} AND USER_ID = #{userId,jdbcType=BIGINT}
+        AND RECOMMEND_ID = #{recommendId,jdbcType=VARCHAR}
+    </update>
+</mapper>

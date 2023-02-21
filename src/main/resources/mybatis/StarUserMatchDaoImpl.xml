@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StarUserMatch">
+    <resultMap id="starUserMatchMap" type="starUserMatch">
+        <result column="ACTIVITY_ID" property="activityId" jdbcType="INTEGER"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="MATCH_ID" property="matchId" jdbcType="INTEGER"/>
+        <result column="IS_RIGHT" property="isRight" jdbcType="INTEGER"/>
+        <result column="AWARD" property="award" jdbcType="INTEGER"/>
+        <result column="MATCH_TIME" property="matchTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        ACTIVITY_ID, USER_ID, MATCH_ID, IS_RIGHT, AWARD, MATCH_TIME
+    </sql>
+
+    <select id="getStarUserMatchByUniKey" resultMap="starUserMatchMap" parameterType="map">
+        select * from tb_star_user_match where ACTIVITY_ID = #{activityId, jdbcType=INTEGER} and USER_ID =
+        #{userId, jdbcType=BIGINT} and MATCH_ID = #{matchId, jdbcType=INTEGER}
+    </select>
+
+    <select id="getNeedBuildListStarUserMatch" resultMap="starUserMatchMap" parameterType="map">
+        select * from tb_star_user_match where ACTIVITY_ID = #{activityId, jdbcType=INTEGER} and USER_ID =
+        #{userId, jdbcType=BIGINT} and AWARD is not null order by MATCH_TIME desc limit #{count, jdbcType=INTEGER}
+    </select>
+
+    <select id="getNeedBuildListStarUserId" resultType="map" parameterType="map">
+        select USER_ID, count(1) as num from tb_star_user_match where ACTIVITY_ID = #{activityId, jdbcType=INTEGER}
+        group by USER_ID having num >= #{count, jdbcType=INTEGER}
+    </select>
+
+    <update id="updateIsRightAndAward" parameterType="map">
+        update tb_star_user_match set IS_RIGHT =#{isRight, jdbcType=INTEGER}, AWARD = #{award, jdbcType=INTEGER}
+        where ACTIVITY_ID = #{activityId, jdbcType=INTEGER} and USER_ID =#{userId, jdbcType=BIGINT} and MATCH_ID =
+        #{matchId, jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="map">
+        insert into tb_star_user_match (
+        <include refid="Base_Column"/>
+        ) values (#{activityId, jdbcType=INTEGER},
+        #{userId, jdbcType=BIGINT}, #{matchId, jdbcType=INTEGER}, #{isRight, jdbcType=INTEGER},
+        #{award, jdbcType=INTEGER}, #{matchTime, jdbcType=TIMESTAMP})
+    </insert>
+
+</mapper>

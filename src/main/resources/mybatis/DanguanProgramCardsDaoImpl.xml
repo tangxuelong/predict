@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DanguanProgramCards">
+    <resultMap id="danguanProgramCardsMap" type="danguanProgramCards">
+        <result column="CARD_ID" property="cardId" jdbcType="INTEGER"/>
+        <result column="CARD_NAME" property="cardName" jdbcType="VARCHAR"/>
+        <result column="CARD_DESC" property="cardDesc" jdbcType="VARCHAR"/>
+        <result column="IMG_URL" property="imgUrl" jdbcType="VARCHAR"/>
+        <result column="ORIGIN_PRICE" property="originPrice" jdbcType="BIGINT"/>
+        <result column="PRICE" property="price" jdbcType="BIGINT"/>
+        <result column="TIMES" property="times" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        CARD_ID, CARD_NAME, CARD_DESC, IMG_URL, ORIGIN_PRICE, PRICE, TIMES, REMARK,
+        CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getDanguanProgramCards" resultMap="danguanProgramCardsMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_DANGUAN_PROGRAM_CARDS
+    </select>
+
+    <select id="getDanguanProgramCardByCardId" resultMap="danguanProgramCardsMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_DANGUAN_PROGRAM_CARDS
+        WHERE CARD_ID = #{cardId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="danguanProgramCards">
+        INSERT INTO TB_DANGUAN_PROGRAM_CARDS(<include refid="Base_Column_List"/>)
+        VALUES (
+        #{cardId,jdbcType=INTEGER}, #{cardName,jdbcType=VARCHAR},#{cardDesc,jdbcType=VARCHAR},
+        #{imgUrl,jdbcType=VARCHAR},#{originPrice,jdbcType=BIGINT},#{price,jdbcType=BIGINT},
+        #{times,jdbcType=INTEGER},
+        #{remark,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="danguanProgramCards">
+        UPDATE TB_DANGUAN_PROGRAM_CARDS
+        SET CARD_NAME = #{cardName,jdbcType=VARCHAR},CARD_DESC = #{cardDesc,jdbcType=VARCHAR},
+        IMG_URL = #{imgUrl,jdbcType=VARCHAR},ORIGIN_PRICE = #{originPrice,jdbcType=BIGINT},PRICE =
+        #{price,jdbcType=BIGINT},
+        TIMES = #{times,jdbcType=INTEGER},
+        REMARK = #{remark,jdbcType=VARCHAR}, UPDATE_TIME = now()
+        WHERE CARD_ID = #{cardId,jdbcType=INTEGER}
+    </update>
+</mapper>

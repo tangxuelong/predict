@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SocialUserFans">
+    <resultMap id="socialUserFansMap" type="socialUserFans">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="FANS_USER_ID" property="fansUserId" jdbcType="BIGINT"/>
+        <result column="FANS_TYPE" property="fansType" jdbcType="INTEGER"/>
+        <result column="IS_FANS" property="isFans" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, FANS_USER_ID, FANS_TYPE, IS_FANS, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserFansListByPage" resultMap="socialUserFansMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_SOCIAL_USER_FANS
+        where USER_ID = #{userId,jdbcType=BIGINT} AND FANS_TYPE =#{fansType, jdbcType=INTEGER} AND IS_FANS = 1 ORDER BY
+        CREATE_TIME DESC
+    </select>
+
+    <select id="getUserFans" resultMap="socialUserFansMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from TB_SOCIAL_USER_FANS
+        where USER_ID = #{userId,jdbcType=BIGINT} AND FANS_USER_ID = #{fansUserId,jdbcType=BIGINT} AND FANS_TYPE
+        =#{fansType, jdbcType=INTEGER}
+    </select>
+
+    <select id="getUserFansUserId" resultType="java.lang.Long" parameterType="map">
+        SELECT FANS_USER_ID FROM TB_SOCIAL_USER_FANS WHERE USER_ID = #{userId,jdbcType=BIGINT} AND FANS_TYPE
+        =#{fansType, jdbcType=INTEGER} AND IS_FANS = 1
+    </select>
+
+    <insert id="insert" parameterType="socialUserFans">
+        INSERT INTO TB_SOCIAL_USER_FANS
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{userId,jdbcType=BIGINT},
+        #{fansUserId,jdbcType=BIGINT}, #{fansType, jdbcType=INTEGER}, #{isFans,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="socialUserFans">
+        UPDATE TB_SOCIAL_USER_FANS SET IS_FANS = #{isFans,jdbcType=INTEGER},
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND FANS_USER_ID = #{fansUserId,jdbcType=BIGINT} AND FANS_TYPE
+        =#{fansType, jdbcType=INTEGER}
+    </update>
+</mapper>

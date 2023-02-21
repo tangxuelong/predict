@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserResonanceLog">
+    <resultMap id="userResonanceLogMap" type="userResonanceLog">
+        <result column="RESONANCE_LOG_ID" property="resonanceLogId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="GAME_ID" property="gameId" jdbcType="BIGINT"/>
+        <result column="START_PERIOD" property="startPeriod" jdbcType="INTEGER"/>
+        <result column="LAST_PERIOD" property="lastPeriod" jdbcType="INTEGER"/>
+        <result column="PAY_AMOUNT" property="payAmount" jdbcType="BIGINT"/>
+        <result column="AMOUNT" property="amount" jdbcType="BIGINT"/>
+        <result column="IS_PAY" property="isPay" jdbcType="INTEGER"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_column">
+        RESONANCE_LOG_ID, USER_ID, GAME_ID, START_PERIOD, LAST_PERIOD, PAY_AMOUNT, AMOUNT, IS_PAY, STATUS, CREATE_TIME
+    </sql>
+
+    <select id="getUserResonanceLogByPk" parameterType="map" resultMap="userResonanceLogMap">
+        SELECT * FROM TB_USER_RESONANCE_LOG WHERE RESONANCE_LOG_ID = #{resonanceLogId, jdbcType=VARCHAR} AND STATUS = 0
+    </select>
+
+    <select id="getUserResonanceLogByUnique" parameterType="map" resultMap="userResonanceLogMap">
+        SELECT * FROM TB_USER_RESONANCE_LOG WHERE USER_ID = #{userId, jdbcType=BIGINT} AND GAME_ID =
+        #{gameId, jdbcType=BIGINT} AND START_PERIOD =#{startPeriod, jdbcType=INTEGER} AND LAST_PERIOD =
+        #{lastPeriod, jdbcType=INTEGER} AND AMOUNT = #{amount, jdbcType=BIGINT} AND STATUS = 0
+    </select>
+
+    <select id="getRepeatUserResonanceLog" resultMap="userResonanceLogMap" parameterType="map">
+        SELECT * FROM TB_USER_RESONANCE_LOG WHERE USER_ID = #{userId, jdbcType=BIGINT} AND  GAME_ID =
+        #{gameId, jdbcType=BIGINT} AND AMOUNT = #{amount, jdbcType=BIGINT} AND LAST_PERIOD &gt;=
+        #{beginPeriod, jdbcType=INTEGER} AND START_PERIOD &lt; #{beginPeriod, jdbcType=INTEGER} AND STATUS = 0
+        limit 1
+    </select>
+
+    <update id="updateUserPayStatus" parameterType="map">
+        UPDATE TB_USER_RESONANCE_LOG SET IS_PAY = #{setPayStatus, jdbcType=INTEGER} WHERE RESONANCE_LOG_ID =
+        #{resonanceLogId, jdbcType=VARCHAR} AND STATUS = 0
+    </update>
+
+    <update id="updateUserResonanceLogStatus" parameterType="map">
+        UPDATE TB_USER_RESONANCE_LOG SET STATUS = #{setStatus, jdbcType=INTEGER} WHERE STATUS =
+        #{originStatus, jdbcType=INTEGER} AND RESONANCE_LOG_ID = #{resonanceLogId, jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insert" parameterType="map">
+        INSERT INTO TB_USER_RESONANCE_LOG (<include refid="Base_column"/>) VALUES
+        (#{resonanceLogId, jdbcType=VARCHAR}, #{userId, jdbcType=BIGINT}, #{gameId, jdbcType=BIGINT},
+        #{startPeriod, jdbcType=INTEGER}, #{lastPeriod, jdbcType=INTEGER}, #{payAmount, jdbcType=BIGINT},
+        #{amount, jdbcType=BIGINT}, #{isPay, jdbcType=INTEGER}, #{status, jdbcType=INTEGER}, now())
+    </insert>
+
+</mapper>

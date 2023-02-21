@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MobileUser">
+    <resultMap id="mobileUserMap" type="mobileUser">
+        <result column="MOBILE" property="mobile" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        MOBILE, USER_ID, CREATE_TIME
+    </sql>
+
+    <select id="getUserIdByMobile" resultType="java.lang.Long" parameterType="map">
+        select user_id
+        from TB_MOBILE_USER
+        where mobile = #{mobile,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="mobileUser">
+        INSERT INTO TB_MOBILE_USER
+        (<include refid="Base_Column_List"/>)
+        VALUES (#{mobile,jdbcType=VARCHAR},
+        #{userId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+</mapper>

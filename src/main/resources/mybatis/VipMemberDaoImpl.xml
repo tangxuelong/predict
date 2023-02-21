@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="VipMember">
+    <resultMap id="vipMemberMap" type="vipMember">
+        <result column="VIP_ID" property="vipId" jdbcType="VARCHAR"/>
+        <result column="VIP_LEVEL" property="vipLevel" jdbcType="INTEGER"/>
+        <result column="VIP_TYPE" property="vipType" jdbcType="INTEGER"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="BEGIN_TIME" property="beginTime" jdbcType="TIMESTAMP"/>
+        <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        VIP_ID, VIP_LEVEL, VIP_TYPE, USER_ID, STATUS, BEGIN_TIME, END_TIME, CREATE_TIME
+    </sql>
+
+    <select id="getVipMemberByUserId" resultMap="vipMemberMap" parameterType="map">
+        SELECT * FROM TB_VIP_MEMBER WHERE USER_ID = #{userId,jdbcType=BIGINT} AND VIP_TYPE = #{vipType,jdbcType=INTEGER}
+        <if test="isLock==true">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <select id="getVipMemberByExpireDate" resultMap="vipMemberMap" parameterType="map">
+        SELECT * FROM TB_VIP_MEMBER WHERE END_TIME = #{date,jdbcType=TIMESTAMP}
+    </select>
+
+    <update id="updateUserVipStatus" parameterType="map">
+        UPDATE TB_VIP_MEMBER SET STATUS = #{status,jdbcType=INTEGER}
+        <if test="beginTime!=null">
+            , BEGIN_TIME = #{beginTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endTime!=null">
+            , END_TIME = #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND VIP_TYPE = #{vipType,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="vipMember">
+        INSERT INTO TB_VIP_MEMBER (<include refid="Base_Column_List"/>)
+        VALUES (#{vipId, jdbcType=VARCHAR}, #{vipLevel,jdbcType=INTEGER}, #{vipType,jdbcType=INTEGER},
+        #{userId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{beginTime,jdbcType=TIMESTAMP},
+        #{endTime,jdbcType=TIMESTAMP}, now())
+    </insert>
+
+</mapper>

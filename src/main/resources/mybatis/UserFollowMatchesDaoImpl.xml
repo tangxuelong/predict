@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserFollowMatches">
+    <resultMap id="userFollowMatchesMap" type="userFollowMatches">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="MATCH_ID" property="matchId" jdbcType="VARCHAR"/>
+        <result column="FOLLOW_STATUS" property="followStatus" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, MATCH_ID, FOLLOW_STATUS, REMARK, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserFollowMatchesByUserId" resultMap="userFollowMatchesMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_FOLLOW_MATCHES
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} ORDER BY CREATE_TIME
+    </select>
+
+    <select id="getUserFollowMatchByUserIdAndUserId" resultMap="userFollowMatchesMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_FOLLOW_MATCHES
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND MATCH_ID = #{matchId,jdbcType=VARCHAR}
+        <if test="isLock == true">
+            for update
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="userFollowMatches">
+        INSERT INTO TB_USER_FOLLOW_MATCHES(<include refid="Base_Column_List"/>)
+        VALUES (
+        #{userId,jdbcType=BIGINT}, #{matchId,jdbcType=VARCHAR}, #{followStatus,jdbcType=INTEGER},
+        #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="userFollowMatches">
+        UPDATE TB_USER_FOLLOW_MATCHES
+        SET FOLLOW_STATUS = #{followStatus,jdbcType=INTEGER},  REMARK = #{remark,jdbcType=VARCHAR}, UPDATE_TIME = now()
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND MATCH_ID = #{matchId,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserVipProgram">
+    <resultMap id="userVipProgramMap" type="userVipProgram">
+        <result column="PRE_PAY_ID" property="prePayId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="PROGRAM_ID" property="programId" jdbcType="VARCHAR"/>
+        <result column="IS_PAY" property="isPay" jdbcType="INTEGER"/>
+        <result column="PAY_TYPE" property="payType" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, PROGRAM_ID, PRE_PAY_ID, IS_PAY, PAY_TYPE, CREATE_TIME,
+        UPDATE_TIME
+    </sql>
+
+    <select id="getUserVipProgramByPk" parameterType="map" resultMap="userVipProgramMap">
+        select * from TB_USER_VIP_PROGRAM where PRE_PAY_ID = #{prePayId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getUserVipProgramByUnkey" parameterType="map" resultMap="userVipProgramMap">
+        select * from TB_USER_VIP_PROGRAM where USER_ID = #{userId,jdbcType=BIGINT} and PROGRAM_ID=
+        #{programId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getUserVipProgram" resultMap="userVipProgramMap" parameterType="map">
+		select * from TB_USER_VIP_PROGRAM where USER_ID = #{userId,jdbcType=BIGINT}
+	</select>
+
+    <update id="update" parameterType="map">
+        UPDATE TB_USER_VIP_PROGRAM
+        SET PROGRAM_ID = #{programId,jdbcType=VARCHAR}, IS_PAY = #{isPay,jdbcType=INTEGER},
+         PAY_TYPE = #{payType,jdbcType=VARCHAR}, UPDATE_TIME = now()
+        WHERE PRE_PAY_ID = #{prePayId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updatePayedStatus" parameterType="map">
+        UPDATE TB_USER_VIP_PROGRAM
+        SET IS_PAY = #{setPayStatus,jdbcType=INTEGER}
+        WHERE PRE_PAY_ID = #{prePayId,jdbcType=VARCHAR} and IS_PAY = #{oldPayStatus,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="userVipProgram">
+        INSERT INTO TB_USER_VIP_PROGRAM (<include refid="Base_Column_List"/>)
+        VALUES (#{userId,jdbcType=BIGINT}, #{programId,jdbcType=VARCHAR}, #{prePayId,jdbcType=VARCHAR},
+        #{isPay,jdbcType=INTEGER}, #{payType,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+</mapper>

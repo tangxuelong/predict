@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>智慧彩票预测</title>
+    <meta name="description"
+          content="科学的彩票预测分析工具">
+    <meta name="Keywords"
+          content="双色球, 六合心水, 六合彩下注, 体彩, 下注, 福彩, 投注, 体彩官网, 彩票软件, 开奖大全, 双色球投注, 大乐透, 彩票预测, 双色球走势, 中奖, 福利彩票, 彩票购买, 中国彩票, 双色球分析, 彩票计划, 买彩票, 旺彩, 双色球开奖">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+    Remove this if you use the .htaccess -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+</head>
+
+<body>
+<div>
+</div>
+<script>
+    var url = {
+        open: 'mjLottery://mjNative',
+        down: "http://a.app.qq.com/o/simple.jsp?pkgname=com.mjanroidlottery",
+        WX: "http://a.app.qq.com/o/simple.jsp?pkgname=com.mjanroidlottery",
+        IOS: "https://t.mojieai.com/web/qybios/index.html"
+    };
+
+    //window.location.href = "";
+    var ua = navigator.userAgent.toLowerCase();
+    //alert(ua);
+    window.location.href = url.open;
+
+    function download() {
+        if (/iphone|ipod|ipad/.test(ua)) {
+            window.location.href = url.IOS;
+        } else {
+            window.location.href = url.down;
+        }
+    }
+
+    setTimeout(download(), 1000);
+
+
+    var _vds = _vds || [];
+    window._vds = _vds;
+    (function () {
+        _vds.push(['setAccountId', 'a84b517d69bd1b0c']);
+        (function () {
+            var vds = document.createElement('script');
+            vds.type = 'text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'assets.growingio.com/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+        })();
+    })();
+
+</script>
+</body>
+</html>

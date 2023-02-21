@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:jdbc.properties</value>
+                <value>classpath:config.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <import resource="dataSource.xml"/>
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com.mojieai.predict.*"/>
+    <aop:aspectj-autoproxy/>
+
+    <bean id="iniCache" class="com.mojieai.predict.cache.IniCache" init-method="init"/>
+    <bean id="activityIniCache" class="com.mojieai.predict.cache.ActivityIniCache" init-method="init"/>
+    <bean id="payChannelInfoCache" class="com.mojieai.predict.cache.PayChannelInfoCache" init-method="init"/>
+    <bean id="payClientChannelCache" class="com.mojieai.predict.cache.PayClientChannelCache" init-method="init"/>
+    <bean id="payClientVersionControlCache" class="com.mojieai.predict.cache.PayClientVersionControlCache"
+          init-method="init"/>
+    <bean id="gameCache" class="com.mojieai.predict.cache.GameCache" init-method="init"/>
+    <bean id="awardInfoCache" class="com.mojieai.predict.cache.AwardInfoCache" init-method="init"
+          depends-on="gameCache"/>
+    <bean id="vipPriceCache" class="com.mojieai.predict.cache.VipPriceCache" init-method="init"/>
+    <bean id="signRewardCache" class="com.mojieai.predict.cache.SignRewardCache" init-method="init"/>
+    <bean id="buttonOrderCache" class="com.mojieai.predict.cache.ButtonOrderCache" init-method="init"/>
+    <bean id="titleCache" class="com.mojieai.predict.cache.TitleCache" init-method="init"/>
+    <bean id="socialLevelIntegralCache" class="com.mojieai.predict.cache.SocialLevelIntegralCache" init-method="init"/>
+
+    <bean id="periodCache" class="com.mojieai.predict.cache.PeriodCache" init-method="init" depends-on="gameCache"/>
+    <bean id="bannerCache" class="com.mojieai.predict.cache.BannerCache" init-method="init"/>
+    <bean id="socialRobotCache" class="com.mojieai.predict.cache.SocialRobotCache" init-method="init"/>
+    <bean id="festivalConstant" class="com.mojieai.predict.constant.FestivalConstant" init-method="init"
+          depends-on="iniCache"/>
+    <bean id="asyncHttpClientManager" class="com.mojieai.predict.service.httpasync.AsyncHttpClientBean"
+          init-method="init"/>
+    <bean id="redisSubscribeManager" class="com.mojieai.predict.redis.refresh.RedisSubscribeManager" init-method="init"
+          depends-on="springContextHolder"/>
+    <bean id="updateDeviceCoordinator" class="com.mojieai.predict.service.cron.UpdateDeviceCoordinator"
+          init-method="init"/>
+    <bean id="flowListCoordinator" class="com.mojieai.predict.service.cron.FlowListCoordinator"
+          init-method="init"/>
+    <bean id="" class="com.mojieai.predict.cache.BankCache" init-method="init"></bean>
+    <!-- 以静态变量保存Spring ApplicationContext 方便获取 -->
+    <bean id="springContextHolder" class="com.mojieai.predict.util.SpringContextHolder" lazy-init="false"/>
+    <!-- transaction manager, use DataSourceTransactionManager -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--  zk lock config-->
+    <bean id="ZKConf" class="com.mojieai.predict.zk.ZkConf">
+        <property name="server" value="${zkServer}"/>
+    </bean>
+    <bean id="zkClusterSyncProvider" class="com.mojieai.predict.zk.client.impl.ZKClusterSyncProvider">
+        <property name="zkConf" ref="ZKConf"/>
+    </bean>
+    <bean id="zKClusterBeanPostProcessor" class="com.mojieai.predict.zk.client.impl.ZKClusterBeanPostProcessor">
+        <property name="clusterSyncProvider" ref="zkClusterSyncProvider"/>
+    </bean>
+    <!-- ScheduleJobDetail -->
+    <bean id="cronScheduleJob"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="cronScheduleJobDetail"/>
+        <property name="targetMethod" value="cronScheduleInit"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <!-- Trigger jobs -->
+    <bean id="cronScheduleTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="cronScheduleJob"/>
+        <property name="cronExpression">
+            <value>0/5 * * * * ?</value>
+        </property>
+    </bean>
+    <!-- Cron jobs -->
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronScheduleTaskTrigger"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 事务控制   -->
+    <tx:annotation-driven transaction-manager="txManager"/>
+</beans>

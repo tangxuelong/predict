@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>会员免费送</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport"/>
+    <meta name="format-detection" content="telephone=no">
+</head>
+<style>
+   *{
+       margin: 0;
+       padding: 0;
+       background-color: #2E082F;
+    }
+    body img {
+        display: block;
+        width: 100%;
+    }
+    body p{
+        margin-left: 10px;
+        margin-right: 11px;
+        margin-top: 27px;
+        margin-bottom: 10px;
+        color: #fff;
+        font-size: 14px;
+        line-height: 25px;
+
+    }
+    .pay-but{
+        width: 350px;
+        height: 44px;
+        margin: 0 auto;
+        text-align: center;
+        line-height: 44px;
+        border-radius: 23px;
+        font-weight: 500;
+        background-color: #9920FF;
+        color: #fff;
+        display: block;
+        margin-top: 13px;
+        margin-bottom: 13px;
+    }
+    .link{
+        width: 94%;
+        height: 0;
+        border-top: 1px dashed  rgba(255,255,255,1);
+        opacity: 0.5;
+        margin: 0 auto;
+        margin-bottom: 35px;
+    }
+</style>
+<body>
+    <img src="https://sportsimg.mojieai.com/zhPayExplain_02.png" alt="">
+    <img src="https://sportsimg.mojieai.com/zhPayExplain_03.png" alt="">
+    <img src="https://sportsimg.mojieai.com/zhPayExplain_04.png" alt="">
+    <p style="margin-bottom: 22px">
+        若您的智慧app尚未有这两种支付渠道，请您将智慧app
+        的版本升级至最新的4.6.2版本。</br>
+        安卓升级：【我的】→【更多】→【检查更新】</br>
+        苹果升级：【退出智慧】→【重新打开】→【点升级弹窗】
+        →【按照页面提示进行升级】
+
+    </p>
+    <div class="link"></div>
+    <p style="margin-bottom: 37px">
+        会员派发时间：</br>
+        使用京东或者易宝支付后，第二天24点前，免费赠送的
+        会员会派发到账
+    </p>
+    <p style="margin-bottom: 106px">
+        注意事项：</br>
+        · 仅第一次使用京东或者易宝支付可享受送会员福利，京东
+        易宝不重复，即使用京东支付后再使用易宝支付，只记第
+        一次京东支付的奖励</br>
+        · 赠送的会员包含足彩跟数字彩，例如赠送3天会员，实际
+        获得3天足彩会员以及3天数字彩会员
+
+
+    </p>
+    <div style="background-color: #000000d6;position: fixed;bottom: 0;width: 100%" onclick="goPay()">
+        <div class="pay-but">充值1块钱，得12元会员>></div>
+    </div>
+
+
+</body>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="config.js?v=23131"></script>
+<script>
+    function goPay() {
+        openNativePage('mjlottery://mjnative?page=wisdomCoin');
+    }
+</script>
+</html>

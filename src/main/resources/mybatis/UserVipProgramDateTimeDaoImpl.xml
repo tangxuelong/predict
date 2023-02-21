@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserVipProgramDateTime">
+    <resultMap id="userVipProgramDateTimeMap" type="userVipProgramDateTime">
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="DATE_ID" property="dateId" jdbcType="VARCHAR"/>
+        <result column="TIMES" property="times" jdbcType="INTEGER"/>
+        <result column="USE_TIMES" property="useTimes" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        USER_ID, DATE_ID, TIMES, USE_TIMES, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="getUserVipProgramTimes" resultMap="userVipProgramDateTimeMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM TB_USER_VIP_PROGRAM_DATE_TIME
+        WHERE USER_ID = #{userId,jdbcType=BIGINT}
+        AND DATE_ID = #{dateId,jdbcType=VARCHAR}
+        <if test="isLock == true">
+            for update
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="userVipProgramDateTime">
+        INSERT INTO TB_USER_VIP_PROGRAM_DATE_TIME(<include refid="Base_Column_List"/>)
+        VALUES (
+        #{userId,jdbcType=BIGINT}, #{dateId,jdbcType=VARCHAR}, #{times,jdbcType=INTEGER},
+        #{useTimes,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="userVipProgramDateTime">
+        UPDATE TB_USER_VIP_PROGRAM_DATE_TIME
+        SET TIMES = #{times,jdbcType=INTEGER}, USE_TIMES = #{useTimes,jdbcType=INTEGER}, UPDATE_TIME = now()
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND DATE_ID =#{dateId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateUserVipProgramDateTimeUseTimes" parameterType="map">
+        UPDATE TB_USER_VIP_PROGRAM_DATE_TIME
+        SET USE_TIMES = #{newUseTimes,jdbcType=INTEGER}, UPDATE_TIME = now()
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND DATE_ID =#{dateId,jdbcType=VARCHAR} and USE_TIMES =
+        #{oldUseTimes,jdbcType=INTEGER}
+    </update>
+</mapper>

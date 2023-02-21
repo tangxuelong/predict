@@ -1,0 +1,8 @@
+package com.mojieai.predict.constant;
+
+public class ConfigConstant {
+    //分表@TableShard 属性值
+    public static final String GAME_PERIOD_SHARD_TYPE = "%100";
+    public static final String GAME_PERIOD_SHARD_BY = "gameId";
+    public static final String GAME_PERIOD_TABLE_NAME = "tb_game_period";
+}

@@ -1,0 +1,25 @@
+{
+  "app_key": "OPR:10023629882",
+  "server_root": "https://open.yeepay.com/yop-center",
+  "yos_server_root": "https://yos.yeepay.com/yop-center",
+  "yop_public_key": [
+    {
+      "store_type": "string",
+      "cert_type": "RSA2048",
+      "value": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6p0XWjscY+gsyqKRhw9MeLsEmhFdBRhT2emOck/F1Omw38ZWhJxh9kDfs5HzFJMrVozgU+SJFDONxs8UB0wMILKRmqfLcfClG9MyCNuJkkfm0HFQv1hRGdOvZPXj3Bckuwa7FrEXBRYUhK7vJ40afumspthmse6bs6mZxNn/mALZ2X07uznOrrc2rk41Y2HftduxZw6T4EmtWuN2x4CZ8gwSyPAW5ZzZJLQ6tZDojBK4GZTAGhnn3bg5bBsBlw2+FLkCQBuDsJVsFPiGh/b6K/+zGTvWyUcu+LUj2MejYQELDO3i2vQXVDk7lVi2/TcUYefvIcssnzsfCfjaorxsuwIDAQAB"
+    }
+  ],
+  "isv_private_key": [
+      {
+        "store_type": "string",
+        "cert_type": "RSA2048",
+        "value": "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCCnhh9KsGvqzbjPZ63D1lr+/LEu6h77xcMYwHMNPVdLZyzfCfkkX/RYH7U89gi7CL1UGzN/yUPLAjI1PHcccvJVMqdJs5SdMIn2R8UG8w7e7ue/aohQSYuA7wrh2J/1QtXBQ6/RNivWajPmMsnVRKf7PSmeeXT+PqtWwecm2cWtfmWp2dY838bWuf9rOWvDYdzg62KNMpIecxEHKkbQ9LJgJCcMAQcnCXLLPpZ6XyLvqoo1R9PktVrbIWB5FWExYUgGz1Nawt84aFA/DAVCjqoRA1ILGMpZwFzqGrfJ2eatGNWSAORMVjSphc7VO3UcjrIIllgIXX2v2n7dkZdTxFRAgMBAAECggEAJTIuWR6e7467X7UBiLH3Thf+h2XFUh3BG4bqUSPXp8RAdqBpn96LXq2zEKOsLi2+uss/YN5CyHJKwh5aDePeG6Ro2p3dbX/QdpaPEiPkYiAXSuyD0VqDK+FmaaLxOuQJiatoCrHpXu4Sc6PYXogMeLx64xmdiGLDyDA/F6rtjXq016G57S7VttY4EKxQ0ijLq3Mwgb/wKaiLH+961siY/y7aFHjOK0dY8FIaVCOPcTb0kCvfBOOdtRnGflflf2FhphHdujpcYRX0XEIaYPPdcolT4tPcF5Mf7HITiDCu8VZJmCPFyyRdGxpDSrkJg6AdCMMv1LtjJKhjoGUJuH1qwQKBgQDdn9bzvWe9LqlE8mojxlQ4gDQx3UWgSLkYepMrH4Lc8a7y4aHmNMohfsuU1RE7Pb127smIwZapu6dQ9QmYQswpnf0RExiEX/U+Ryzx0gSHhVqi5vbQlIobP9VL+yR8Lspuzr/XbdnbxL967KOntxMqrrTYRtHbC0ZwTNs96DXgOQKBgQCW4JlCsbA7fSz+utG1hCD4T4SYiXE6y02UIrdydSEbC+d9uPqxD2aHDZxpbMlkQjdinf60ixF+DBe7cP1rAcQ7L1Qt5maS3MAyt3DAfXQInXZdjV4igf/CzgfubMfMMAzBkKKNE75OvUf0Xt++Z0+bx/IjrHMz0ocdFqrOVNIJ2QKBgCeiFgawsISce5jg4SpUpWsVQkBImdL4LmG6SedEU1q/vdGhmBpbBmrHChErqVE20VMbkN7r/82KyXko2PZpu6kVn9QV3iSOJIVmpRr5u+Wga30GYM0cQzZsS/CykOvEUl9OifA0rOkoXjXVa87qZnsTkzO6Nn09nvMmS27ewAPBAoGAe5GplCkJaD+GGX6SgLKdeiFOPMvcc8XMXPXt/w0VNxyR1LMqhtdRJm0sXF/ftYBR8i/qSp3Xjr+CtF6+/uPsfnit3gXknoWz2BXLf6t/3Apyxf4hSevkt/ycHFb1cDMuT14Q87Bm3gBCLU+CumPMnI6ury7vD1Num5FUBTcM60kCgYBB9N2Su8Mr/97Kf1ZZudDxOkDAce911rnR7sDYSsVytjA5bVd7Z2fRXffJ53pu8AU7kEhnICnqolaq+SzvZyrPX3CwNj14+zUiq5bo6H5gqqbtL0tXIlE8wS+f001HE5JcxnHxZmUfuO4OwLnqVio0YrpMkFfS6Ua4dG9DOPVrmg=="
+     }
+      ],
+   "http_client": {
+    "connect_timeout": 10000,
+    "read_timeout": 30000,
+    "max_conn_total": 200,
+    "max_conn_per_route": 100
+  }
+}

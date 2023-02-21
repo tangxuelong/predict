@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserCoupon">
+    <resultMap id="userCouponMap" type="userCoupon">
+        <result column="COUPON_ID" property="couponId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="COUPON_TYPE" property="couponType" jdbcType="INTEGER"/>
+        <result column="COUPON_CONFIG_ID" property="couponConfigId" jdbcType="BIGINT"/>
+        <result column="COUPON_NAME" property="couponName" jdbcType="VARCHAR"/>
+        <result column="COUPON_DESC" property="couponDesc" jdbcType="VARCHAR"/>
+        <result column="BEGIN_TIME" property="beginTime" jdbcType="TIMESTAMP"/>
+        <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="ACCESS_TYPE" property="accessType" jdbcType="INTEGER"/>
+        <result column="USE_STATUS" property="useStatus" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="AVAILABLE_TIMES" property="availableTimes" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        COUPON_ID, USER_ID, COUPON_TYPE, COUPON_CONFIG_ID, COUPON_NAME, COUPON_DESC, BEGIN_TIME, END_TIME, USE_STATUS,
+        ACCESS_TYPE, AVAILABLE_TIMES, CREATE_TIME
+</sql>
+
+    <select id="getUserCouponByUserId" resultMap="userCouponMap" parameterType="map">
+        select * from tb_user_coupon where USER_ID=#{userId, jdbcType=BIGINT}
+    </select>
+
+    <select id="getUserUseAbleCouponByAccessType" resultMap="userCouponMap" parameterType="map">
+        select * from tb_user_coupon where USER_ID=#{userId, jdbcType=BIGINT} and ACCESS_TYPE =
+        #{accessType, jdbcType=INTEGER} and USE_STATUS = 1 and BEGIN_TIME &lt; now() and END_TIME &gt; now() order by
+        END_TIME
+    </select>
+
+    <select id="getUserCouponByUserIdAndCouponId" resultMap="userCouponMap" parameterType="map">
+        select * from tb_user_coupon where COUPON_ID =#{couponId, jdbcType=VARCHAR}
+        AND USER_ID = #{userId,jdbcType=BIGINT}
+        <if test="ifLock == true">
+            FOR UPDATE
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="userCoupon">
+        insert into tb_user_coupon (<include refid="Base_Column_List"/>)
+        values (#{couponId, jdbcType=VARCHAR}, #{userId, jdbcType=BIGINT}, #{couponType, jdbcType=INTEGER},
+        #{couponConfigId, jdbcType=BIGINT}, #{couponName,jdbcType=VARCHAR}, #{couponDesc, jdbcType=VARCHAR},
+        #{beginTime, jdbcType=TIMESTAMP},#{endTime, jdbcType=TIMESTAMP},#{useStatus, jdbcType=INTEGER},
+        #{accessType, jdbcType=INTEGER}, #{availableTimes,jdbcType=INTEGER}, now())
+    </insert>
+
+    <update id="updateCouponUseStatus" parameterType="map">
+        update tb_user_coupon set USE_STATUS = #{setUseStatus, jdbcType=INTEGER}
+        where COUPON_ID =#{couponId, jdbcType=VARCHAR} and USE_STATUS = #{oldStatus, jdbcType=INTEGER}
+    </update>
+
+    <select id="getCouponHasAvailableTimesByType" parameterType="java.util.Map" resultMap="userCouponMap">
+      SELECT *
+      FROM tb_user_coupon
+      WHERE USER_ID = #{userId,jdbcType=VARCHAR} AND ACCESS_TYPE = #{accessType,jdbcType=INTEGER}
+      AND USE_STATUS = #{useStatus,jdbcType=INTEGER} AND AVAILABLE_TIMES > 0;
+    </select>
+
+    <update id="updateCouponAvailableTimes" parameterType="java.util.Map">
+        UPDATE tb_user_coupon
+        SET AVAILABLE_TIMES = #{setAvailableTimes,jdbcType=INTEGER}
+        <if test="setUseStatus != null">
+            , USE_STATUS = #{setUseStatus,jdbcType=INTEGER}
+        </if>
+        WHERE USER_ID = #{userId,jdbcType=BIGINT} AND COUPON_ID = #{couponId,jdbcType=VARCHAR}
+        AND AVAILABLE_TIMES = #{oldAvailableTimes,jdbcType=INTEGER} AND USE_STATUS = #{oldUseStatus,jdbcType=INTEGER}
+    </update>
+</mapper>
